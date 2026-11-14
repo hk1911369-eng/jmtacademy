@@ -36,7 +36,7 @@ The desired experience is: **open the same lesson and safely continue close to t
 
 1. **Separate playback from completion.** New `lesson_playback_progress` rows contain only student, lesson, approximate position, optional duration and timestamps. They do not write `lesson_progress`, mastery, scores or `learning_events`.
 2. **No client write privilege.** Enable RLS, revoke all table privileges from `anon`, `authenticated` and `PUBLIC`, then grant authenticated SELECT only. RLS allows only the student's own checkpoint while the lesson is published and the student has an active, paid entitlement through the current Asia/Dhaka billing-month end.
-3. **One guarded RPC.** `save_lesson_playback_checkpoint` derives identity from `auth.uid()`; accepts no student ID or course ID; checks student role, published lesson, active enrollment, admission fee, current `paid_through`, numeric bounds and already-completed status. It uses SECURITY DEFINER with a fixed safe search path and explicit execute grants.
+3. **One guarded RPC.** The public `save_lesson_playback_checkpoint` endpoint is a SECURITY INVOKER wrapper; its SECURITY DEFINER implementation lives in a non-exposed `private` schema. It derives identity from `auth.uid()`; accepts no student ID or course ID; checks an active student profile, published lesson, active enrollment, admission fee, current `paid_through`, numeric bounds and already-completed status. A boolean return distinguishes a saved checkpoint from a server-throttled update; the client retries a deferred write after the two-second window.
 4. **Completion cleanup.** A database trigger deletes the checkpoint when a lesson is completed. Resume state cannot masquerade as completion and does not survive a verified completion.
 5. **Resilient client player.** Restore after `loadedmetadata`; save after meaningful progress changes (15 seconds), on pause and seek; queue a same-origin `sendBeacon` on `visibilitychange=hidden`; use a keepalive fetch fallback if the beacon cannot be queued. Do not block video playback on save errors.
 6. **Student Today continuation.** Show the latest checkpoint from a currently eligible paid course and a published, incomplete lesson. If there is no urgent due action, the primary next action becomes Continue; if there is urgent work, show Continue as a secondary card.
@@ -47,7 +47,7 @@ The desired experience is: **open the same lesson and safely continue close to t
 
 - Only authenticated student accounts can write a checkpoint; role and entitlement are rechecked in Postgres, not trusted from the UI.
 - Student A cannot read or write Student B's checkpoint, even by changing a lesson ID or posting directly to the RPC/route.
-- A student cannot save for an unpublished lesson, inactive/expired/unpaid course or a lesson in another course.
+- A student cannot save for an inactive student profile, unpublished lesson, inactive/expired/unpaid course or a lesson in another course.
 - Direct INSERT/UPDATE/DELETE against the checkpoint table is denied to anon and authenticated roles.
 - Checkpoint values are integer seconds in the supported 0–86,400 range; duration may be unknown; position cannot exceed known duration by more than three seconds.
 - Checkpoint saves never mark a lesson complete, advance goals, change mastery or create a learning event.
@@ -56,15 +56,18 @@ The desired experience is: **open the same lesson and safely continue close to t
 - Client saves are throttled; failures do not interrupt playback and the UI reports a recoverable save issue.
 - Pause, seek, app/tab switch, refresh, same-account second device and completed-lesson cases are covered in tests or manual test plan.
 - Student Today only shows current eligible paid, published, incomplete lesson checkpoints; expired/unpaid or completed lessons are not shown.
-- No production migration is run as part of code review. Test-environment migration and RLS/RPC tests must be completed before merge/release.
+- No production migration is run as part of code review. The JMT Test migration and PostgreSQL RLS/RPC isolation test must pass before merge/release.
 
 ## 6. Verification plan and current limitations
 
 - Automated tests cover SQL guardrails, table grants/RLS, action/route validation, player save/restore hooks and dashboard continuation wiring.
 - CI must pass full test, lint, typecheck, production build and dependency audit on the exact PR head.
-- A real Postgres migration/RLS test, two-account isolation test, mobile browser test, network-throttling test and human student usability test remain mandatory before the feature can be considered fully verified.
-- No production/test Supabase migration is applied in this code-only implementation session.
-- Full screenshot-based Product Design audit is not available in this standard chat environment; no visual or real-device verification is claimed.
+- **JMT Test** (project `cullxqklmbdiosibgois`, ap-south-1) was verified as the separate test project; its migration history was inspected before applying this migration. No production project was changed.
+- The test migration succeeded and was recorded as `20261114185830 / secure_lesson_playback_resume_checkpoints`. Read-back SQL confirmed the checkpoint table, RLS, own-entitled-row policy, completion trigger, private SECURITY DEFINER implementation, public SECURITY INVOKER wrapper, anon denial, authenticated SELECT/EXECUTE, and no authenticated direct INSERT/UPDATE.
+- A transaction-scoped PostgreSQL test used two synthetic students, a synthetic admin, one published course/lesson and current paid enrollments. Both students saved successfully; A saw one row; B saw zero A rows before saving and then saw only B's row; completing A's lesson deleted only A's checkpoint. The transaction rolled back and no synthetic test records were retained.
+- Supabase security advisors reported no checkpoint-specific warning. Existing unrelated warnings remain for other public SECURITY DEFINER functions, two RLS-enabled rate-limit tables without policies, and disabled leaked-password protection.
+- GitHub Actions has zero runs/check-runs for the current PR head. All repository workflows filter PRs to target `main`, but PR #67 targets `feat/student-today-next-action`; therefore Node tests, TypeScript, ESLint, production build and dependency audit are still unverified on this exact head.
+- Android/mobile browser, network-throttling and human student usability tests remain mandatory. Full screenshot-based Product Design audit is not available in this standard chat environment; no visual or real-device verification is claimed.
 
 ## 7. Explicit boundaries
 
