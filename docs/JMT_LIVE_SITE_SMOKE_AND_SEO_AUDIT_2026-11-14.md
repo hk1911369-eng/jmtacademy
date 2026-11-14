@@ -146,3 +146,12 @@ A read-only comparison found a potentially release-blocking environment mismatch
 - The legacy host's `/contact` continued to render its configured public contact sections in the earlier comparison.
 - Production `academy_settings.updated_at` is 8 November 2026, so the configured contact fields are not a just-written change that would ordinarily explain a five-minute stale response.
 - This makes the new-host/test-project mismatch hypothesis stronger than a transient cache explanation, but it remains an inference until the new Render service's actual `NEXT_PUBLIC_SUPABASE_URL` and matching anon key are checked.
+
+
+## 10. Render Blueprint drift
+
+Repository `render.yaml` on `main` still declares service `sanjay-kumar-chemistry-lms` and repository URL `https://github.com/hk1911369-eng/sanjay-kumar-chemistry-lms`, while the canonical repository is now `hk1911369-eng/jmtacademy` and the replacement live service is `jmtacademy-web`.
+
+This is configuration drift, not proof that the currently running services use the stale repository (Render service inspection shows the active services connected to the current repository). Do not sync/apply the Blueprint until the intended topology is explicitly reconciled; an indiscriminate Blueprint sync could recreate or alter the legacy service rather than safely cut over to the new service.
+
+No Blueprint, Render service, repository connection or deployment was changed.
