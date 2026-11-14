@@ -265,3 +265,156 @@ next_review_date:
 Read this benchmark standard and the Project North Star before major feature work. Find the best credible reference for the exact feature, validate it with primary documentation and user pain/failure evidence, create an original JMT design, and define success before implementation. Build in reviewable increments; test actual journeys and adversarial cases; record evidence and limitations. Never claim feature parity or superiority from a mock-up, marketing copy, code file or checklist alone.
 
 **JMT's goal is not to copy the most popular app or to keep students trapped on a screen. It is to create the most useful, calm, trustworthy and effective academic environment we can prove works. Student learning, agency, mastery and wellbeing outrank compulsive engagement and vanity metrics.**
+
+
+## 11. Deep benchmark record 01 — Student Today dashboard and guided learning path
+
+**Feature ID:** LXP-STUDENT-HOME-001  
+**Pillar:** Priority 1 — JMT Learning Experience OS  
+**Related product pillars:** Personal Academic Command Centre, JMT AI Teacher, Smart Assessment, Live Classes, Virtual Labs  
+**Benchmark date:** 14 November 2026  
+**Status:** benchmark research completed; JMT code foundation exists; full user-journey design and student usability validation remain open; production-verified student usage is not established.
+
+### 11.1 User problem and desired outcome
+
+When a student opens JMT, they should not need to interpret a collection of statistics or decide from scratch what to do. The home experience should answer, in order:
+
+1. What is the most useful learning action for me now?
+2. Where did I last stop, and can I continue without searching?
+3. What is due or scheduled soon?
+4. Which topic should I revise, and why?
+5. How will this action improve my preparation?
+
+The result should be a calm, personalised academic command centre, not a social feed or attention trap. Students must be able to understand, edit, dismiss and pause recommendations.
+
+### 11.2 Reference comparison
+
+**Duolingo — guided learning path and teaching method**
+- Reference: [The Duolingo Teaching Method](https://blog.duolingo.com/duolingo-teaching-method/) and [Duolingo Handbook](https://handbook.duolingo.com/).
+- Observed patterns: a guided path reduces the burden of choosing a random next lesson; personalisation and appropriate challenge keep practice relevant; lesson progression should build foundations rather than reward rushing through a sequence.
+- JMT adaptation: show a clear next academic action with a reason and prerequisite context; keep the student on a curriculum-linked journey.
+- JMT rejection: no copying of Duolingo's character art, branding, path artwork, proprietary content, streak mechanics or interface. Do not use streak pressure or time-on-app as a learning metric.
+- Evidence limitation: first-party product/engineering descriptions explain design intent. JMT must independently test local student outcomes.
+
+**Khan Academy — Mastery Challenges**
+- Reference: [Mastery Challenges in course mastery](https://support.khanacademy.org/hc/en-us/articles/360037127892-What-are-Mastery-Challenges-in-course-mastery).
+- Observed patterns: review is personalised from prior skills; skill selection considers time since last practice and current mastery; short practice sessions revisit earlier learning rather than only pushing new content.
+- JMT adaptation: schedule due retrieval practice from verified learning events, concept evidence, recency and mastery confidence; let students understand why an item is due.
+- JMT improvement target: integrate the schedule with Bangladesh syllabus mapping, exam deadlines, teacher-assigned work, local time and lesson context; provide a clear “why this now” explanation and a fair way to reschedule.
+- Evidence limitation: the support article describes product rules, not independent proof that copying its exact session length or scoring logic is best for JMT.
+
+**MyStudyLife — planner and academic calendar**
+- References: [How to use MyStudyLife](https://care.mystudylife.com/en/articles/9502657-how-to-use-msl) and [MyStudyLife FAQ](https://mystudylife.com/faq/).
+- Observed patterns: one calendar brings together classes, tasks, assignments and exams; classes can repeat and support rotating timetables; tasks and revision items have due dates; the product describes daily, weekly and monthly views, filters, reminders, focus timer and a parent view.
+- JMT adaptation: combine timetable, study plan, live classes, exam dates, assignment deadlines, missed-class catch-up and revision in one local-time aware view.
+- JMT improvement target: connect every calendar item to its course, lesson, syllabus topic, teacher and next learning action. Support Bangla/English and actual academy schedules without asking students to re-enter information already held by JMT.
+- Evidence limitation: MyStudyLife's own documentation describes features and current plan boundaries must be checked before implementation.
+
+**Learning-science evidence — retrieval, spacing and interleaving**
+- Reference: Ruitenburg et al. (2026), [meta-analysis in authentic school classrooms](https://app.cochat.ai/from/chatgpt/fetch/papers/10.1007/s10648-026-10225-5), DOI 10.1007/s10648-026-10225-5.
+- The meta-analysis included 233 effect sizes from 53 studies and 7,303 participants. It reported average testing, spacing and interleaving effects, while also identifying meaningful moderators such as knowledge type, post-test format, comparison condition, retention interval and feedback.
+- JMT implication: use retrieval and spaced practice deliberately, but select methods based on topic, learner evidence, feedback and the intended assessment. Do not turn the reported average effects into a JMT outcome promise or assume every topic should use the same schedule.
+
+### 11.3 Current JMT implementation evidence
+
+**Main branch code**
+- Student page: app/student/page.tsx.
+- Dashboard component: components/learning-os-dashboard.tsx.
+- Actions: app/actions/learning-os.ts, app/actions/learning.ts and app/actions/exam-war-room.ts.
+- Current component shows counts for goals, revision due, tracked topics, unresolved mistakes and average mastery; it offers a 7-day lesson-completion goal, a revision queue, upcoming quizzes/written exams/assignments, mistake memory, evidence-backed lesson recommendations and a topic mastery map.
+- The student page loads learner goals, revision tasks, mastery rows and unresolved mistakes. Recommendations require at least three evidence items and a weak mastery score, are linked to published lessons and currently paid course enrolment, and use prerequisite evidence in the recommendation logic.
+- The dashboard has an Exam War Room entry point. CSS has responsive grid behavior and a one-column goal form for narrow screens.
+
+**What is already good**
+- Recommendations are not shown from a single weak signal; the inspected code uses a minimum evidence count.
+- Recommendation candidates are scoped to published lessons and eligible active paid course enrolments.
+- The dashboard explicitly says insights improve as learning evidence is collected and has honest empty states for missing mastery or revision evidence.
+- Mistake memory includes the previous response, correct answer and explanation rather than just a red/green score.
+- Due tasks, upcoming assessments and goals are grouped into recognisable academic categories.
+
+**Gaps identified by code review**
+- The first action is not yet a single, prioritised “continue/learn next” card. The interface begins with several summary numbers and a goal form, then separate lists.
+- No clearly verified “resume last lesson” or “continue where you stopped” action was located in the inspected dashboard component.
+- The component does not display the full weekly timetable or a unified class/task/exam calendar.
+- Goal creation is currently constrained to lesson completions in the visible component; broader goals (revision sessions, question sets, topic mastery, assignment completion and teacher-set targets) need a consistent design.
+- Upcoming live classes are not passed into this dashboard's current props in the inspected code excerpt.
+- Recommendations and mastery can be empty until enough mapped, verified learner evidence exists; a new student needs a useful onboarding path rather than a blank analytics panel.
+- The dashboard is a relatively long vertical section. Its hierarchy and action priority require a real mobile usability test, not just a CSS inspection.
+- The production database snapshot at this audit had no learners' goals, revision tasks, mastery rows or learning events. The product's live student experience is therefore not validated by production data.
+
+### 11.4 Required JMT experience
+
+The target student home should have a clear hierarchy:
+
+**A. Today — one recommended next action**
+- Display one primary action, with up to two secondary actions.
+- Examples: continue an unfinished lesson, complete a due retrieval set, attend the next scheduled class, submit an assignment or review a teacher's feedback.
+- Explain why it is recommended and estimate duration only when a defensible estimate exists.
+- Make the action resumable and safe across refresh/network interruption.
+
+**B. Continue learning**
+- Show active course, subject, chapter and last visited lesson when this data is reliably recorded.
+- Provide a one-tap resume link; do not fabricate “recent activity” for a new student.
+- If there is no history, guide the student to the first available lesson or course-application step.
+
+**C. Academic calendar**
+- Show next class, assignment deadline, exam and revision item in a combined chronological view.
+- Respect Asia/Dhaka date/time, recurring and rotating schedules where configured, academic holidays and student availability.
+- Allow day/week/month views and filters without duplicating the same event.
+
+**D. Revision and mastery**
+- Show only evidence-backed due items and explain their reason.
+- Show confidence and evidence count alongside mastery; never treat raw time spent, simulation clicks or an ungraded answer as mastery.
+- Let learners defer or reschedule safely within teacher/course rules.
+- Provide immediate corrective feedback and follow-up retrieval where appropriate.
+
+**E. Progress and wellbeing**
+- Show progress toward meaningful goals, not a wall of numbers.
+- No public ranking pressure, manipulative streak-loss warnings, forced notifications or infinite scroll.
+- Include a clear pause/focus control, optional study timer and notification preferences.
+- Students can dismiss or correct recommendations and see the underlying reason.
+
+**F. First-use and sparse-data experience**
+- On a new account, explain how to add a course, choose a goal or begin the first lesson.
+- Explain why mastery/recommendation data is not available yet.
+- Never substitute sample/demo mastery values or fake upcoming classes.
+- Provide a graceful state when the student has no published course, no active enrolment or an expired payment.
+
+### 11.5 Atomic acceptance criteria
+
+| ID | Acceptance criterion | Release evidence required |
+|---|---|---|
+| LXP-001-A | Student sees one primary next action and can reach it in one obvious step | Browser tests for new, returning, overdue and fully caught-up learner states |
+| LXP-001-B | Resume action opens the correct authorised lesson and preserves progress safely | Database + browser test for pause, refresh, expired session and network interruption |
+| LXP-001-C | Academic calendar merges classes, assignments, exams and revision without duplicates | Fixture tests for recurring events, time zones, cancellations and overlapping events |
+| LXP-001-D | Recommendations show an understandable reason and only use verified evidence | Unit/integration tests for evidence thresholds, prerequisites, published content and paid access |
+| LXP-001-E | Students can control study goals, reminders and focus settings | Role and preference tests; no reminder sent against user settings |
+| LXP-001-F | Bengali and English labels, times, dates and academic terminology render consistently | Localization snapshots and manual review by fluent reviewers |
+| LXP-001-G | Mobile layout works on representative Android widths with no horizontal overflow or tiny targets | Viewport tests and real-device review at 320, 360, 390 and 430 CSS pixels |
+| LXP-001-H | Keyboard, screen reader, focus, contrast, zoom and reduced motion meet WCAG 2.2 AA target | Automated accessibility scan plus keyboard/screen-reader manual checks |
+| LXP-001-I | Low-bandwidth and transient failures preserve user progress and provide retry/recovery | Network-throttling and offline-interruption test with persisted-state assertions |
+| LXP-001-J | No fabricated metrics or mastery values are shown when evidence is sparse | Empty-state and zero/low-sample tests |
+| LXP-001-K | Teacher/parent visibility is scoped and consent-aware; peers cannot see private learner records | Adversarial role/RLS and direct API tests |
+| LXP-001-L | Dashboard does not optimise compulsive use or punish breaks | Product-copy review, notification preferences test and wellbeing review |
+
+### 11.6 Measurement plan
+
+Set baselines with a small, consented student usability pilot before comparing changes.
+
+- **Primary UX metric:** time from student dashboard open to starting the next intended learning action.
+- **Task success:** percentage of students who can identify and start the correct next action without help.
+- **Continuity:** percentage of interrupted lessons/practice tasks that resume at the correct point without data loss.
+- **Planning quality:** percentage of scheduled academic tasks completed or consciously rescheduled; do not punish legitimate changes.
+- **Learning quality:** retention and correctness on aligned retrieval practice after defined intervals; stratify by subject, skill and feedback type.
+- **Recommendation quality:** acceptance, dismissal/correction, and subsequent learning evidence; compare with a simple baseline.
+- **Accessibility:** WCAG 2.2 AA audit results, screen-reader/keyboard completion and error rates by device.
+- **Guardrails:** false/unsupported recommendations, missed classes due to incorrect notifications, data-loss incidents, excess notification opt-outs, privacy/security events and student-reported pressure.
+
+Do not set an arbitrary “time-on-site” or streak target. Do not claim learning gains from clicks, session duration or dashboard visits.
+
+### 11.7 Decision and status
+
+- **Benchmark decision:** adapt Duolingo's guided progression, Khan Academy's evidence-informed mastery review and MyStudyLife's integrated academic calendar; combine them in an original Bangladesh curriculum-aware JMT experience.
+- **JMT differentiation:** connect the next action to JMT course access, official cohort/syllabus version, teacher feedback, offline/online schedule, lesson, assessment, virtual lab and evidence-backed revision in a single student-controlled home.
+- **Implementation status:** partial foundations exist in main. The complete integrated experience, unified calendar, verified resume flow, student pilot, full mobile/accessibility testing and production learning outcome measurement remain open.
+- **Next implementation slice:** design and test the student home information hierarchy and next-action card, then add a real resume/continue path using the current authorised lesson-progress model. Do not build another dashboard island.
