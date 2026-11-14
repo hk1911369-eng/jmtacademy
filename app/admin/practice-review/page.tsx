@@ -58,14 +58,15 @@ export default async function PracticeReviewPage({ searchParams }: { searchParam
           <form action={reviewStudentPracticeQuestion} className="auth-form practice-authoring-form">
             <input type="hidden" name="question_id" value={question.id}/>
             <label>Rights verification
-              <select name="rights_status" defaultValue={question.source_kind === 'original' ? 'original' : 'permission_verified'}>
+              <select name="rights_status" defaultValue="" required>
+                <option value="" disabled>Choose only after checking the evidence</option>
                 <option value="original">Original teacher-authored content</option>
                 <option value="permission_verified">Permission / licence verified</option>
                 <option value="open_license_verified">Open licence verified</option>
                 <option value="public_domain_verified">Public domain verified</option>
               </select>
             </label>
-            <label>Reviewer note <textarea name="review_note" rows={2} maxLength={2000} placeholder="Record syllabus fit, answer check and rights evidence…"/></label>
+            <label>Reviewer note <textarea name="review_note" rows={2} maxLength={2000} required placeholder="Explain the answer check, syllabus fit and permission evidence (or rejection reason)…"/></label>
             <div className="practice-authoring-grid">
               <button type="submit" name="decision" value="approve" className="practice-submit-button">Approve and publish</button>
               <button type="submit" name="decision" value="reject" className="quiet-button">Reject / return for revision</button>
