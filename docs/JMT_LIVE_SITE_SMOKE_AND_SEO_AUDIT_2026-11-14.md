@@ -138,3 +138,11 @@ A read-only comparison found a potentially release-blocking environment mismatch
 **Assessment:** The new host appears to be using the test Supabase project (or a stale cached response), while the legacy host appears to use the production project. The evidence strongly suggests a service-level Supabase environment mismatch, but the connected Render read tool does not expose the configured environment values, so the exact `NEXT_PUBLIC_SUPABASE_URL` has not been independently confirmed.
 
 **Required before hostname cutover:** inspect the new service's `NEXT_PUBLIC_SUPABASE_URL` and matching anon key in Render, and verify that both belong to the intended production project `jpoxrxjixkcgjqvyyznw`. Do not paste secrets into chat. Do not update environment variables or trigger a deployment until the intended target and matching key are reviewed and approved. No Render environment variable or database record was changed during this audit.
+
+
+### 9.1 Recheck after cache revalidation window — 14 November 2026 (16:30 UTC)
+
+- Re-fetched the new host's `/contact` after the five-minute route revalidation interval. It still renders the empty-contact state; WhatsApp, email, Facebook and offline-address sections remain absent.
+- The legacy host's `/contact` continued to render its configured public contact sections in the earlier comparison.
+- Production `academy_settings.updated_at` is 8 November 2026, so the configured contact fields are not a just-written change that would ordinarily explain a five-minute stale response.
+- This makes the new-host/test-project mismatch hypothesis stronger than a transient cache explanation, but it remains an inference until the new Render service's actual `NEXT_PUBLIC_SUPABASE_URL` and matching anon key are checked.
