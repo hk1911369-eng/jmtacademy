@@ -64,7 +64,7 @@ RETURNS boolean
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = pg_catalog, public, pg_temp
-AS $
+AS $$
 DECLARE
   v_course_id uuid;
   v_period_end date;
@@ -153,7 +153,7 @@ BEGIN
   -- False means the server-side write throttle intentionally deferred this update.
   RETURN COALESCE(v_saved, false);
 END;
-$;
+$$;
 
 REVOKE ALL ON FUNCTION private.save_lesson_playback_checkpoint(uuid, integer, integer)
   FROM PUBLIC, anon, authenticated;
@@ -170,9 +170,9 @@ RETURNS boolean
 LANGUAGE sql
 SECURITY INVOKER
 SET search_path = pg_catalog, public, private, pg_temp
-AS $
+AS $$
   SELECT private.save_lesson_playback_checkpoint($1, $2, $3);
-$;
+$$;
 REVOKE ALL ON FUNCTION public.save_lesson_playback_checkpoint(uuid, integer, integer)
   FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.save_lesson_playback_checkpoint(uuid, integer, integer)
