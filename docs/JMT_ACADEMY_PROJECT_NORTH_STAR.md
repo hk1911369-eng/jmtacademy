@@ -262,10 +262,10 @@ Product takeaway: JMT's catalogue must be cohort-aware and linked to syllabus ve
 
 
 ## Research continuation — tranche 23 (14 November 2026)
-- Verified the official NCTB carry-forward rule for HSC 2027 / 2025–26 intake: Bangla First Paper continues the existing 2024–25 syllabus, pending any further instruction.
+- Located the official NCTB 26 November 2025 Bangla First Paper notice for HSC 2027 / 2025–26 intake; contemporaneous reporting quotes it as continuing the 2024–25 syllabus. The official attachment text remains pending, so record the carry-forward as secondary-reported until directly checked.
 - Retrieved and checked the signed NCTB circular dated 21 November 2024 (memo 37.06.0000.402.71.068.02.39), which identifies the 2024–25 Bangla First Paper syllabus attachment and states the syllabus comprises twelve stories and twelve poems.
 - The full attachment item list is still not retrieved; no detailed reading-list records are approved from the cover letter alone.
-- Added tranche-23 audit: docs/JMT_HSC_2027_BANGLA_FIRST_PAPER_CARRY_FORWARD_AUDIT_TRANCHE_23_2026-11-14.md on the research branch / PR #42.
+- Added tranche-23 audit: docs/JMT_HSC_2027_BANGLA_FIRST_PAPER_CARRY_FORWARD_AUDIT_TRANCHE_23_2026-11-14.md on the research branch / PR #42. The exact attachment is not yet verified.
 - Predictor evaluation protocol added on PR #42: cohort-isolated chronological walk-forward validation, leakage checks, baseline comparisons, calibration, uncertainty and teacher-review release gates.
 
 
