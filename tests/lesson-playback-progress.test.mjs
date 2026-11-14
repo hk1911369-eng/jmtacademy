@@ -65,7 +65,7 @@ test('lesson player restores only after metadata, saves periodically and on paus
   assert.ok(player.includes('video.currentTime = position'));
   assert.ok(player.includes('onTimeUpdate'));
   assert.ok(player.includes('difference < 15'));
-  assert.ok(player.includes('lastAttemptAt.current < 10000'));
+  assert.ok(player.includes('now - lastAttemptAt.current < 10000'));
   assert.ok(player.includes("typeof navigator.sendBeacon === 'function'"));
   assert.ok(player.includes('onPause='));
   assert.ok(player.includes('onSeeked='));
