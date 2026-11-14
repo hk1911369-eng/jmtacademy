@@ -263,3 +263,21 @@ button,.btn,.auth-submit,.portal-nav-link{touch-action:manipulation}
   .learning-os-next-action{align-items:stretch;flex-direction:column;gap:16px;padding:18px;margin:18px 0 22px}
   .learning-os-next-action-link{width:100%;white-space:normal}
 }
+
+
+/* Student Today: pair the primary action with a saved lesson when one exists. */
+.learning-os-action-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin:22px 0 26px}
+.learning-os-action-grid.has-continue{grid-template-columns:minmax(0,1.35fr) minmax(250px,1fr)}
+.learning-os-action-grid .learning-os-next-action{margin:0;height:100%}
+.learning-os-continue-card{
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px;
+  min-width:0;padding:20px 22px;border:1px solid #d5e3f4;border-radius:18px;background:#fff
+}
+.learning-os-continue-card .auth-kicker{margin:0;color:#1769d2}
+.learning-os-continue-card h3{margin:0;color:var(--navy);font-size:18px;line-height:1.35}
+.learning-os-continue-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
+.learning-os-continue-card a{display:inline-flex;align-items:center;gap:5px;margin-top:3px;color:#1769d2;font-size:13px;font-weight:800;text-decoration:none}
+.learning-os-continue-card a:focus-visible{outline:3px solid #1769d2;outline-offset:3px;border-radius:4px}
+.lesson-video-progress{display:grid;gap:8px;width:100%}
+.lesson-video-progress-status{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
+@media(max-width:760px){.learning-os-action-grid.has-continue{grid-template-columns:minmax(0,1fr)}}
