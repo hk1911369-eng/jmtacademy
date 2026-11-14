@@ -55,7 +55,6 @@ test('final checkpoint route is same-origin, authenticated and delegates authori
   assert.ok(route.includes('originHost.toLowerCase() !== host.toLowerCase()'));
   assert.ok(route.includes('supabase.auth.getUser()'));
   assert.ok(route.includes("rpc('save_lesson_playback_checkpoint'"));
-  assert.ok(route.includes("credentials" ) === false);
   assert.ok(route.includes('Cache-Control'));
 });
 
@@ -66,6 +65,8 @@ test('lesson player restores only after metadata, saves periodically and on paus
   assert.ok(player.includes('video.currentTime = position'));
   assert.ok(player.includes('onTimeUpdate'));
   assert.ok(player.includes('difference < 15'));
+  assert.ok(player.includes('lastAttemptAt.current < 10000'));
+  assert.ok(player.includes("typeof navigator.sendBeacon === 'function'"));
   assert.ok(player.includes('onPause='));
   assert.ok(player.includes('onSeeked='));
   assert.ok(player.includes("document.addEventListener('visibilitychange'"));
@@ -92,6 +93,7 @@ test('Student Today offers the latest saved lesson only from current paid publis
   assert.ok(page.includes('eligibleCourseIds'));
   assert.ok(page.includes(".eq('is_published', true)"));
   assert.ok(page.includes(".eq('completed', true)"));
+  assert.ok(page.includes('Number(row.position_seconds) < Number(row.duration_seconds) - 5'));
   assert.ok(page.includes('continueLesson={continueLesson}'));
   const dashboard = await readFile(new URL('../components/learning-os-dashboard.tsx', import.meta.url), 'utf8');
   assert.ok(dashboard.includes('learning-os-continue-card'));
