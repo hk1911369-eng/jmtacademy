@@ -2,7 +2,7 @@
 
 ## Decision
 
-**Do not delete the old Render service yet.** The replacement host is serving the application, but the cutover is not proven complete. Two material configuration mismatches and two unverified authentication settings remain.
+**The repository-side source-of-truth mismatch has been corrected on the open PR branch, but the live Render service and authentication configuration still need verification. Do not delete or suspend any service based on this report alone.**
 
 ## Verified live checks
 
@@ -10,57 +10,44 @@
   - `/api/health` returned HTTP 200 with `status=ok` and `database=reachable`.
   - `/login`, `/register` and `/forgot-password` each returned HTTP 200 and rendered the JMT Academy interface.
 - Previous host: `https://sanjay-kumar-chemistry-lms.onrender.com`
-  - `/api/health` also returned HTTP 200 with `status=ok` and `database=reachable`.
-  - The previous service is still active and is not redirecting/retired.
-- Both Render services are active Free Node web services in Singapore, attached to `hk1911369-eng/jmtacademy` on `main`.
-- Latest observed deploys succeeded on both services. The old service has continued to receive deploys, including a manual successful deploy on 14 November.
-- The 30-day Render request-log query returned no records for either service. This is not proof of zero user traffic and must not be treated as a safe-to-delete signal.
+  - `/api/health` also returned HTTP 200 with `status=ok`.
+  - It remains active in Render. The user has directed that project work proceed with the replacement as the sole intended production target; no deletion or suspension was performed.
+- Both services were attached to `hk1911369-eng/jmtacademy` on `main` at the time of inspection.
+- Render request-log retrieval returned no records for the inspected period. This is not proof of zero user traffic.
 
-## Blocking configuration drift
+## Repository correction completed on the open PR branch
 
-### 1. New Render health check is missing
+The following files were updated on `audit/jmt-master-prompt-follow-through`:
 
-- New service `jmtacademy-web` has an empty `healthCheckPath`.
-- Old service has `/api/health` configured.
-- The new endpoint is confirmed healthy, so set the new service health-check path to `/api/health` and confirm the service remains healthy after Render applies the setting.
+- `render.yaml`: production service is now named `jmtacademy-web`, uses repository `hk1911369-eng/jmtacademy`, retains `main`, configures `/api/health`, and sets both public URL variables to the replacement hostname.
+- The prepared staging definition now references the renamed repository too. Its Supabase URL, anon key and service-role key remain manual secure inputs (`sync: false`); it has not been provisioned.
+- `DEPLOYMENT.md`: production service, repository, URL, health check, environment-variable requirements and rollback instructions now describe `jmtacademy-web`. It explicitly warns against reintroducing the old service through a Blueprint sync.
+- Added `tests/render-blueprint.test.mjs` to protect the production hostname/repository, health check, staging secret isolation and deployment documentation.
 
-The available Render connector can read service configuration but does not expose a service-settings update action for this field. This audit did not change Render settings.
+These changes are on the draft PR branch, not `main`. They have not changed the live service, deployed production code or synchronized a Render Blueprint.
 
-### 2. Repository Blueprint and deployment guide still describe the old host
+## Remaining live configuration gates
 
-The current `main` branch `render.yaml` still declares:
-- Service name `sanjay-kumar-chemistry-lms`
-- Repository `hk1911369-eng/sanjay-kumar-chemistry-lms`
-- `APP_URL` and `NEXT_PUBLIC_SITE_URL` set to the old hostname
+1. The live Render service's `healthCheckPath` was blank when inspected. The Blueprint now contains `/api/health`, but that setting will not take effect until the reviewed Blueprint is applied or the service setting is updated in Render.
+2. Render's available read-only service response did not expose environment-variable names/presence. Confirm `APP_URL` and `NEXT_PUBLIC_SITE_URL` on `jmtacademy-web` both equal `https://jmtacademy-web.onrender.com`, and verify its Supabase URL points to the primary production project.
+3. The available Supabase connector did not expose Auth Site URL / redirect allow-list configuration. Confirm the primary project's Site URL and allow-list include the replacement host and `/auth/confirm`.
+4. Actual registration email confirmation, password recovery, session refresh, sign-out, student/teacher/admin access and manual payment review remain untested end-to-end.
+5. Check external OAuth providers, email templates, custom domains, callback URLs, notification links and bookmarks for old-host dependencies.
 
-The current `DEPLOYMENT.md` also identifies the old service, old repository and old URL as production.
+## Required release sequence
 
-This is a real source-of-truth mismatch. Do not sync the existing Blueprint as-is: it could recreate or reconfigure the old service rather than describe the current replacement. Update and review the Blueprint and deployment guide before any future Blueprint sync or service retirement.
-
-## Authentication and integration gates
-
-The application constructs signup-confirmation and password-recovery redirects from `APP_URL`, falling back to `NEXT_PUBLIC_SITE_URL`. The source code throws in production if neither is configured.
-
-- The Render connector response does not expose environment-variable names/presence or values. Secret values were not requested or printed. Confirm on the new service that `APP_URL` and `NEXT_PUBLIC_SITE_URL` are both set to the replacement origin.
-- The available Supabase connector does not expose the Supabase Auth Site URL / redirect allow-list configuration. Confirm the primary project Auth URL settings allow the replacement host and `/auth/confirm` callback, while keeping the old host during transition.
-- A page-load check does not test actual email confirmation, password recovery, login sessions or sign-out. These flows remain unverified.
-- Repository source uses manual payment review rather than a live payment gateway. Still check any external emails, bookmarks, OAuth providers, custom domains or third-party callbacks for old-host references before retirement.
-
-## Required cutover checklist
-
-1. Set Render health-check path on `jmtacademy-web` to `/api/health`; verify healthy status.
-2. Confirm new service environment-variable presence and that `APP_URL` and `NEXT_PUBLIC_SITE_URL` use `https://jmtacademy-web.onrender.com`. Confirm its Supabase URL is the primary production project, not JMT Test.
-3. Update `render.yaml` and `DEPLOYMENT.md` to describe the actual replacement service and repository. Review the diff; do not Blueprint-sync until the plan is understood.
-4. Update Supabase Auth Site URL and redirect allow-list to include the replacement host. Keep the old host allowed until end-to-end tests pass.
-5. Test on the replacement host: registration email confirmation, login, password reset, session refresh, sign-out, student/teacher/admin access and manual payment submission/review using an approved test account.
-6. Check any custom domains, external callback URLs, notification/email templates and public links for the old host.
-7. Observe the replacement service through a normal usage window and review request logs/events. Only then consider deleting the old Render service.
+1. Review and merge the repository changes only after all required CI checks pass and the owner approves merging.
+2. Apply the reviewed Render health-check configuration to the existing `jmtacademy-web` service; do not create another production service.
+3. Verify production environment variables and primary Supabase Auth redirect settings without exposing secrets.
+4. Test all authentication and role-gated workflows on the replacement host with approved test accounts.
+5. Monitor real usage and inspect Render logs/events over a normal usage window.
+6. Only after all checks pass should the old Render service be considered for deletion.
 
 ## Scope and safety
 
-- Read-only inspection only.
-- No Render setting, environment variable, custom domain, deploy, database, Supabase Auth setting or service was changed.
+- Repository documentation and test changes only, on an open draft PR branch.
+- No Render setting, environment variable, custom domain, deployment, Blueprint sync, database or Supabase Auth setting was changed.
 - No service was suspended or deleted.
-- No environment-variable values, credentials or student data were accessed or disclosed.
+- No secret values, credentials or student data were accessed or disclosed.
 
-**Deletion decision: NOT READY.** Reassess only after all seven cutover checks are complete.
+**Deletion decision: NOT READY.** The repository-side fix is prepared for review; live configuration and end-to-end validation remain outstanding.
