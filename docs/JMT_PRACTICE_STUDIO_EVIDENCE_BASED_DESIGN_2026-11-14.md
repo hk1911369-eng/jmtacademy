@@ -29,7 +29,7 @@ All 17 concepts are currently broad, unpublished placeholders across Bangla, Bio
 Agarwal, Nunes and Blunt (2021), *Retrieval Practice Consistently Benefits Student Learning: a Systematic Review of Applied Research in Schools and Classrooms*, reviewed 50 classroom experiments with 5,374 participants and 49 effect sizes. The authors report that 57% of effect sizes showed medium or large benefits. Only 6% of included experiments were conducted in non-WEIRD countries, so local validation in Bangladesh remains important.
 
 - Consensus record: https://consensus.app/papers/agarwal-nunes-retrieval-practice-consistently-benefits-student/w:d75ede03-68ab-4a33-86db-d4049f68e80c/
-- CoChat full-text record: https://app.cochat.ai/from/chatgpt/search/papers/10.1007/s10648-021-09646-2
+- CoChat full-text record: https://app.cochat.ai/from/chatgpt/search/papers/10.1007/s10648-021-09595-9
 
 ### Retrieval, spacing and interleaving in authentic classrooms
 
