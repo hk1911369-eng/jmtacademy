@@ -32,7 +32,7 @@ test('database checkpoint RPC revalidates lesson, student role, payment and Bang
   assert.ok(migration.includes('p_position_seconds BETWEEN 0 AND 86400') || migration.includes('p_position_seconds < 0'));
   assert.ok(migration.includes('REVOKE ALL ON FUNCTION private.save_lesson_playback_checkpoint(uuid, integer, integer)'));
   assert.ok(migration.includes('REVOKE ALL ON FUNCTION public.save_lesson_playback_checkpoint(uuid, integer, integer)'));
-  assert.ok(migration.includes('GRANT EXECUTE ON FUNCTION public.save_lesson_playback_checkpoint(uuid, integer, integer) TO authenticated'));
+  assert.match(migration, /GRANT EXECUTE ON FUNCTION public\\.save_lesson_playback_checkpoint\\(uuid, integer, integer\\)\\s+TO authenticated/);
   assert.ok(migration.includes('updated_at <= now() - interval \'2 seconds\''));
   assert.ok(migration.includes('RETURNS boolean'));
   assert.ok(migration.includes('RETURN COALESCE(v_saved, false)'));
@@ -98,8 +98,8 @@ test('lesson player restores only after metadata, saves periodically and on paus
 test('learning page reads only the signed-in student checkpoint and does not resume completed lessons', async () => {
   const page = await readFile(new URL('../app/learn/[courseId]/page.tsx', import.meta.url), 'utf8');
   assert.ok(page.includes("from('lesson_playback_progress')"));
-  assert.ok(page.includes("lessons!inner(id,title,course_id)"));
-  assert.ok(page.includes(".in('lessons.course_id', eligibleCourseIds)"));
+  assert.ok(page.includes(".in('lesson_id', lessonIds)"));
+  assert.ok(page.includes(".eq('student_id', user.id)"));
   assert.ok(page.includes("profile?.role === 'student'"));
   assert.ok(page.includes('initialPositionSeconds={done.has(l.id) ? 0'));
   assert.ok(page.includes('completed={done.has(l.id)}'));
