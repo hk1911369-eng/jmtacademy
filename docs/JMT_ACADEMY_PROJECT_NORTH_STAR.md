@@ -346,3 +346,9 @@ Product takeaway: JMT's catalogue must be cohort-aware and linked to syllabus ve
 2. Attempt the Dhaka Board HSC-26 manual archives through a supported file-capable route; do not bypass verification.
 3. Continue building the versioned Curriculum Atlas and past-paper provenance register; do not train the Predictor until an authenticated, rights-cleared corpus and leakage-safe evaluation set exist.
 4. Keep platform work in parallel, but use draft PRs and test environments first. Do not merge PR #42 blindly or alter production DB/Render settings without the required review.
+
+
+### HSC 2027 Bangla carry-forward — secondary corroboration update (14 November 2026)
+- Exa located two independent reports dated 27 November 2025 (Dhaka Post and Prothom Alo) describing the NCTB memo of 26 November 2025: the 2024–25 Bangla First Paper syllabus remains applicable to the 2025–26 XI–XII intake and continues until further instruction.
+- This upgrades the carry-forward finding from a single secondary lead to secondary-corroborated, but the signed NCTB memo and its attachment remain unretrieved. Keep the existing 26-item secondary-mirror dataset teacher-review-required and non-publishable until primary attachment comparison.
+- Sources: https://www.dhakapost.com/national/412688 and https://www.prothomalo.com/education/examination/6gnl078cvr
