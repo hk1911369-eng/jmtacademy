@@ -237,7 +237,7 @@ These are connected strategic priorities, not isolated products. The Learning Ex
 ## 17. Resume refresh — 15 November 2026 (Asia/Dhaka)
 - Re-read the complete live handoff, all sections of the North Star (69,560 characters; strategic priorities and required workflow verified), and the full permanent benchmark standard. No new product feature request was added; the owner repeated the master resume prompt.
 - Current GitHub state:
-  - PR #64 remains open/draft/unmerged/mergeable; exact head `7531d931c53dd01857726f07007eca04f7e25368`, handoff blob `a4015237df68bd5b75f73e33bd34c5a24aa715fb` before this update.
+- PR #64 remains open/draft/unmerged/mergeable on `docs/jmt-academy-project-north-star`; its exact head is the handoff commit created by this update and is verified by the live PR read-back below. PR #65 remains open/draft/unmerged/mergeable at `8dae210b135bb44322fa9fe206377720823f8f28`;
   - PR #65 remains open/draft/unmerged/mergeable; head `8dae210b135bb44322fa9fe206377720823f8f28`.
   - PR #66 remains open/draft/unmerged/mergeable; head `638bd0307f9044b34ef263a65f807bfef705c912`, base main.
   - PR #67 remains open/draft/unmerged/mergeable; head `da2f632c688ae2077a07cc3be0993b51f9cb5747`, base PR #66 head `638bd030...`.
