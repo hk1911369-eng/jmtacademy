@@ -90,8 +90,18 @@ Replace the relevant sections above and record:
 
 **Never mark a task done because a document was written or code was committed. Done means acceptance criteria passed and the stated verification evidence exists.**
 
+## 9. Strategic Top 3 — preserve separately from the Top 10 signature pillars
+
+**Important correction to the earlier handoff wording:** The owner explicitly distinguishes the three highest strategic priorities from the ten signature product pillars. Never present the Top 10 as a replacement for the Top 3, and never omit the Learning Experience OS when summarising JMT's top priorities.
+
+1. **JMT Learning Experience OS — Priority #1 and foundation of the entire product.** This is the complete student-first operating experience, not merely a dashboard or cosmetic redesign: UI, UX, information architecture, navigation, original design system, visual language, interaction patterns, personalised academic home, connected learning journey, focus workspace, mobile/Android and low-bandwidth excellence, accessibility, feedback, progress, recovery and consistent quality across every student, teacher, parent, staff and admin screen. Every feature must pass its review.
+2. **JMT Intelligence Engine — Priority #2.** Includes the distinct AI Teacher and Exam Question Predictor, trustworthy adaptive learning, mastery, revision, mistake memory, explainable recommendations and academic analytics.
+3. **Complete Learning Ecosystem — Priority #3.** Includes courses, lessons, live/recorded classes, assessments, virtual labs, academic tools, community, teacher/parent/admin workspaces, offline entitlements, secure finance/payments, reporting, support, integrations and automation.
+
+These are connected strategic priorities, not isolated products. The Learning Experience OS is the experience and quality foundation through which the Intelligence Engine and the complete ecosystem are delivered. **The Top 10 list below is a separate ranking of signature product pillars.** Ranking affects strategic focus and sequencing only; it never lowers the quality bar for any feature.
+
 ## 9. Owner's Top 10 signature features — ranked by strategic intensity, NOT quality
-**Critical interpretation:** This ranking determines strategic intensity, sequencing and focus only. It does not mean #1 gets excellence while #10 gets an ordinary implementation. Every single feature must be designed, benchmarked, built and verified to be best-in-class in its own category. The target is an unmatched overall JMT experience across the complete product.
+**Critical interpretation:** This is the separate Top 10 signature-pillar ranking, not the strategic Top 3 above. It determines strategic intensity, sequencing and focus only. It does not mean #1 gets excellence while #10 gets an ordinary implementation. Every single feature must be designed, benchmarked, built and verified to be best-in-class in its own category. The target is an unmatched overall JMT experience across the complete product.
 
 1. **Exam Question Predictor AI** — evidence-based exam preparation and question-pattern intelligence.
 2. **JMT AI Teacher** — personal, curriculum-grounded AI teaching experience.
