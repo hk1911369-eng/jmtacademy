@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { saveLessonPlaybackCheckpoint } from '@/app/actions/learning';
 
 type SaveStatus = 'idle' | 'saving' | 'saved' | 'error';
+type PlaybackCheckpoint = { lessonId: string; positionSeconds: number; durationSeconds: number | null };
 
 export function LessonVideoPlayer({
   lessonId,
@@ -22,9 +23,9 @@ export function LessonVideoPlayer({
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const lastSavedPosition = useRef(Math.max(0, Math.floor(initialPositionSeconds)));
-  const lastSavedAt = useRef(0);
   const lastAttemptAt = useRef(0);
   const saving = useRef(false);
+  const pendingCheckpoint = useRef<PlaybackCheckpoint | null>(null);
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
 
   const readCheckpoint = useCallback(() => {
@@ -38,37 +39,61 @@ export function LessonVideoPlayer({
     return { lessonId, positionSeconds, durationSeconds };
   }, [lessonId]);
 
+  const persistCheckpoint = useCallback(async (firstCheckpoint: PlaybackCheckpoint) => {
+    if (!enabled || completed) return;
+    if (saving.current) {
+      // Preserve the latest pause/seek checkpoint if a periodic save is still in flight.
+      pendingCheckpoint.current = firstCheckpoint;
+      return;
+    }
+
+    let checkpoint: PlaybackCheckpoint | null = firstCheckpoint;
+    while (checkpoint && enabled && !completed) {
+      saving.current = true;
+      setSaveStatus('saving');
+      try {
+        const result = await saveLessonPlaybackCheckpoint(
+          checkpoint.lessonId,
+          checkpoint.positionSeconds,
+          checkpoint.durationSeconds,
+        );
+        if (result.ok) {
+          lastSavedPosition.current = checkpoint.positionSeconds;
+          setSaveStatus('saved');
+        } else {
+          setSaveStatus('error');
+        }
+      } catch {
+        setSaveStatus('error');
+      } finally {
+        saving.current = false;
+      }
+
+      // Flush one newer pause/seek point captured while the previous request was pending.
+      const pending = pendingCheckpoint.current;
+      pendingCheckpoint.current = null;
+      checkpoint = pending && Math.abs(pending.positionSeconds - lastSavedPosition.current) >= 1
+        ? pending
+        : null;
+    }
+  }, [completed, enabled]);
+
   const saveProgress = useCallback(async (force = false) => {
-    if (!enabled || completed || saving.current) return;
+    if (!enabled || completed) return;
     const checkpoint = readCheckpoint();
     if (!checkpoint) return;
     const difference = Math.abs(checkpoint.positionSeconds - lastSavedPosition.current);
     const now = Date.now();
+    if (saving.current) {
+      if (force) pendingCheckpoint.current = checkpoint;
+      return;
+    }
     if (!force && (difference < 15 || now - lastAttemptAt.current < 10000)) return;
     if (force && now - lastAttemptAt.current < 2000 && difference < 5) return;
 
     lastAttemptAt.current = now;
-    saving.current = true;
-    setSaveStatus('saving');
-    try {
-      const result = await saveLessonPlaybackCheckpoint(
-        checkpoint.lessonId,
-        checkpoint.positionSeconds,
-        checkpoint.durationSeconds,
-      );
-      if (result.ok) {
-        lastSavedPosition.current = checkpoint.positionSeconds;
-        lastSavedAt.current = Date.now();
-        setSaveStatus('saved');
-      } else {
-        setSaveStatus('error');
-      }
-    } catch {
-      setSaveStatus('error');
-    } finally {
-      saving.current = false;
-    }
-  }, [completed, enabled, readCheckpoint]);
+    await persistCheckpoint(checkpoint);
+  }, [completed, enabled, persistCheckpoint, readCheckpoint]);
 
   const restorePosition = useCallback(() => {
     const video = videoRef.current;
@@ -88,9 +113,13 @@ export function LessonVideoPlayer({
   }, [completed, enabled, initialPositionSeconds]);
 
   const sendFinalCheckpoint = useCallback(() => {
-    if (!enabled || completed || saving.current) return;
+    if (!enabled || completed) return;
     const checkpoint = readCheckpoint();
     if (!checkpoint || Math.abs(checkpoint.positionSeconds - lastSavedPosition.current) < 1) return;
+    if (saving.current) {
+      pendingCheckpoint.current = checkpoint;
+      return;
+    }
     const body = new Blob([JSON.stringify(checkpoint)], { type: 'application/json' });
     const queued = typeof navigator.sendBeacon === 'function'
       && navigator.sendBeacon('/api/learning/playback-checkpoint', body);
