@@ -1,0 +1,143 @@
+'use client';
+
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { saveLessonPlaybackCheckpoint } from '@/app/actions/learning';
+
+type SaveStatus = 'idle' | 'saving' | 'saved' | 'error';
+
+export function LessonVideoPlayer({
+  lessonId,
+  title,
+  src,
+  initialPositionSeconds = 0,
+  completed = false,
+  enabled = true,
+}: {
+  lessonId: string;
+  title: string;
+  src: string;
+  initialPositionSeconds?: number;
+  completed?: boolean;
+  enabled?: boolean;
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const lastSavedPosition = useRef(Math.max(0, Math.floor(initialPositionSeconds)));
+  const lastSavedAt = useRef(0);
+  const saving = useRef(false);
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
+
+  const readCheckpoint = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || !Number.isFinite(video.currentTime) || video.currentTime < 1) return null;
+    const positionSeconds = Math.min(86400, Math.floor(video.currentTime));
+    if (positionSeconds <= 0) return null;
+    const durationSeconds = Number.isFinite(video.duration) && video.duration > 0 && video.duration <= 86400
+      ? Math.floor(video.duration)
+      : null;
+    return { lessonId, positionSeconds, durationSeconds };
+  }, [lessonId]);
+
+  const saveProgress = useCallback(async (force = false) => {
+    if (!enabled || completed || saving.current) return;
+    const checkpoint = readCheckpoint();
+    if (!checkpoint) return;
+    const difference = Math.abs(checkpoint.positionSeconds - lastSavedPosition.current);
+    if (!force && difference < 15) return;
+    if (force && Date.now() - lastSavedAt.current < 2000 && difference < 5) return;
+
+    saving.current = true;
+    setSaveStatus('saving');
+    try {
+      const result = await saveLessonPlaybackCheckpoint(
+        checkpoint.lessonId,
+        checkpoint.positionSeconds,
+        checkpoint.durationSeconds,
+      );
+      if (result.ok) {
+        lastSavedPosition.current = checkpoint.positionSeconds;
+        lastSavedAt.current = Date.now();
+        setSaveStatus('saved');
+      } else {
+        setSaveStatus('error');
+      }
+    } catch {
+      setSaveStatus('error');
+    } finally {
+      saving.current = false;
+    }
+  }, [completed, enabled, readCheckpoint]);
+
+  const restorePosition = useCallback(() => {
+    const video = videoRef.current;
+    const position = Math.max(0, Math.floor(initialPositionSeconds));
+    if (!enabled || completed || !video || position < 5 || !Number.isFinite(video.duration)) return;
+    if (video.duration <= position + 5) {
+      // A checkpoint at the end is replayed from the beginning, not stranded at EOF.
+      lastSavedPosition.current = 0;
+      return;
+    }
+    try {
+      video.currentTime = position;
+      lastSavedPosition.current = position;
+    } catch {
+      setSaveStatus('error');
+    }
+  }, [completed, enabled, initialPositionSeconds]);
+
+  const sendFinalCheckpoint = useCallback(() => {
+    if (!enabled || completed || saving.current) return;
+    const checkpoint = readCheckpoint();
+    if (!checkpoint || Math.abs(checkpoint.positionSeconds - lastSavedPosition.current) < 1) return;
+    const body = new Blob([JSON.stringify(checkpoint)], { type: 'application/json' });
+    const queued = navigator.sendBeacon('/api/learning/playback-checkpoint', body);
+    if (!queued) {
+      void fetch('/api/learning/playback-checkpoint', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(checkpoint),
+        keepalive: true,
+      }).catch(() => undefined);
+    }
+  }, [completed, enabled, readCheckpoint]);
+
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === 'hidden') sendFinalCheckpoint();
+    };
+    const handleOnline = () => { void saveProgress(true); };
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('online', handleOnline);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('online', handleOnline);
+    };
+  }, [saveProgress, sendFinalCheckpoint]);
+
+  return (
+    <div className="lesson-video-progress">
+      <video
+        ref={videoRef}
+        controls
+        playsInline
+        preload="metadata"
+        src={src}
+        aria-label={'Lesson video: ' + title}
+        onLoadedMetadata={restorePosition}
+        onTimeUpdate={() => {
+          const video = videoRef.current;
+          if (video && video.currentTime - lastSavedPosition.current >= 15) void saveProgress();
+        }}
+        onPause={() => { void saveProgress(true); }}
+        onSeeked={() => { void saveProgress(true); }}
+      >
+        Your browser does not support video playback.
+      </video>
+      {enabled && !completed && saveStatus !== 'idle' && (
+        <p className="lesson-video-progress-status" role="status" aria-live="polite">
+          {saveStatus === 'saving' ? 'Saving your progress…' : saveStatus === 'saved' ? 'Progress saved' : 'Progress could not be saved yet. Playback can continue; we will try again.'}
+        </p>
+      )}
+    </div>
+  );
+}
