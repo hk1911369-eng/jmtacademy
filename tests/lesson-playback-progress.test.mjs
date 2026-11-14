@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 test('playback checkpoint storage is isolated from lesson completion and has strict client grants', async () => {
-  const migration = await readFile(new URL('../supabase/migrations/20261115120000_secure_lesson_playback_resume_checkpoints.sql', import.meta.url), 'utf8');
+  const migration = await readFile(new URL('../supabase/migrations/20261114185830_secure_lesson_playback_resume_checkpoints.sql', import.meta.url), 'utf8');
   assert.ok(migration.includes('CREATE TABLE public.lesson_playback_progress'));
   assert.ok(migration.includes('CREATE SCHEMA IF NOT EXISTS private'));
   assert.ok(migration.includes('CREATE OR REPLACE FUNCTION private.save_lesson_playback_checkpoint'));
@@ -19,7 +19,7 @@ test('playback checkpoint storage is isolated from lesson completion and has str
 });
 
 test('database checkpoint RPC revalidates lesson, student role, payment and Bangladesh billing entitlement', async () => {
-  const migration = await readFile(new URL('../supabase/migrations/20261115120000_secure_lesson_playback_resume_checkpoints.sql', import.meta.url), 'utf8');
+  const migration = await readFile(new URL('../supabase/migrations/20261114185830_secure_lesson_playback_resume_checkpoints.sql', import.meta.url), 'utf8');
   assert.ok(migration.includes('public.save_lesson_playback_checkpoint'));
   assert.ok(migration.includes('SECURITY DEFINER'));
   assert.ok(migration.includes('SET search_path = pg_catalog, public, pg_temp'));
@@ -39,7 +39,7 @@ test('database checkpoint RPC revalidates lesson, student role, payment and Bang
 });
 
 test('verified lesson completion clears its playback checkpoint without changing completion evidence', async () => {
-  const migration = await readFile(new URL('../supabase/migrations/20261115120000_secure_lesson_playback_resume_checkpoints.sql', import.meta.url), 'utf8');
+  const migration = await readFile(new URL('../supabase/migrations/20261114185830_secure_lesson_playback_resume_checkpoints.sql', import.meta.url), 'utf8');
   assert.ok(migration.includes('CREATE OR REPLACE FUNCTION private.clear_completed_lesson_playback_checkpoint()'));
   assert.ok(migration.includes('DELETE FROM public.lesson_playback_progress'));
   assert.ok(migration.includes('AFTER INSERT OR UPDATE OF completed ON public.lesson_progress'));
