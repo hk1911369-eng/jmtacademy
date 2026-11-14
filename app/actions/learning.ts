@@ -106,12 +106,12 @@ export async function saveLessonPlaybackCheckpoint(
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { ok: false };
 
-  const { error } = await supabase.rpc('save_lesson_playback_checkpoint', {
+  const { data, error } = await supabase.rpc('save_lesson_playback_checkpoint', {
     p_lesson_id: lessonId,
     p_position_seconds: safePosition,
     p_duration_seconds: safeDuration,
   });
-  return { ok: !error };
+  return { ok: !error && data === true, deferred: !error && data === false };
 }
 
 export async function markLessonComplete(formData: FormData) {
