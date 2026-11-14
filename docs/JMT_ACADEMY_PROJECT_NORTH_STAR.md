@@ -311,3 +311,38 @@ Product takeaway: JMT's catalogue must be cohort-aware and linked to syllabus ve
 - Details and tests are in PR #42. No Supabase data or Render production settings were changed.
 
 - Live-site recheck after a 503 interstitial showed the new Render instance became ready and the health endpoint, homepage and course catalogue returned HTTP 200. Render's official Free-tier docs confirm idle services spin down after 15 minutes and show a loading page on restart; the cold-start delay remains a production UX/SEO risk until the service plan is reviewed.
+
+
+
+## 13. Working checkpoint — verified continuation state (2026-11-14)
+
+### Repository and active work
+- Canonical repository remains `hk1911369-eng/jmtacademy`, default branch `main`.
+- PR #42 (`audit/jmt-master-prompt-follow-through`) remains open and draft. Latest observed head: `dacd8124e74109b7414c66e84f7f2c4d7484778a`.
+- Quality checks run `43613264247` succeeded on the immediately preceding PR #42 head `3f5ce241e35b714db595d40baad09d3ba924ef4b`. No workflow run was returned for the new documentation-only head; do not describe the latest head as CI-verified until checks run against it.
+- PR #42 now also contains `docs/JMT_HSC_2027_OFFICIAL_SYLLABUS_GAP_AUDIT_TRANCHE_24_2026-11-14.md`, created and fetched back successfully. It documents the HSC 2027 official-source gap and source/version boundary.
+
+### Render topology — rechecked
+- Two active Free Node services still point to the same repository and `main` commit `141d49343d80452c0871cec77fbc02367346e847`.
+- New service: `jmtacademy-web`, https://jmtacademy-web.onrender.com, service ID `srv-dbs2jbm7bikc73ee5c10`; latest deployment is live, but Render's health-check path is blank.
+- Old service: `jmtacademy`, https://sanjay-kumar-chemistry-lms.onrender.com, service ID `srv-dbn8v2hsrm7s738nntrg`; latest deployment is live and its health-check path is `/api/health`.
+- The old service is not suspended or retired. Do not delete/suspend it or change production service settings without a reviewed cutover plan and required approval.
+
+### Supabase boundary — rechecked
+- Both connected projects report ACTIVE_HEALTHY on PostgreSQL 17.11.
+- `cullxqklmbdiosibgois` is named `JMT Test`; `jpoxrxjixkcgjqvyyznw` is named `hk1911369-eng's Project`.
+- The prior read-only boundary audit records 49 shared public tables and 8 test-only tables, with matching shared table structure/RLS flags. Migration histories differ; never replay or synchronize them blindly.
+- No production database change was made during this checkpoint.
+
+### HSC 2027 source audit — tranche 24
+- The official NCTB syllabus index (https://nctb.gov.bd/site/page/9a90c854-ce5f-4d77-9915-1ecd0953079d/SSC-&-HSC-Short-Syllabus) was live-scraped. Its HSC-specific 2024–25 XI–XII entry concerns HSC 2026, not HSC 2027.
+- NCTB's current notices index (https://nctb.gov.bd/pages/notices/) lists the 1 October 2026 prescribed higher-secondary syllabus for academic year 2026–27; keep this in the HSC 2028 cohort bucket.
+- A school-hosted Cantonment English School & College HSC 2027 Science PDF was found, but it is a school term/examination schedule, not an official NCTB/board syllabus. It is not a basis for national syllabus or marks-weighting claims.
+- The official NCTB HSC 2027 Bangla First Paper notice dated 26 November 2025 remains a lead; its File 1 attachment URL/content has not yet been retrieved. Do not guess the attachment URL.
+- The five official Dhaka Board HSC-26 moderator ZIP links remain identified but their ZIP payloads have not been obtained or inspected. Do not claim manual analysis.
+
+### Immediate next work
+1. Continue from the official HSC 2027 Bangla attachment retrieval and subject-wise official source audit.
+2. Attempt the Dhaka Board HSC-26 manual archives through a supported file-capable route; do not bypass verification.
+3. Continue building the versioned Curriculum Atlas and past-paper provenance register; do not train the Predictor until an authenticated, rights-cleared corpus and leakage-safe evaluation set exist.
+4. Keep platform work in parallel, but use draft PRs and test environments first. Do not merge PR #42 blindly or alter production DB/Render settings without the required review.
