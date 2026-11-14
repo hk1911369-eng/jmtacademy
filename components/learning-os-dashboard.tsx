@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { completeRevisionTask, createStudyGoal } from '@/app/actions/learning';
+import { selectNextLearningAction } from '@/lib/learning-next-action.mjs';
 
 type Goal = {
   id: string; goal_type: string; target_value: number; current_value: number;
@@ -30,6 +31,7 @@ export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, r
   goals: Goal[]; revisionTasks: RevisionTask[]; mastery: Mastery[]; mistakes: Mistake[]; recommendations: Recommendation[];
   courseNames: Map<string, string>; upcomingExams: UpcomingExam[]; upcomingAssignments: UpcomingAssignment[];
 }) {
+  const nextAction = selectNextLearningAction({ revisionTasks, upcomingExams, upcomingAssignments, recommendations, courseNames, now: new Date() });
   const dueCount = revisionTasks.filter(task => new Date(task.scheduled_for) <= new Date()).length;
   const averageMastery = mastery.length
     ? Math.round(mastery.reduce((sum, item) => sum + Number(item.mastery_score), 0) / mastery.length * 100)
@@ -39,6 +41,14 @@ export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, r
     <span className="auth-kicker">YOUR LEARNING OS</span>
     <h2>Today dashboard</h2>
     <p className="learning-os-muted">A subject-independent view of your study goals, revision queue and topic mastery. Insights improve as you complete lessons and assessments.</p>
+    <section className="learning-os-next-action" aria-labelledby="learning-os-next-action-title" data-testid="learning-os-next-action">
+      <div className="learning-os-next-action-copy">
+        <span className="auth-kicker">YOUR NEXT STEP</span>
+        <h3 id="learning-os-next-action-title">{nextAction.title}</h3>
+        <p>{nextAction.description}</p>
+      </div>
+      <Link className="learning-os-next-action-link" href={nextAction.href}>{nextAction.actionLabel}<span aria-hidden="true"> →</span></Link>
+    </section>
     <div className="learning-os-stats">
       <div className="learning-os-stat"><strong>{goals.length}</strong><span>Current goals</span></div>
       <div className="learning-os-stat"><strong>{dueCount}</strong><span>Revision due</span></div>
@@ -48,7 +58,7 @@ export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, r
     </div>
 
     <h3>Set a 7-day study target</h3>
-    <form action={createStudyGoal} className="auth-form learning-os-goal-form">
+    <form id="learning-os-goal-form" action={createStudyGoal} className="auth-form learning-os-goal-form">
       <label>Goal type
         <select name="goal_type" defaultValue="lesson_completions" required>
           <option value="lesson_completions">Lesson completions</option>
