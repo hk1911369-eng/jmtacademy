@@ -23,6 +23,7 @@ export function LessonVideoPlayer({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const lastSavedPosition = useRef(Math.max(0, Math.floor(initialPositionSeconds)));
   const lastSavedAt = useRef(0);
+  const lastAttemptAt = useRef(0);
   const saving = useRef(false);
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
 
@@ -42,9 +43,11 @@ export function LessonVideoPlayer({
     const checkpoint = readCheckpoint();
     if (!checkpoint) return;
     const difference = Math.abs(checkpoint.positionSeconds - lastSavedPosition.current);
-    if (!force && difference < 15) return;
-    if (force && Date.now() - lastSavedAt.current < 2000 && difference < 5) return;
+    const now = Date.now();
+    if (!force && (difference < 15 || now - lastAttemptAt.current < 10000)) return;
+    if (force && now - lastAttemptAt.current < 2000 && difference < 5) return;
 
+    lastAttemptAt.current = now;
     saving.current = true;
     setSaveStatus('saving');
     try {
@@ -89,7 +92,8 @@ export function LessonVideoPlayer({
     const checkpoint = readCheckpoint();
     if (!checkpoint || Math.abs(checkpoint.positionSeconds - lastSavedPosition.current) < 1) return;
     const body = new Blob([JSON.stringify(checkpoint)], { type: 'application/json' });
-    const queued = navigator.sendBeacon('/api/learning/playback-checkpoint', body);
+    const queued = typeof navigator.sendBeacon === 'function'
+      && navigator.sendBeacon('/api/learning/playback-checkpoint', body);
     if (!queued) {
       void fetch('/api/learning/playback-checkpoint', {
         method: 'POST',
