@@ -27,6 +27,8 @@ test('database checkpoint RPC revalidates lesson, student role, payment and Bang
   assert.ok(migration.includes('REVOKE ALL ON FUNCTION public.save_lesson_playback_checkpoint(uuid, integer, integer)'));
   assert.ok(migration.includes('GRANT EXECUTE ON FUNCTION public.save_lesson_playback_checkpoint(uuid, integer, integer) TO authenticated'));
   assert.ok(migration.includes('updated_at <= now() - interval \'2 seconds\''));
+  assert.ok(migration.includes('RETURNS boolean'));
+  assert.ok(migration.includes('RETURN COALESCE(v_saved, false)'));
 });
 
 test('verified lesson completion clears its playback checkpoint without changing completion evidence', async () => {
@@ -49,6 +51,7 @@ test('server action validates untrusted checkpoint values and writes only throug
   assert.ok(action.includes('const safeDuration = durationSeconds === null ? null : Math.floor(durationSeconds)'));
   assert.ok(action.includes('p_lesson_id: lessonId'));
   assert.ok(action.includes('p_position_seconds: safePosition'));
+  assert.ok(action.includes('deferred: !error && data === false'));
 });
 
 test('final checkpoint route is same-origin, authenticated and delegates authorization to the database', async () => {
@@ -58,6 +61,8 @@ test('final checkpoint route is same-origin, authenticated and delegates authori
   assert.ok(route.includes('supabase.auth.getUser()'));
   assert.ok(route.includes("rpc('save_lesson_playback_checkpoint'"));
   assert.ok(route.includes('Cache-Control'));
+  assert.ok(route.includes('status: 429'));
+  assert.ok(route.includes("'Retry-After': '2'"));
 });
 
 test('lesson player restores only after metadata, saves periodically and on pause/seek, and does not autoplay', async () => {
@@ -68,6 +73,9 @@ test('lesson player restores only after metadata, saves periodically and on paus
   assert.ok(player.includes('onTimeUpdate'));
   assert.ok(player.includes('difference < 15'));
   assert.ok(player.includes('now - lastAttemptAt.current < 10000'));
+  assert.ok(player.includes('pendingCheckpoint.current = checkpoint'));
+  assert.ok(player.includes('await new Promise(resolve => window.setTimeout(resolve, 2100))'));
+  assert.ok(player.includes('Flush one newer pause/seek point captured while the previous request was pending'));
   assert.ok(player.includes("typeof navigator.sendBeacon === 'function'"));
   assert.ok(player.includes('onPause='));
   assert.ok(player.includes('onSeeked='));
