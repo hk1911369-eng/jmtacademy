@@ -155,3 +155,19 @@ Do not conflate a textbook title list with a prescribed syllabus; keep each docu
 6. After official curriculum map is reviewed, connect prior-year question-paper records and teacher-reviewed question tagging. Keep exam question corpus rights and provenance per item.
 
 **Completion boundary:** This tranche verifies three official NCTB 2026–27 subject PDFs (ICT, Bangla 1st Paper, English 1st Paper), one official textbook announcement and two HSC 2027 source leads. It does not complete either cohort's full syllabus, inspect moderator manuals, build the full past-paper corpus, train the predictor, or deploy the AI Teacher.
+
+
+## 8. Follow-up retrieval attempt — HSC-26 manual links and HSC 2027 notice attachment (14 November 2026)
+
+### 8.1 Board manual index re-opened
+- The Dhaka Education Board manual index renders the subject links directly in its HTML (Physics link 99, Biology 102, Higher Math 104, ICT 105, Chemistry 108 in the browser's link list).
+- Following all five links through the available browser reader reaches the exact HSC-26 ZIP URLs, but the reader returns an unsupported `application/zip` response (and in two cases a generic “OK” with no archive body).
+- This is a file-format/reader limitation at the retrieval layer, not evidence that the Board links are broken or that the ZIP files are empty.
+- A prior Firecrawl attempt showed a verification/challenge response. Neither route produced a ZIP payload. No contents, hashes or page counts can be asserted.
+
+### 8.2 HSC 2027 Bangla First Paper attachment
+- Re-opened the official NCTB notice with a live scrape. The page is confirmed HTTP 200 and its metadata identifies NCTB as issuer; however, the scrape exposes no attachment link in the page's extracted link set.
+- The official NCTB search-index result confirms “File 1” and notice date 26 November 2025, but the current page extraction did not expose the file target. Keep the attachment URL unresolved; do not infer it.
+- Next retrieval path: inspect the official NCTB notice's underlying attachment metadata via a supported authenticated browser/portal route or obtain the file through the official NCTB notice page's download control. Do not use a guessed object-storage key.
+
+**Correction:** Previous wording “Board anti-bot verification page” should be read as one Firecrawl response path only. The independently followed Board links were also blocked by ZIP content-type handling in the browser reader. The source register records the exact limitation rather than treating either failure as proof about the underlying file.
