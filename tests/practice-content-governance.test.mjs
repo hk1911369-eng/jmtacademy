@@ -35,9 +35,10 @@ test('editing an approved question returns it to unpublished review state', asyn
 });
 
 test('teacher authoring captures provenance and never publishes directly', async () => {
-  const [action, page] = await Promise.all([
+  const [action, page, migration] = await Promise.all([
     read('app/actions/student-practice-authoring.ts'),
     read('app/teacher/practice/page.tsx'),
+    read('supabase/migrations/20261114100000_practice_content_provenance_and_review.sql'),
   ]);
   assert.match(action, /source_kind: sourceKind/);
   assert.match(action, /source_reference: sourceReference/);
