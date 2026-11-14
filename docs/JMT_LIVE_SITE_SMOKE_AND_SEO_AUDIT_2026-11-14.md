@@ -123,3 +123,18 @@ The PR #42 branch now adds distinct meta descriptions for `/courses`, `/about`, 
 - The site is **not ready for a full student/enrolment launch** on this evidence: the public course catalogue is empty, verified academy contact/location details are absent, and offline/PWA behavior is not implemented/verified.
 - This is not a claim that all student, teacher, payment, authentication, accessibility, browser, performance or security journeys have been tested. Those remain separate release gates.
 - No production database, course publication, Render setting, environment variable, hostname, deployment or Search Console property was changed.
+
+
+## 9. New-host versus legacy data-source discrepancy — 14 November 2026 (16:28 UTC)
+
+A read-only comparison found a potentially release-blocking environment mismatch:
+
+- Production Supabase project `jpoxrxjixkcgjqvyyznw` has `academy_settings` contact flags set for WhatsApp, email, physical address and Facebook; phone is not configured. Its settings row was last updated `2026-11-08 08:44:04 UTC`.
+- Test Supabase project `cullxqklmbdiosibgois` has all those contact flags unset; its settings row was last updated `2026-11-07 15:22:09 UTC`.
+- The new host `jmtacademy-web.onrender.com/contact` repeatedly renders the empty-contact message.
+- The legacy host `sanjay-kumar-chemistry-lms.onrender.com/contact` renders the configured WhatsApp, email, Facebook and offline-location sections.
+- Both services run the same repository/application code. `app/contact/page.tsx` reads `academy_settings` through `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`, with a five-minute revalidation interval.
+
+**Assessment:** The new host appears to be using the test Supabase project (or a stale cached response), while the legacy host appears to use the production project. The evidence strongly suggests a service-level Supabase environment mismatch, but the connected Render read tool does not expose the configured environment values, so the exact `NEXT_PUBLIC_SUPABASE_URL` has not been independently confirmed.
+
+**Required before hostname cutover:** inspect the new service's `NEXT_PUBLIC_SUPABASE_URL` and matching anon key in Render, and verify that both belong to the intended production project `jpoxrxjixkcgjqvyyznw`. Do not paste secrets into chat. Do not update environment variables or trigger a deployment until the intended target and matching key are reviewed and approved. No Render environment variable or database record was changed during this audit.
