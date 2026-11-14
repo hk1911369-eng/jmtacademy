@@ -101,3 +101,44 @@ Before doing work:
 **Default next research task:** start the actual Curriculum Atlas and source inventory for HSC subjects using current official NCTB/education-board material; in parallel, identify and catalogue authentic past-paper sources and question-setter/moderator resources. Then build the question corpus and teacher-reviewed topic map. Do not spend the next work cycle writing another generic AI strategy document.
 
 **User's intent:** remember and continue the original JMT Academy vision, especially the Exam Question Predictor AI and AI Teacher, with real research and implementation rather than repeatedly re-describing the idea.
+
+
+## 8. Actual research log — 2026-11-14
+
+This is the first source-verification pass. It records what was actually found, not assumptions.
+
+### Official HSC question-setting resources located
+
+**Dhaka Education Board — HSC and equivalent question-setter/moderator training manuals**
+- Landing page: https://dhakaeducationboard.gov.bd/index.php/site/cms/24857
+- The page labels the collection as the HSC/equivalent question-setter and moderator training manual collection.
+- Subject links listed include Bangla, Physics, Civics & Good Governance, Business Organisation & Management, Biology, Sociology, Higher Math, ICT, Logic, Accounting, Chemistry, Geography, Islamic History, Economics, Social Work and Production Management.
+- Direct linked HSC-26 archives observed from the page:
+  - Physics: https://dhakaeducationboard.gov.bd/Moderator%20Training%20Manual/HSC-26/Book_02_Physics.zip
+  - Biology: https://dhakaeducationboard.gov.bd/Moderator%20Training%20Manual/HSC-26/Book_05_Biology.zip
+  - Higher Mathematics: https://dhakaeducationboard.gov.bd/Moderator%20Training%20Manual/HSC-26/Book_07_Higher_Math.zip
+  - ICT: https://dhakaeducationboard.gov.bd/Moderator%20Training%20Manual/HSC-26/Book_08_ICT.zip
+  - Chemistry: https://dhakaeducationboard.gov.bd/Moderator%20Training%20Manual/HSC-26/Book_11_Chemistry.zip
+- Access status: the official page and its subject labels are readable. Attempts to retrieve the linked ZIP files through the available browser/download path hit the board's anti-bot verification or unsupported ZIP content handling. Therefore, archive contents have **not yet been inspected or extracted**. Do not claim the manuals have been analysed until the ZIPs are actually obtained and reviewed.
+- Board HSC Corner: https://dhakaeducationboard.gov.bd/index.php/site/product/hsccorner
+  - Search-indexed notices show the HSC question-setter/moderator training manual announcement dated 1 February 2026, related training notices in January 2026, and a 28 October 2025 notice about full syllabus for HSC/Alim 2026. These are useful discovery leads; each notice and attachment must be opened and checked before using its details.
+
+### NCTB curriculum and textbook source findings
+
+- NCTB official portal: https://nctb.gov.bd/
+- NCTB higher-secondary curriculum files page: https://nctb.gov.bd/pages/files/6922dbc6933eb65569e0c702
+  - The page is labelled higher-secondary curriculum and lists subject files including Higher Mathematics, Biology, Chemistry, ICT and Physics.
+  - It is last updated 7 August 2017. Treat it as a legacy curriculum source, **not proof of the HSC 2027 syllabus**.
+- NCTB 2026 school and higher-secondary textbook index: https://nctb.gov.bd/pages/static-pages/695b98afc4774958d7b7044c
+  - Official index for 2026 textbooks, including a higher-secondary section. Its page alone does not establish a complete subject-specific HSC 2027 syllabus.
+- NCTB 2025–26 higher-secondary XI–XII textbook page: https://nctb.gov.bd/pages/static-pages/6922e145933eb65569e2b37b
+  - Search-indexed listing includes Literature, English for Today and ICT (Bangla and English versions). It is not a complete list of all group-subject textbooks.
+- HSC 2027 official syllabus/subject-wise syllabus notice: **not located in this first official-source pass**. This is an open verification task, not evidence that no such notice exists.
+
+### Research conclusions and next actions
+
+1. Use the Dhaka Board HSC-26 manual archives as primary source leads for question construction and moderation, but obtain and inspect their contents before coding any question taxonomy.
+2. Search NCTB and all relevant education-board official notice archives for the actual HSC 2027 batch syllabus, subject-wise curriculum, exam structure and marks distribution. Keep HSC 2026, legacy 2017 curriculum, and HSC 2027 evidence in separate version buckets.
+3. Build a source register and subject/topic map first; do not begin predictor-frequency calculations until a sufficiently complete, authenticated, rights-cleared set of papers exists.
+4. Do not infer exact chapter weighting or predicted topics from the existence of moderator manuals alone.
+5. Preserve the distinction between official syllabus, official question-setting guidance, past papers, and JMT teacher-created explanations.
