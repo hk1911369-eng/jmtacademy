@@ -40,20 +40,24 @@ At the start of every JMT work session, including a new chat:
 4. Evidence-backed recommendations explaining why each is suggested.
 5. A genuinely useful, polished first-use state for students with no learning history.
 
-**Status:** Research/benchmark first pass reported complete; implementation not yet verified as complete. This task is not finished.
+**Status:** The first Student Today implementation slice (one explainable next-action card) is in draft PR #66. Exact lesson resume, the unified academic calendar, visual/student usability validation and production verification remain incomplete. This task is not finished.
 
 ## 3. Related active PR / dependencies to refresh
-- PR #65: https://github.com/hk1911369-eng/jmtacademy/pull/65
-- Last known state from 15 Nov 2026: open, draft, unmerged; branch `feat/jmt-learning-experience-os-first-pass`; last fetched head `8dae210b135bb44322fa9fe206377720823f8f28`.
-- Last reported purpose: homepage fallback branding correction, removal of unsupported unconditional free-recording claims and regression tests.
-- Last reported CI: LMS quality checks passed; other checks were still running. **This is stale historical information, not current CI status.**
-- Offline roll-number enforcement was explicitly not included in PR #65. Refresh current PR files, head, checks, comments and conflicts before deciding next steps.
+- PR #65: https://github.com/hk1911369-eng/jmtacademy/pull/65 — still open, draft, unmerged; branch `feat/jmt-learning-experience-os-first-pass`; head `8dae210b135bb44322fa9fe206377720823f8f28`. Five changed files cover multi-subject homepage tagline fallback and correction of unconditional offline-recording copy. Offline roll-number enforcement is not included. The latest status endpoint returned no commit-status entries; do not claim CI green without checking workflow runs.
+- PR #66: https://github.com/hk1911369-eng/jmtacademy/pull/66 — new open, draft, unmerged implementation slice; branch `feat/student-today-next-action`; latest head `638bd0307f9044b34ef263a65f807bfef705c912`; 9 commits ahead of main, 0 behind; 6 changed files.
+- PR #66 adds a deterministic next-action selector, accessible card before dashboard metrics, responsive CSS, unit/regression tests and a feature-specific benchmark record. It prioritises the most recently overdue pending revision for a course in the active-enrolment map, then the nearest assignment/exam within 7 days, then an evidence-backed recommendation; fallback is study goal or course discovery.
+- CI on the latest PR #66 head: `CI` and `LMS quality checks` are in progress; `Quality checks` is queued. Earlier CI on the previous head `b53e67af0aa6920ccff77fbd7726ccdee5655cd0` succeeded, but the other two earlier runs were cancelled after the branch advanced. **No final green status is established on the latest head.**
+- PR #66 is not merged, not deployed and not visually verified in a browser. Do not merge or deploy automatically.
+- PR #42 remains open, draft, unmerged; last refreshed head `5574013d5ee2e6f02a7a487ca30ecd4e7ca3927a`. It contains extensive security parity, research and Learning OS foundations; it is not live on main.
+- PR #64 remains open, draft, unmerged; its North Star branch head was `66e1f09bbea5b1f0e52e53473ad0379cb1b55056` before this handoff update. It contains the durable project charter and benchmark standard.
 - Do not merge or deploy automatically.
 
 ## 4. The single next action (do this first on resume)
-**Refresh GitHub evidence before coding:** fetch current PR #65 metadata/head/files/checks/comments; read current North Star and benchmark standard; inspect main plus relevant open PR branches for existing dashboard, goals, revision, mastery, mistake-memory, recommendation, calendar, lesson-progress and assessment code. Produce a concise verified gap list and benchmark the specific missing dashboard journeys. Then define acceptance tests and implement only the highest-value non-duplicative slice in a reviewable branch.
+**First action on resume: refresh PR #66 workflow runs and check-runs for the exact current head `638bd0307f9044b34ef263a65f807bfef705c912`.** If any check fails, inspect its logs, fix the root cause on `feat/student-today-next-action`, and re-check the new head. Do not treat the earlier-head CI success as current verification. Keep PR #66 draft and unmerged.
 
-After this inspection, update this file with the actual verified state and the next concrete implementation step. Do not assume previous reports are still current.
+After latest-head checks pass, continue the same Student Today task with the next required slice: design and implement secure **Continue Where You Stopped**. First inspect all current lesson/video/player code and the authorised `lesson_progress` / `learning_events` schema and policies. The current `lesson_progress` table only stores completion, completion time and update time; the current player is a native video element in a server-rendered learning page. Define a minimal privacy-safe, server-authorised checkpoint model and client playback-save/recovery behavior; benchmark it against Edrolo and other strong learning products; set acceptance criteria for pause, refresh, seek, duplicate updates, throttling, expired sessions, revoked access, network loss, device changes and course entitlement. Do not expose media access or let students forge completion/mastery. Use a separate reviewable PR; no production migration or release without the required review and approval.
+
+The unified class/task/exam/revision calendar remains the following Student Today slice after resume, with recurring schedules, cancellation, Bangladesh timezone and duplicate handling. Do not claim it is implemented.
 
 ## 5. Pending / unresolved / approval gates
 - **Offline academy access:** Offline students mean students attending JMT's physical/local classroom academy, not merely website users without internet. They should receive free recordings of missed classes as make-up support. Eligibility is restricted to students whose roll numbers are added to the authorised roster by teacher/staff/admin; entitlement is tied to student identity, roll number, cohort, batch and period. Online students have separate enrolment and access entitlements. This policy is defined; robust technical enforcement is still a required security task. Enforce server-side for pages/APIs/media/playback/download, with revocation, audit trail and tests. Hiding buttons is insufficient.
@@ -66,8 +70,9 @@ After this inspection, update this file with the actual verified state and the n
 ## 6. Recently completed / last known checkpoint (brief; not the active next task)
 - Best-in-Class Feature Benchmark Standard was saved on the North Star branch and read-back verified. It contains a 12-dimension rubric, evidence hierarchy, trade-off analysis, measurable acceptance criteria and reusable template.
 - Initial benchmark candidates included Duolingo, Khan Academy, MyStudyLife, PhET, GeoGebra, Piazza, Moodle, Gradescope, BigBlueButton, Replit, Bangladesh payment providers, WCAG 2.2 and research on retrieval/spacing/interleaving. Revalidate each source when implementing the relevant feature.
-- Student Today dashboard benchmark first pass was reported complete.
-- PR #65 was created as a draft with the purpose described in Section 3; do not treat as merged or production released.
+- Student Today dashboard benchmark research was extended and recorded in `docs/JMT_STUDENT_TODAY_NEXT_ACTION_BENCHMARK_2026-11-15.md` on PR #66. It covers Edrolo, MyStudyLife, Khan Academy, a Moodle redesign case study and University of Edinburgh notification-overload research, with evidence limitations and acceptance criteria.
+- PR #66 implemented the first dashboard hierarchy slice: a deterministic, explainable primary next action before the existing metrics. Tests were added for revision, assignment, exam, evidence-backed recommendation, first-use, study-goal and inactive-course cases. Latest CI is still running/queued; no test suite is yet reported as passed on the latest head.
+- PR #65 remains a separate draft with public branding/eligibility-copy corrections; do not treat as merged or production released.
 - Detailed product charter: Section 16 of `docs/JMT_ACADEMY_PROJECT_NORTH_STAR.md`.
 - Permanent benchmark standard: `docs/JMT_BEST_IN_CLASS_FEATURE_BENCHMARK_STANDARD_2026-11-14.md`.
 - Previous continuity checkpoint: `docs/JMT_PROJECT_CONTINUITY_CHECKPOINT_2026-11-15.md`. This file supersedes it as the **live active-work handoff**; the older file remains a historical checkpoint and must not be treated as the current task state.
@@ -75,7 +80,7 @@ After this inspection, update this file with the actual verified state and the n
 ## 7. New owner requests / feature intake
 Add each new owner-requested feature here with its exact intent, date, priority, relevant cohort/roles, dependencies, benchmark needed and disposition. Do not silently discard it or allow it to derail an in-progress task without recording the decision.
 
-**Current new requests:** Owner clarified that prioritisation/intensity must never be interpreted as permission to deliver inferior quality to lower-ranked features. This applies portfolio-wide and is recorded as a permanent rule in Section 1 and the Top 10 list in Section 9.
+**Current new requests:** Owner clarified that prioritisation/intensity must never be interpreted as permission to deliver inferior quality to lower-ranked features; recorded permanently in Section 1 and the Top 10 list in Section 9. Owner also explicitly reaffirmed that the JMT Learning Experience OS (complete UI/UX and operating interface) is strategic Priority #1, separate from the Top 10 signature-pillar ranking; the Top 3 are preserved in Section 9's first subsection. No additional feature request was added in this session.
 
 ## 8. Update format required after every meaningful work session
 Replace the relevant sections above and record:
@@ -115,3 +120,17 @@ These are connected strategic priorities, not isolated products. The Learning Ex
 10. **Advanced Payment & Financial Management** — secure, transparent and reliable financial operations.
 
 **Portfolio-wide acceptance rule:** No feature may be deliberately downgraded because of its rank. Each feature requires its own category-specific benchmark research, measurable quality criteria, accessibility/security/reliability review where relevant, and honest verification. Shared foundations such as the Learning Experience OS must improve all features consistently. Rank may affect what is tackled first, never the quality bar.
+
+
+## 10. Latest session record — Student Today next-action slice (15 November 2026, Asia/Dhaka)
+
+- Recovered and read the current handoff, North Star and benchmark standard before work.
+- Verified repository default branch `main` at `141d49343d80452c0871cec77fbc02367346e847`.
+- Re-read current student dashboard, learning dashboard component, learning actions, lesson page, academic hub, Learning OS migrations and tests. Confirmed current UI has separated metrics/lists, no single next-action card, no unified student calendar, and no true resume checkpoint.
+- Confirmed `lesson_progress` stores `completed`, `completed_at` and `updated_at`; it has no playback offset. The current video is a native HTML video element in `app/learn/[courseId]/page.tsx`; no exact resume behavior is established.
+- Used GitHub for source history/code/PRs and Exa for benchmark research. Product Design's full screenshot workflow was not run in this standard chat environment; no visual audit or real-device validation is claimed.
+- Created PR #66 on `feat/student-today-next-action`; current head `638bd0307f9044b34ef263a65f807bfef705c912`. Files: `components/learning-os-dashboard.tsx`, `app/globals.css`, `lib/learning-next-action.mjs`, `lib/learning-next-action.d.mts`, `tests/learning-next-action.test.mjs`, `docs/JMT_STUDENT_TODAY_NEXT_ACTION_BENCHMARK_2026-11-15.md`.
+- Added an active-course filter so stale revision tasks from courses the student is no longer enrolled in do not become the primary action.
+- No Supabase calls that mutate data/schema, no payment changes, no Render/Vercel deployments, no production changes, no merges.
+- CI on the latest PR #66 head: CI and LMS quality checks in progress; Quality checks queued. Previous-head CI success is historical only. Full tests/typecheck/lint/build on latest head are not yet verified.
+- PR #65, #42 and #64 remain draft/unmerged as described in Section 3.
