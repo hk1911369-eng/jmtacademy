@@ -277,3 +277,11 @@ Product takeaway: JMT's catalogue must be cohort-aware and linked to syllabus ve
 - Courses page has no detected meta description in the page metadata export; source already defines canonical /courses. Add unique descriptions in a reviewed code change.
 - GSC Wizard has no connected or shared Search Console properties, so search performance/indexing metrics are unavailable.
 - Full read-only audit is docs/JMT_LIVE_SITE_SMOKE_AND_SEO_AUDIT_2026-11-14.md on PR #42.
+
+
+## Supabase primary/test boundary audit — 14 November 2026
+- Both Supabase projects report ACTIVE_HEALTHY on PostgreSQL 17.11.
+- Read-only public-schema comparison: primary has 49 tables; JMT Test has 57. All 49 shared tables match on column names/types, primary keys and RLS-enabled flags; neither project has a listed public table with RLS disabled.
+- JMT Test has eight additional tables for practice questions/attempts, virtual-lab catalogue and lab notebooks/practicals/evidence/review history, plus assignment submission version history.
+- Migration histories differ; do not replay or synchronize migration histories blindly. Production remains unchanged.
+- Full report: docs/JMT_SUPABASE_PRIMARY_TEST_SCHEMA_BOUNDARY_AUDIT_2026-11-14.md on PR #42.
