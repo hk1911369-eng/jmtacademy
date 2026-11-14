@@ -65,8 +65,6 @@ export async function createStudentPracticeQuestion(formData: FormData) {
     source_kind: sourceKind,
     source_reference: sourceReference,
     source_year: sourceYear,
-    rights_status: 'pending_review',
-    review_status: 'pending_review',
     is_published: false,
     created_by: user.id,
   });
