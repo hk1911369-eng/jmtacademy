@@ -41,8 +41,8 @@ test('teacher authoring captures provenance and never publishes directly', async
   ]);
   assert.match(action, /source_kind: sourceKind/);
   assert.match(action, /source_reference: sourceReference/);
-  assert.match(action, /rights_status: 'pending_review'/);
-  assert.match(action, /review_status: 'pending_review'/);
+  assert.match(migration, /rights_status text NOT NULL DEFAULT 'pending_review'/);
+  assert.match(migration, /review_status text NOT NULL DEFAULT 'pending_review'/);
   assert.match(action, /is_published: false/);
   assert.match(page, /name="source_kind"/);
   assert.match(page, /name="source_reference"/);
