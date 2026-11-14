@@ -2,6 +2,7 @@ import { PortalLayout } from '@/components/portal-layout';
 import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
 import { LessonResourceAccess } from '@/components/lesson-resource-access';
+import { LessonVideoPlayer } from '@/components/lesson-video-player';
 import { createClient } from '@/lib/supabase/server';
 import { billingMonthEnd, currentBangladeshBillingPeriod } from '@/lib/pricing';
 import {
@@ -45,6 +46,12 @@ export default async function LearningPage({
     supabase.from('lesson_bookmarks').select('lesson_id').eq('student_id', user.id),
   ]);
   const lessonIds = (lessons ?? []).map(l => l.id);
+  const playbackProgressResult = profile?.role === 'student' && lessonIds.length
+    ? await supabase.from('lesson_playback_progress')
+      .select('lesson_id,position_seconds,duration_seconds')
+      .eq('student_id', user.id).in('lesson_id', lessonIds)
+    : { data: [] as { lesson_id:string; position_seconds:number; duration_seconds:number|null }[] };
+  const playbackByLesson = new Map((playbackProgressResult.data ?? []).map((row:any) => [row.lesson_id, row]));
   const [{ data: rawResources }, { data: discussions }] = lessonIds.length ? await Promise.all([
     supabase.from('lesson_resources').select('id,lesson_id,file_name,mime_type,file_size,resource_type,caption,downloadable,storage_path').in('lesson_id', lessonIds).order('created_at'),
     supabase.from('lesson_discussions').select('id,lesson_id,parent_id,author_id,author_name,body,is_pinned,created_at').in('lesson_id', lessonIds).order('created_at'),
@@ -111,7 +118,7 @@ export default async function LearningPage({
                 <h2>{l.title}</h2>
                 {l.description && <p>{l.description}</p>}
                 {l.content && <div className="lesson-content">{l.content.split('\n').map((line: string, i: number) => <p key={i}>{line}</p>)}</div>}
-                {l.video_url && <div className="lesson-video jmt-video-player"><div className="video-brand"><span>J</span><b>JMT ACADEMY</b><small>OFFICIAL LEARNING PLAYER</small></div><video controls playsInline preload="metadata" src={l.video_url}>Your browser does not support video playback.</video></div>}
+                {l.video_url && <div className="lesson-video jmt-video-player"><div className="video-brand"><span>J</span><b>JMT ACADEMY</b><small>OFFICIAL LEARNING PLAYER</small></div><LessonVideoPlayer lessonId={l.id} title={l.title} src={l.video_url} initialPositionSeconds={done.has(l.id) ? 0 : Number(playbackByLesson.get(l.id)?.position_seconds ?? 0)} completed={done.has(l.id)} enabled={profile?.role === 'student'} /></div>}
 
                 {!!lessonResources.length && <section className="lesson-materials">
                   <h3>Class videos, slides and files</h3>
