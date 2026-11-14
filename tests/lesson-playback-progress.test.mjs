@@ -32,7 +32,7 @@ test('database checkpoint RPC revalidates lesson, student role, payment and Bang
   assert.ok(migration.includes('p_position_seconds BETWEEN 0 AND 86400') || migration.includes('p_position_seconds < 0'));
   assert.ok(migration.includes('REVOKE ALL ON FUNCTION private.save_lesson_playback_checkpoint(uuid, integer, integer)'));
   assert.ok(migration.includes('REVOKE ALL ON FUNCTION public.save_lesson_playback_checkpoint(uuid, integer, integer)'));
-  assert.match(migration, /GRANT EXECUTE ON FUNCTION public\\.save_lesson_playback_checkpoint\\(uuid, integer, integer\\)\\s+TO authenticated/);
+  assert.ok(migration.includes('GRANT EXECUTE ON FUNCTION public.save_lesson_playback_checkpoint(uuid, integer, integer)\n  TO authenticated'));
   assert.ok(migration.includes('updated_at <= now() - interval \'2 seconds\''));
   assert.ok(migration.includes('RETURNS boolean'));
   assert.ok(migration.includes('RETURN COALESCE(v_saved, false)'));
