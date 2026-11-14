@@ -72,3 +72,23 @@ GSC Wizard returned no connected or shared Search Console properties. Consequent
 ## 6. Change boundary
 
 This audit made no production database, Render setting, deployment, course publication or Search Console property change. It is evidence and a proposed work list only.
+
+
+## 7. Follow-up live verification and draft SEO repair — 14 November 2026
+
+A fresh read-only fetch of the replacement URL after the earlier audit confirmed:
+- Homepage HTTP 200; page title and description metadata are present, as are Open Graph title/description/URL and Twitter title/description.
+- The homepage positions JMT as a school, higher-secondary, admission, university and skills learning provider. Its public course section still reports that new courses are being prepared.
+- `/api/health` returned HTTP 200 with `status=ok`, `app=jmt-academy`, and `database=reachable`.
+- Malwarebytes returned **unknown**, not a verified-safe verdict. This is absence of a threat-intelligence match, not a security certification.
+- The live Render service remains the Free Node service `jmtacademy-web`, connected to `hk1911369-eng/jmtacademy` on `main`, auto-deploy enabled. Its live health-check path is still blank even though the repository Blueprint specifies `/api/health`. A repository change alone does not update this live setting.
+
+### Draft code improvement
+The PR #42 branch now adds distinct meta descriptions for `/courses`, `/about`, `/contact`, `/help`, `/privacy` and `/terms`, preserving each canonical path and Open Graph URL. A regression test checks that every public informational page has a non-empty, distinct description and canonical URL. This is branch-only until reviewed, merged and deployed; the currently live site has not received this change.
+
+### Remaining release actions
+1. Verify the new CI build and dependency audit.
+2. Review and merge the draft only after all checks pass.
+3. Set the live Render health-check path to `/api/health` through the approved Render configuration workflow.
+4. Re-fetch rendered page heads after deployment to confirm metadata, canonical URLs and sitemap output.
+5. Populate the course catalogue only with owner-approved, real courses and verified details; do not seed placeholder courses to disguise an empty catalogue.
