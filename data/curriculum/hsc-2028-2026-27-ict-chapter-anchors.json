@@ -1,0 +1,90 @@
+{
+  "dataset_id": "JMT-HSC-2028-ICT-CHAPTER-ANCHORS-001",
+  "title": "HSC 2028 ICT chapter-anchor candidate map",
+  "language": "bn",
+  "academic_session": "2026-2027",
+  "cohort": "HSC 2028",
+  "subject": {
+    "name_en": "Information and Communication Technology",
+    "name_bn": "তথ্য ও যোগাযোগ প্রযুক্তি",
+    "subject_code": null,
+    "paper": null
+  },
+  "source": {
+    "issuer": "National Curriculum and Textbook Board (NCTB), Bangladesh",
+    "title_bn": "২০২৬-২০২৭ শিক্ষাবর্ষে উচ্চ মাধ্যমিক ও সমমান শ্রেণির জন্য নির্ধারিত পাঠ্যসূচি",
+    "url": "https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-nctb/2026/9/78491622-b852-466c-af8b-783718732428.pdf",
+    "source_type": "official_nctb_hosted_pdf",
+    "extraction_method": "PDF text extraction; chapter headings transcribed from the official-hosted syllabus PDF",
+    "publication_date": null
+  },
+  "status": "source_extracted_needs_teacher_review",
+  "release": {
+    "teacher_review_required": true,
+    "publishable": false,
+    "approved_for_student_practice": false
+  },
+  "scope_note": "This file records only the six chapter-level anchors exposed by the NCTB syllabus. It does not infer subtopics, learning outcomes, marks weight, question frequency, practical requirements or exam probabilities. Use the current NCTB textbook and teacher review before adding lower-level concepts or practice questions.",
+  "chapters": [
+    {
+      "number": 1,
+      "title_bn": "তথ্য ও যোগাযোগ প্রযুক্তি: বিশ্ব ও বাংলাদেশ প্রেক্ষিত",
+      "title_en": "Information and Communication Technology: World and Bangladesh Perspective",
+      "anchor_type": "chapter_heading_only",
+      "subtopics": [],
+      "review_status": "needs_textbook_alignment"
+    },
+    {
+      "number": 2,
+      "title_bn": "কমিউনিকেশন সিস্টেমস ও নেটওয়ার্কিং",
+      "title_en": "Communication Systems and Networking",
+      "anchor_type": "chapter_heading_only",
+      "subtopics": [],
+      "review_status": "needs_textbook_alignment"
+    },
+    {
+      "number": 3,
+      "title_bn": "সংখ্যা পদ্ধতি ও ডিজিটাল ডিভাইস",
+      "title_en": "Number Systems and Digital Devices",
+      "anchor_type": "chapter_heading_only",
+      "subtopics": [],
+      "review_status": "needs_textbook_alignment"
+    },
+    {
+      "number": 4,
+      "title_bn": "ওয়েব ডিজাইন পরিচিতি এবং HTML",
+      "title_en": "Introduction to Web Design and HTML",
+      "anchor_type": "chapter_heading_only",
+      "subtopics": [],
+      "review_status": "needs_textbook_alignment"
+    },
+    {
+      "number": 5,
+      "title_bn": "প্রোগ্রামিং ভাষা",
+      "title_en": "Programming Language",
+      "anchor_type": "chapter_heading_only",
+      "subtopics": [],
+      "review_status": "needs_textbook_alignment"
+    },
+    {
+      "number": 6,
+      "title_bn": "ডেটাবেজ ম্যানেজমেন্ট সিস্টেম",
+      "title_en": "Database Management System",
+      "anchor_type": "chapter_heading_only",
+      "subtopics": [],
+      "review_status": "needs_textbook_alignment"
+    }
+  ],
+  "cohort_boundary": "Do not reuse this 2026-2027 / HSC 2028 map for HSC 2027 (2025-2026 intake).",
+  "rights_note": "Chapter titles are factual syllabus metadata. This record does not reproduce textbook passages or grant rights to copy protected questions or textbook content.",
+  "provenance": {
+    "created_at": "2026-11-14",
+    "evidence_status": "official_pdf_retrieved; teacher_review_pending",
+    "review_required": [
+      "visually compare chapter headings with PDF pages",
+      "align chapter anchors to the matching NCTB textbook edition",
+      "approve bilingual terminology",
+      "create granular concepts only from verified textbook sections"
+    ]
+  }
+}
