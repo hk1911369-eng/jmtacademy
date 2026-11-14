@@ -5,6 +5,10 @@ import { readFile } from 'node:fs/promises';
 test('playback checkpoint storage is isolated from lesson completion and has strict client grants', async () => {
   const migration = await readFile(new URL('../supabase/migrations/20261115120000_secure_lesson_playback_resume_checkpoints.sql', import.meta.url), 'utf8');
   assert.ok(migration.includes('CREATE TABLE public.lesson_playback_progress'));
+  assert.ok(migration.includes('CREATE SCHEMA IF NOT EXISTS private'));
+  assert.ok(migration.includes('CREATE OR REPLACE FUNCTION private.save_lesson_playback_checkpoint'));
+  assert.ok(migration.includes('CREATE OR REPLACE FUNCTION public.save_lesson_playback_checkpoint'));
+  assert.ok(migration.includes('SECURITY INVOKER'));
   assert.ok(migration.includes('ALTER TABLE public.lesson_playback_progress ENABLE ROW LEVEL SECURITY'));
   assert.ok(migration.includes('REVOKE ALL ON TABLE public.lesson_playback_progress FROM PUBLIC, anon, authenticated'));
   assert.ok(migration.includes('GRANT SELECT ON TABLE public.lesson_playback_progress TO authenticated'));
@@ -24,6 +28,7 @@ test('database checkpoint RPC revalidates lesson, student role, payment and Bang
   assert.ok(migration.includes('e.admission_fee_paid IS TRUE'));
   assert.ok(migration.includes('e.paid_through >= v_period_end'));
   assert.ok(migration.includes('p_position_seconds BETWEEN 0 AND 86400') || migration.includes('p_position_seconds < 0'));
+  assert.ok(migration.includes('REVOKE ALL ON FUNCTION private.save_lesson_playback_checkpoint(uuid, integer, integer)'));
   assert.ok(migration.includes('REVOKE ALL ON FUNCTION public.save_lesson_playback_checkpoint(uuid, integer, integer)'));
   assert.ok(migration.includes('GRANT EXECUTE ON FUNCTION public.save_lesson_playback_checkpoint(uuid, integer, integer) TO authenticated'));
   assert.ok(migration.includes('updated_at <= now() - interval \'2 seconds\''));
@@ -33,7 +38,7 @@ test('database checkpoint RPC revalidates lesson, student role, payment and Bang
 
 test('verified lesson completion clears its playback checkpoint without changing completion evidence', async () => {
   const migration = await readFile(new URL('../supabase/migrations/20261115120000_secure_lesson_playback_resume_checkpoints.sql', import.meta.url), 'utf8');
-  assert.ok(migration.includes('CREATE OR REPLACE FUNCTION public.clear_completed_lesson_playback_checkpoint()'));
+  assert.ok(migration.includes('CREATE OR REPLACE FUNCTION private.clear_completed_lesson_playback_checkpoint()'));
   assert.ok(migration.includes('DELETE FROM public.lesson_playback_progress'));
   assert.ok(migration.includes('AFTER INSERT OR UPDATE OF completed ON public.lesson_progress'));
   assert.ok(migration.includes('WHEN (NEW.completed IS TRUE)'));
