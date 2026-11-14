@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 
 const uuidPattern = /^[0-9a-f-]{36}$/i;
+const sourceKinds = ['original', 'official_document', 'licensed_resource', 'open_resource', 'teacher_material'];
 
 export async function createStudentPracticeQuestion(formData: FormData) {
   const db = await createClient();
@@ -26,7 +27,10 @@ export async function createStudentPracticeQuestion(formData: FormData) {
   const correctOption = Number(formData.get('correct_option') ?? -1);
   const options = String(formData.get('options') ?? '').split(/\r?\n/).map(option => option.trim()).filter(Boolean);
   const conceptId = String(formData.get('concept_id') ?? '').trim();
-  const isPublished = formData.get('is_published') === 'on';
+  const sourceKind = String(formData.get('source_kind') ?? 'original');
+  const sourceReference = String(formData.get('source_reference') ?? '').trim();
+  const sourceYearValue = String(formData.get('source_year') ?? '').trim();
+  const sourceYear = sourceYearValue ? Number(sourceYearValue) : null;
 
   if (
     !uuidPattern.test(courseId)
@@ -40,6 +44,10 @@ export async function createStudentPracticeQuestion(formData: FormData) {
     || options.some(option => option.length > 1000)
     || !Number.isInteger(correctOption) || correctOption < 0 || correctOption >= options.length
     || !Number.isFinite(marks) || marks <= 0 || marks > 100
+    || !sourceKinds.includes(sourceKind)
+    || sourceReference.length > 1000
+    || (sourceKind !== 'original' && sourceReference.length < 4)
+    || (sourceYear !== null && (!Number.isInteger(sourceYear) || sourceYear < 1900 || sourceYear > 2100))
   ) redirect('/teacher/practice?error=invalid');
 
   const { error } = await db.from('student_practice_questions').insert({
@@ -54,7 +62,12 @@ export async function createStudentPracticeQuestion(formData: FormData) {
     correct_option: correctOption,
     explanation,
     marks,
-    is_published: isPublished,
+    source_kind: sourceKind,
+    source_reference: sourceReference,
+    source_year: sourceYear,
+    rights_status: 'pending_review',
+    review_status: 'pending_review',
+    is_published: false,
     created_by: user.id,
   });
 
@@ -62,5 +75,37 @@ export async function createStudentPracticeQuestion(formData: FormData) {
 
   revalidatePath('/practice');
   revalidatePath('/teacher/practice');
-  redirect('/teacher/practice?created=1');
+  revalidatePath('/admin/practice-review');
+  redirect('/teacher/practice?submitted=1');
+}
+
+
+export async function reviewStudentPracticeQuestion(formData: FormData) {
+  const db = await createClient();
+  const { data: { user } } = await db.auth.getUser();
+  if (!user) redirect('/login');
+
+  const { data: profile } = await db.from('profiles').select('role,is_active').eq('id', user.id).single();
+  if (profile?.is_active !== true || profile.role !== 'admin') redirect('/portal');
+
+  const questionId = String(formData.get('question_id') ?? '').trim();
+  const decision = String(formData.get('decision') ?? '');
+  const rightsStatus = String(formData.get('rights_status') ?? '');
+  const reviewNote = String(formData.get('review_note') ?? '').trim();
+  if (!uuidPattern.test(questionId) || !['approve', 'reject'].includes(decision) || reviewNote.length > 2000) {
+    redirect('/admin/practice-review?error=invalid');
+  }
+
+  const { error } = await db.rpc('review_student_practice_question', {
+    p_question_id: questionId,
+    p_decision: decision,
+    p_rights_status: decision === 'approve' ? rightsStatus : null,
+    p_review_note: reviewNote,
+  });
+  if (error) redirect('/admin/practice-review?error=review');
+
+  revalidatePath('/admin/practice-review');
+  revalidatePath('/teacher/practice');
+  revalidatePath('/practice');
+  redirect('/admin/practice-review?success=1');
 }
