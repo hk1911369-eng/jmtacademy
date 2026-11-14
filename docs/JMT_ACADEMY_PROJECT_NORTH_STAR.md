@@ -240,3 +240,11 @@ These are official-hosted object-storage files identifying NCTB and supersede th
 - The active research branch now contains `data/curriculum/hsc-2028-2026-27-nctb-core-subjects.json`, with official NCTB source links and extracted ICT, Bangla First Paper and English First Paper records.
 - Added `tests/curriculum-source-register.test.mjs` to validate JSON structure, official source provenance, subject record counts, extracted chapter/unit counts and the HSC 2027/HSC 2028 cohort boundary.
 - All extracted records remain pending teacher review; this is not a published curriculum or exam prediction dataset.
+
+
+## 11. Retrieval QA note (14 November 2026)
+
+The tranche-22 source register now includes a follow-up retrieval audit:
+- Official NCTB HSC 2027 Bangla First Paper notice page is HTTP 200 and identifies NCTB, but its “File 1” PDF href was not exposed by the page extraction. The PDF URL remains unresolved; never guess an object-storage path.
+- Dhaka Board HSC-26 manual links are present on the official index. Following Physics, Biology, Higher Math, ICT and Chemistry links through the browser reader returns unsupported ZIP content-type / no archive body; a separate Firecrawl attempt encountered a verification response. No ZIP content has been inspected.
+- This distinction matters: the retrieval layer cannot read the archive, but the official source links are present. Continue through a legitimate file-capable browser or a supplied archive, without bypassing verification.
