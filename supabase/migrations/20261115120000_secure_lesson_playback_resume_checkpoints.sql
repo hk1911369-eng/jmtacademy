@@ -131,8 +131,7 @@ BEGIN
       duration_seconds = COALESCE(EXCLUDED.duration_seconds, public.lesson_playback_progress.duration_seconds),
       last_viewed_at = now(),
       updated_at = now()
-  WHERE public.lesson_playback_progress.updated_at <= now() - interval '2 seconds'
-     OR abs(EXCLUDED.position_seconds - public.lesson_playback_progress.position_seconds) >= 5;
+  WHERE public.lesson_playback_progress.updated_at <= now() - interval '2 seconds';
 END;
 $$;
 
