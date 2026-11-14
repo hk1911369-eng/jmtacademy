@@ -6,7 +6,10 @@ const read = path => readFile(new URL('../' + path, import.meta.url), 'utf8');
 
 test('staff authoring validates content and relies on course-subject RLS and database scope trigger', async () => {
   const action = await read('app/actions/student-practice-authoring.ts');
-  const migration = await read('supabase/migrations/20261109290000_add_student_practice_question_engine.sql');
+  const [migration, governance] = await Promise.all([
+    read('supabase/migrations/20261109290000_add_student_practice_question_engine.sql'),
+    read('supabase/migrations/20261114100000_practice_content_provenance_and_review.sql'),
+  ]);
   assert.match(action, /profile\?\.is_active !== true/);
   assert.match(action, /options\.length < 2 \|\| options\.length > 6/);
   assert.match(action, /correctOption >= options\.length/);
@@ -14,7 +17,7 @@ test('staff authoring validates content and relies on course-subject RLS and dat
   assert.match(action, /is_published: false/);
   assert.match(action, /source_kind: sourceKind/);
   assert.match(action, /source_reference: sourceReference/);
-  assert.match(action, /review_status: 'pending_review'/);
+  assert.match(governance, /review_status text NOT NULL DEFAULT 'pending_review'/);
   assert.match(migration, /guard_student_practice_question_scope/);
   assert.match(migration, /practice question subject must belong to its course/i);
   assert.match(migration, /practice question concept must belong to its subject/i);
