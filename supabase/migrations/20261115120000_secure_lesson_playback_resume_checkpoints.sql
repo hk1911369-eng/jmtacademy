@@ -50,14 +50,15 @@ CREATE OR REPLACE FUNCTION public.save_lesson_playback_checkpoint(
   p_position_seconds integer,
   p_duration_seconds integer DEFAULT NULL
 )
-RETURNS void
+RETURNS boolean
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = pg_catalog, public, pg_temp
-AS $$
+AS $
 DECLARE
   v_course_id uuid;
   v_period_end date;
+  v_saved boolean;
 BEGIN
   IF auth.uid() IS NULL THEN
     RAISE EXCEPTION 'Authentication required' USING ERRCODE = '28000';
@@ -118,7 +119,7 @@ BEGIN
   ) THEN
     DELETE FROM public.lesson_playback_progress
     WHERE student_id = auth.uid() AND lesson_id = p_lesson_id;
-    RETURN;
+    RETURN true;
   END IF;
 
   INSERT INTO public.lesson_playback_progress (
@@ -131,9 +132,13 @@ BEGIN
       duration_seconds = COALESCE(EXCLUDED.duration_seconds, public.lesson_playback_progress.duration_seconds),
       last_viewed_at = now(),
       updated_at = now()
-  WHERE public.lesson_playback_progress.updated_at <= now() - interval '2 seconds';
+  WHERE public.lesson_playback_progress.updated_at <= now() - interval '2 seconds'
+  RETURNING true INTO v_saved;
+
+  -- False means the server-side write throttle intentionally deferred this update.
+  RETURN COALESCE(v_saved, false);
 END;
-$$;
+$;
 
 REVOKE ALL ON FUNCTION public.save_lesson_playback_checkpoint(uuid, integer, integer)
   FROM PUBLIC, anon, authenticated;
