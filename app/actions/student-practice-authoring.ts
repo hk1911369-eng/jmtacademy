@@ -90,7 +90,8 @@ export async function reviewStudentPracticeQuestion(formData: FormData) {
   const decision = String(formData.get('decision') ?? '');
   const rightsStatus = String(formData.get('rights_status') ?? '');
   const reviewNote = String(formData.get('review_note') ?? '').trim();
-  if (!uuidPattern.test(questionId) || !['approve', 'reject'].includes(decision) || reviewNote.length > 2000) {
+  if (!uuidPattern.test(questionId) || !['approve', 'reject'].includes(decision) || reviewNote.length > 2000
+    || (decision === 'approve' && reviewNote.length < 10) || (decision === 'reject' && reviewNote.length < 5)) {
     redirect('/admin/practice-review?error=invalid');
   }
 
