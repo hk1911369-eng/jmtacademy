@@ -292,3 +292,11 @@ Product takeaway: JMT's catalogue must be cohort-aware and linked to syllabus ve
 - The official NCTB signed circular independently confirms the 12+12 count and the syllabus attachment, but the secondary PDF has not been byte-compared with the NCTB attachment.
 - Added candidate structured file data/curriculum/hsc-2027-2024-25-bangla-first-paper-candidate-secondary-mirror.json on PR #42.
 - Candidate records are marked secondary-mirror, teacher-review-required and not publishable. HSC 2027 carry-forward remains secondary-reported until the 2025–26 NCTB File 1 attachment is retrieved.
+
+
+## Render service topology audit — 14 November 2026
+- Render workspace contains two active Free Node web services for the same repository and main branch: new jmtacademy-web (new hostname) and previous jmtacademy (old hostname).
+- Both latest deploys are live/succeeded and reference main commit 141d49343d80452c0871cec77fbc02367346e847.
+- New service starts successfully and /api/health returns status ok with database reachable, but its Render health-check path is blank. Previous service has /api/health configured.
+- Old service is still present and non-suspended; its hostname must not be assumed retired just because a cold-start interstitial appears.
+- Added docs/JMT_RENDER_SERVICE_TOPOLOGY_AUDIT_2026-11-14.md to PR #42. No Render settings, environment variables, hostnames, deploys or services were changed.
