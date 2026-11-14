@@ -92,7 +92,7 @@ Do not publish a single “accuracy” number without denominator, target defini
 
 ## 9. Current JMT evidence boundary (2026-11-14)
 
-- Official NCTB notice for the 2025–26 XI–XII intake confirms a Bangla First Paper syllabus notice dated 26 November 2025, but the attachment bytes have not yet been retrieved and checked. Notice: https://nctb.gov.bd/pages/notices/695b9e5235ce18e1c05af63d
+- Official NCTB notice for the 2025–26 XI–XII intake is dated 26 November 2025 and lists File 1; contemporary reporting quotes the decision as continuing the 2024–25 Bangla First Paper syllabus, but the official attachment bytes have not yet been retrieved and checked. Notice: https://nctb.gov.bd/pages/notices/695b9e5235ce18e1c05af63d
 - NCTB's 2025–26 XI–XII textbook index lists *Sahityapath*, *Sahapath*, *English for Today* and ICT books: https://nctb.gov.bd/pages/static-pages/6922e145933eb65569e2b37b
 - This does not constitute a complete HSC 2027 syllabus or examination blueprint. Physics, Chemistry, Higher Mathematics, Biology and other subject-specific syllabus/marking sources still require verification.
 - The HSC 2028 / 2026–27 curriculum dataset is a separate cohort and remains marked for teacher review.
