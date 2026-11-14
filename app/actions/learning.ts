@@ -94,11 +94,11 @@ export async function saveLessonPlaybackCheckpoint(
   if (!Number.isFinite(positionSeconds) || positionSeconds < 0 || positionSeconds > 86400) {
     return { ok: false };
   }
-  const safeDuration = durationSeconds === null
-    ? null
-    : Number.isFinite(durationSeconds) && durationSeconds >= 1 && durationSeconds <= 86400
-      ? Math.floor(durationSeconds)
-      : null;
+  if (durationSeconds !== null
+    && (!Number.isFinite(durationSeconds) || durationSeconds < 1 || durationSeconds > 86400)) {
+    return { ok: false };
+  }
+  const safeDuration = durationSeconds === null ? null : Math.floor(durationSeconds);
   const safePosition = Math.floor(positionSeconds);
   if (safeDuration !== null && safePosition > safeDuration + 3) return { ok: false };
 
