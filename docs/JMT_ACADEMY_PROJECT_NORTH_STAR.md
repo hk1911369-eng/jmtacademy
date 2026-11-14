@@ -300,3 +300,12 @@ Product takeaway: JMT's catalogue must be cohort-aware and linked to syllabus ve
 - New service starts successfully and /api/health returns status ok with database reachable, but its Render health-check path is blank. Previous service has /api/health configured.
 - Old service is still present and non-suspended; its hostname must not be assumed retired just because a cold-start interstitial appears.
 - Added docs/JMT_RENDER_SERVICE_TOPOLOGY_AUDIT_2026-11-14.md to PR #42. No Render settings, environment variables, hostnames, deploys or services were changed.
+
+
+## Practice Studio governance and evidence review — 14 November 2026
+- Added a draft independent content-review gate for student practice: source provenance, source year, rights classification, independent administrator review, documented reviewer notes and automatic unpublishing when approved content is edited.
+- Added an administrator review queue; teacher submissions remain unpublished until approved. The migration is draft-only and has not been applied to JMT Test or production.
+- Read-only JMT Test snapshot: 3 demo courses (none published), 24 course-subject mappings, 17 learning concepts (none published) and 0 practice questions. The empty student Practice Studio is therefore honest; content creation and course publication remain prerequisites.
+- Added a research-backed practice design brief using school-classroom evidence on retrieval practice, spacing, interleaving and feedback. The brief flags limited evidence from non-WEIRD contexts and calls for local teacher/student validation.
+- Added HSC 2028 / 2026–27 ICT chapter anchors from the official NCTB-hosted syllabus PDF. Only the six chapter headings are represented; subtopics and assessment weights remain un-inferred and the dataset is not publishable before teacher review.
+- Details and tests are in PR #42. No Supabase data or Render production settings were changed.
