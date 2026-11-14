@@ -386,3 +386,11 @@ Product takeaway: JMT's catalogue must be cohort-aware and linked to syllabus ve
 3. Review multiple permissive RLS policies for redundant predicates without weakening the effective policy; investigate unused indexes over a representative workload before removal.
 4. Connect the intended Google Search Console account/property before attempting SEO performance analysis.
 5. Continue official HSC 2027 attachment retrieval and science-subject source discovery; do not substitute HSC 2028 documents.
+
+
+### 14.1 Follow-up after warm-up and function-level review — 14 November 2026 (16:25 UTC)
+
+- Rechecked legacy `/api/health` after the initial Render loading response. It returned HTTP 200 with application JSON `status=ok` and `database=reachable` at `2026-11-14T16:25:25.464Z`. The earlier HTTP 503 was a transient cold-start/loading response. Both new and legacy hostnames were healthy at their respective successful capture times.
+- Read-only inspection of production `public.get_public_course_teachers(uuid)` confirmed it is a stable SQL SECURITY DEFINER function with a pinned `search_path` (`pg_catalog, public, pg_temp`). It returns only teacher/staff profile UUID and full name for a specified published, non-archived course; it does not select email or phone fields. The function is executable by anon and authenticated roles.
+- This public teacher-list behavior appears consistent with a public course catalogue, but must be confirmed against the intended public product behavior and checked for profile visibility expectations. The advisor warning remains recorded; no EXECUTE grant, function body or RLS policy was changed.
+- Updating the North Star document created PR #64 head `92f8eed236fcf91d655d4c236ff65012129c05cd`. Its new Quality checks, CI and LMS quality checks runs (`43615517306`, `43615517313`, `43615517308`) were in progress at the time of this note; do not describe this new head as green until the runs complete.
