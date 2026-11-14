@@ -3,17 +3,17 @@
 ## Current production service
 
 - Provider: Render Web Service
-- Service: `sanjay-kumar-chemistry-lms`
-- Repository: `hk1911369-eng/sanjay-kumar-chemistry-lms`
+- Service: `jmtacademy-web`
+- Repository: `hk1911369-eng/jmtacademy`
 - Branch: `main`
 - Region: Singapore
 - Runtime: Node.js 22
 - Build: `npm ci && npm run build`
 - Start: `npm start`
 - Health endpoint: `/api/health`
-- Production URL: https://sanjay-kumar-chemistry-lms.onrender.com
+- Production URL: https://jmtacademy-web.onrender.com
 
-The checked-in `render.yaml` is the desired Blueprint configuration. It names the existing service so Render can associate it during Blueprint setup/sync. Review the diff in Render before confirming any Blueprint sync; do not create a duplicate production service.
+The replacement service is the production target. The old Render service is treated as retired for planning and must not be reintroduced by a Blueprint sync. The Blueprint's production service name and repository must match the existing `jmtacademy-web` service. Review any Render plan before approving it; never accept a plan that creates a second production service or changes its database target.
 
 ## Environment variable names
 
@@ -28,11 +28,14 @@ Required:
 Optional server-side rate limiting:
 - `SUPABASE_SERVICE_ROLE_KEY`
 
-Use the production Supabase project for the production service. A separate staging service must use the test Supabase project and its own environment variables; never point staging at production.
+Optional trusted proxy configuration:
+- `TRUST_CLOUDFLARE_IP_HEADER` (default unset/false). Keep unset on direct Render ingress. Set to `true` only when Cloudflare is the enforced edge, direct-origin bypass is blocked, and Cloudflare overwrites `CF-Connecting-IP`.
+
+For the production service, `APP_URL` and `NEXT_PUBLIC_SITE_URL` must both equal `https://jmtacademy-web.onrender.com`. Keep the production Supabase project configured on this service. Never point production at the JMT Test project.
 
 ## CI and deployment
 
-The GitHub Actions workflow runs dependency installation, ESLint, guardrail tests, TypeScript, production build and dependency audit. Configure Render's auto-deploy trigger to deploy only after checks pass when syncing the Blueprint. Confirm the CI status is green before promoting a commit.
+The GitHub Actions workflow runs dependency installation, ESLint, guardrail tests, TypeScript, production build and dependency audit. Configure Render's auto-deploy trigger to deploy only after checks pass. Confirm the CI status is green before a production release. A push to the main branch can trigger the connected production service; draft-branch documentation changes do not change the live production service.
 
 ## Database migrations
 
@@ -46,7 +49,7 @@ Never run `supabase db reset` against production. Never apply a demo purge as a 
 
 ## Rollback
 
-1. Open the Render service dashboard.
+1. Open the `jmtacademy-web` Render service dashboard.
 2. Open Events / Deploys and select the last known-good deployment.
 3. Use Render's rollback action to restore that deployment.
 4. Verify `/api/health`, public pages and sign-in.
@@ -54,4 +57,22 @@ Never run `supabase db reset` against production. Never apply a demo purge as a 
 
 ## Staging
 
-The separate Supabase test project is available for database and integration validation. A Render staging web service is not yet provisioned because it requires its own test-project environment values. Do not create it pointed at production.
+A separate Render staging service definition is prepared in `render.yaml`, but the service has **not** been provisioned. It uses the audit/staging branch and requires its own environment values.
+
+Before any Blueprint sync:
+1. Obtain the test Supabase project's URL, anon key and (if needed) service-role key.
+2. Enter them directly in Render's secure environment-variable interface; never commit them.
+3. Confirm the staging service uses only the test Supabase project.
+4. Obtain explicit approval before syncing the Blueprint or creating the Render service.
+
+Do not sync the Blueprint while the staging environment variables are blank. Never point staging at production.
+
+## Database migrations
+
+The canonical schema source is `supabase/migrations/*.sql`. Apply migrations in order through the reviewed local/test workflow. `supabase/JMT_ACADEMY_DATABASE_UPDATE.sql` is an archived bundle from an older 0001–0020 sequence; do not run it against production or alongside the current timestamped migrations.
+
+## Database backup and restore
+
+Use the scripts in `scripts/` only with an explicitly selected non-production/test database unless a production backup has been specifically approved. They require a connection URL supplied through the environment, use restrictive file permissions, and never print credentials.
+
+A restore must require an explicit confirmation string and must refuse a production target. Do not use `supabase db reset` or any seed/purge script against production.
