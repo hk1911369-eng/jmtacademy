@@ -352,3 +352,37 @@ Product takeaway: JMT's catalogue must be cohort-aware and linked to syllabus ve
 - Exa located two independent reports dated 27 November 2025 (Dhaka Post and Prothom Alo) describing the NCTB memo of 26 November 2025: the 2024–25 Bangla First Paper syllabus remains applicable to the 2025–26 XI–XII intake and continues until further instruction.
 - This upgrades the carry-forward finding from a single secondary lead to secondary-corroborated, but the signed NCTB memo and its attachment remain unretrieved. Keep the existing 26-item secondary-mirror dataset teacher-review-required and non-publishable until primary attachment comparison.
 - Sources: https://www.dhakapost.com/national/412688 and https://www.prothomalo.com/education/examination/6gnl078cvr
+
+
+## 14. Live verification checkpoint — 14 November 2026 (16:25 UTC)
+
+### GitHub review gates
+- PR #42 head `f85777a2f11395ec0614c05a4dcd13664367ca9e`: Quality checks run `43614490589` completed successfully. Its job completed guardrail tests, ESLint, TypeScript, production build and production dependency audit.
+- PR #64 head `c35520cf565b87f802af412d44e8460a38a9b34f`: CI run `43614495676`, Quality checks run `43614495727`, and LMS quality checks run `43614495664` all completed successfully. The Quality checks job completed guardrail tests, ESLint, TypeScript, production build and production dependency audit.
+- Both PRs remain open, draft and unmerged. Green CI is not approval to merge; review the diffs and release gates first.
+
+### Render production smoke check
+- New service `jmtacademy-web` / https://jmtacademy-web.onrender.com: latest deploy `dep-dbs2jbu7bikc73ee5d2g` is live on main commit `141d49343d80452c0871cec77fbc02367346e847`. Live `/api/health` returned HTTP 200 and JSON `status=ok`, `database=reachable` at `2026-11-14T16:25:02.415Z`.
+- Legacy service `jmtacademy` / https://sanjay-kumar-chemistry-lms.onrender.com: service remains not suspended and latest deploy `dep-dbs1hiu7bikc73ebgbkg` is marked live on the same main commit. Its `/api/health` request returned Render's loading page with HTTP 503 at this capture time; this is a cold-start/unavailable response, not proof that the deployment failed. Recheck after warm-up before making a retirement decision.
+- The new service's Render health-check path is still blank; the legacy service has `/api/health` configured. No service settings, hostname, environment variables or deploys were changed.
+
+### Supabase read-only advisor recheck
+- Production project `jpoxrxjixkcgjqvyyznw`: security notices include 2 RLS-enabled tables without policies (INFO), 1 anon-executable SECURITY DEFINER function (WARN), 18 authenticated-executable SECURITY DEFINER functions (WARN), and leaked-password protection not enabled (WARN). Performance notices include 64 unused indexes (INFO) and 27 multiple-permissive-policy findings (WARN).
+- Test project `cullxqklmbdiosibgois`: security notices include 2 RLS-enabled tables without policies (INFO), 1 anon-executable SECURITY DEFINER function (WARN), 23 authenticated-executable SECURITY DEFINER functions (WARN), and leaked-password protection not enabled (WARN). Performance notices include 1 unindexed foreign key (INFO), 90 unused indexes (INFO), and 22 multiple-permissive-policy findings (WARN).
+- These are advisor/linter findings, not a conclusion that each function or policy is exploitable. Review function bodies, ACLs and intended authorization before changing grants or policies; do not mass-revoke SECURITY DEFINER functions or drop indexes based only on counts.
+- No schema, migration, auth setting, policy, function, index or production data was changed during this check.
+
+### Search Console connection
+- GSC Wizard `list_sites` returned no connected properties. Search impressions, clicks, indexing coverage and sitemap performance are therefore unavailable from the connected GSC account. Do not claim SEO performance is measured until a Search Console account/property is connected.
+
+### HSC 2027 official notice attachment retrieval
+- Re-opened the official NCTB notice https://nctb.gov.bd/pages/notices/695b9e5235ce18e1c05af63d (title: ২০২৫-২৬ শিক্ষাবর্ষ থেকে একাদশ-দ্বাদশ শ্রেণির বাংলা প্রথম পত্রের পাঠ্যসূচি; issuer NCTB; publication date 26 November 2025).
+- Firecrawl live HTML, extracted links and targeted page-metadata inspection returned no attachment URL or file identifier. The notice itself is verified; the attachment remains unavailable through this retrieval route. Do not guess a PDF/object-storage URL or upgrade the secondary-reported carry-forward to attachment-verified.
+- Cohort boundary remains HSC 2027 = 2025–26 intake; HSC 2028 = 2026–27 intake.
+
+### Next actions
+1. Recheck the legacy Render health endpoint after its cold start; retain both services until a reviewed hostname cutover plan is ready.
+2. Review SECURITY DEFINER functions individually, beginning with anon-executable `get_public_course_teachers`, and inspect auth leaked-password protection settings. No automatic permission changes.
+3. Review multiple permissive RLS policies for redundant predicates without weakening the effective policy; investigate unused indexes over a representative workload before removal.
+4. Connect the intended Google Search Console account/property before attempting SEO performance analysis.
+5. Continue official HSC 2027 attachment retrieval and science-subject source discovery; do not substitute HSC 2028 documents.
