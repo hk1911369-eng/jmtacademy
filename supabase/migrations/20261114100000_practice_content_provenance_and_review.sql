@@ -123,6 +123,7 @@ BEGIN
   END IF;
 
   IF p_question_id IS NULL
+    OR p_decision IS NULL
     OR p_decision NOT IN ('approve','reject')
     OR length(COALESCE(p_review_note,'')) > 2000 THEN
     RAISE EXCEPTION 'Review request is invalid' USING ERRCODE = '22023';
