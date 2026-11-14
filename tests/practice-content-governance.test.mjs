@@ -55,10 +55,11 @@ test('teacher authoring captures provenance and never publishes directly', async
 });
 
 test('admin review page exposes source and rights evidence and uses the guarded review action', async () => {
-  const [page, action, nav] = await Promise.all([
+  const [page, action, nav, teacherPage] = await Promise.all([
     read('app/admin/practice-review/page.tsx'),
     read('app/actions/student-practice-authoring.ts'),
     read('components/portal-layout.tsx'),
+    read('app/teacher/practice/page.tsx'),
   ]);
   assert.match(page, /role !== 'admin'/);
   assert.match(page, /source_reference/);
@@ -67,8 +68,8 @@ test('admin review page exposes source and rights evidence and uses the guarded 
   assert.match(page, /name="decision" value="approve"/);
   assert.match(page, /name="decision" value="reject"/);
   assert.match(page, /Reject and keep unpublished/);
-  assert.match(page, /Reviewer feedback/);
-  assert.match(page, /submit the revised question as a new version/);
+  assert.match(teacherPage, /Reviewer feedback/);
+  assert.match(teacherPage, /submit the revised question as a new version/);
   assert.match(page, /Choose only after checking the evidence/);
   assert.match(page, /required placeholder="Explain the answer check/);
   assert.match(action, /db\.rpc\('review_student_practice_question'/);
