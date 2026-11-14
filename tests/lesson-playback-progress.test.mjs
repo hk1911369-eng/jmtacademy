@@ -36,6 +36,11 @@ test('database checkpoint RPC revalidates lesson, student role, payment and Bang
   assert.ok(migration.includes('updated_at <= now() - interval \'2 seconds\''));
   assert.ok(migration.includes('RETURNS boolean'));
   assert.ok(migration.includes('RETURN COALESCE(v_saved, false)'));
+  const courseGuard = await readFile(new URL('../supabase/migrations/20261114190505_require_published_unarchived_course_for_playback_resume.sql', import.meta.url), 'utf8');
+  assert.ok(courseGuard.includes('JOIN public.courses c ON c.id = l.course_id'));
+  assert.ok(courseGuard.includes('c.is_published IS TRUE'));
+  assert.ok(courseGuard.includes('c.archived_at IS NULL'));
+  assert.ok(courseGuard.includes('DROP POLICY IF EXISTS "students read own entitled lesson playback progress"'));
 });
 
 test('verified lesson completion clears its playback checkpoint without changing completion evidence', async () => {
