@@ -267,3 +267,13 @@ Product takeaway: JMT's catalogue must be cohort-aware and linked to syllabus ve
 - The full attachment item list is still not retrieved; no detailed reading-list records are approved from the cover letter alone.
 - Added tranche-23 audit: docs/JMT_HSC_2027_BANGLA_FIRST_PAPER_CARRY_FORWARD_AUDIT_TRANCHE_23_2026-11-14.md on the research branch / PR #42.
 - Predictor evaluation protocol added on PR #42: cohort-isolated chronological walk-forward validation, leakage checks, baseline comparisons, calibration, uncertainty and teacher-review release gates.
+
+
+## Live-site smoke / SEO audit — 14 November 2026
+- Verified the new Render host serves the JMT Academy application after its free-tier cold start; /api/health returned status ok and database reachable.
+- Live robots.txt allows public routes and disallows private account/administration routes; live sitemap lists seven public URLs on jmtacademy-web.onrender.com.
+- Public catalogue currently has zero published courses; no fake courses were added.
+- Homepage strapline still reads “JMT CHEMISTRY · LEARNING · PROGRESS” from the production academy_settings row. It is not hard-coded in the homepage component; production data was not changed.
+- Courses page has no detected meta description in the page metadata export; source already defines canonical /courses. Add unique descriptions in a reviewed code change.
+- GSC Wizard has no connected or shared Search Console properties, so search performance/indexing metrics are unavailable.
+- Full read-only audit is docs/JMT_LIVE_SITE_SMOKE_AND_SEO_AUDIT_2026-11-14.md on PR #42.
