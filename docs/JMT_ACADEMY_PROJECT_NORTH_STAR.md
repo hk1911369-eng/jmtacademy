@@ -405,3 +405,42 @@ Product takeaway: JMT's catalogue must be cohort-aware and linked to syllabus ve
 - Treat the new-host Supabase target as a cutover blocker. Before replacing the legacy hostname, inspect the new service's `NEXT_PUBLIC_SUPABASE_URL` and matching anon key and confirm they point to intended production project `jpoxrxjixkcgjqvyyznw`. No environment variable, database, course, hostname or deployment change was made.
 - Detailed evidence and recommended verification are in `docs/JMT_LIVE_SITE_SMOKE_AND_SEO_AUDIT_2026-11-14.md` on PR #42 (latest docs commit `e6dfc2b4fc34d91b9d09aa708b22a1be1e759f8c`).
 - PR #64 head `5fa09e5ee81167b30f7e867e5b0fb1bc9f932236`: CI, Quality checks and LMS quality checks all completed successfully. PR #42's earlier code head had successful Quality checks; the newest commits to PR #42 are documentation-only and returned no new workflow runs.
+
+
+## 15. Owner direction — whole-platform excellence, finance and offline eligibility (2026-11-14)
+
+The owner has reiterated that JMT Academy must be engineered as a best-in-class, extensible platform across every category it enters—not only academics. This includes the learning platform, AI, payments and finance, administration, security, analytics, support, integrations, automation, accessibility, performance and student experience. Do not let a current missing provider/account or earlier implementation limitation define the product ceiling. Design for provider choice and future capability, while accurately distinguishing implemented code from external accounts, contracts, credentials, regulatory approvals and verified live integrations.
+
+### 15.1 Payments and finance — required product direction
+
+Replace any simplistic or “lazy” single-method payment assumptions with a modular, admin-governed finance system. The application should be architected to support multiple payment gateways and methods, with provider adapters and clear configuration/activation status. Admin-authorised finance settings should be able to represent and manage:
+
+- Payment gateway/provider, supported methods, merchant/business identity and provider account identifiers.
+- Settlement bank, account and destination details, with sensitive values protected and masked in ordinary UI.
+- Accountant/finance staff, role-scoped permissions, maker-checker approval and separation of duties.
+- Fees, commissions, taxes where applicable, currencies, payment references, settlement schedules and reconciliation rules.
+- Payment intents/attempts, provider transaction IDs, receipts, refunds, chargebacks, failed/pending/expired states and immutable status history.
+- Manual/offline payment instructions and evidence submission, with staff review and explicit approval; never mark a payment verified merely because a student uploaded a screenshot.
+- Finance dashboards and exportable audit/reconciliation reports, scoped to each staff member's authorised responsibilities.
+
+Admins should be able to add/configure providers, merchants, settlement destinations and finance staff through controlled settings, then test and verify configuration before activation. Secrets must be stored server-side in an appropriate secret store, never exposed to browser clients or committed to the repository. Use provider webhooks with signature verification, idempotency, replay protection and reconciliation; do not trust client-submitted payment status. Keep an auditable record of who configured, reviewed, approved, refunded or reconciled each transaction. Never invent a merchant account, bank connection, provider credential or regulatory permission. External onboarding/credentials remain real-world prerequisites; build the code so approved providers can be connected when available.
+
+### 15.2 Offline-batch eligibility and protected benefits
+
+Offline-batch status is an explicitly controlled entitlement, not a self-selected profile attribute and not a benefit granted to every registered account. Only a student whose roll number has been entered and authorised by a teacher, staff member or admin may be assigned to the relevant offline batch. The authorised roster is the source of truth for offline-specific entitlements, including free access to recorded classes.
+
+Implement server-side checks for every protected route, media URL, API, download and playback action; hiding a button in the UI is insufficient. Bind eligibility to the correct student identity, roll number, batch, cohort and entitlement period. Prevent duplicate/ambiguous roll-number assignment, support revocation and transfer with audit history, and ensure online-only students cannot gain offline benefits by editing their profile or request payload. Apply least-privilege roles so teachers/staff can manage only their permitted batches and admins can oversee the full roster. Preserve a clear distinction between online enrolment, offline enrolment and any separately granted scholarship/free-access entitlement.
+
+### 15.3 Automation, administration and trust
+
+Automate repeatable verification and operational checks where safe: provider configuration tests, webhook health, reconciliation exceptions, roster consistency, entitlement checks, deployment health, backups/restore checks and security/quality monitoring. Automation must use approved scoped service credentials or supported secure authorization flows—not shared passwords, browser-stored admin credentials or unattended impersonation. Require human approval for consequential actions such as activating a payment destination, approving/refunding a payment, changing student entitlements, publishing paid courses, or altering production financial settings. Maintain tamper-evident audit events and clear failure alerts.
+
+### 15.4 Engineering and release rules
+
+- Build for extensibility and high quality, but ship in reviewed, testable increments with documented acceptance criteria and end-to-end tests.
+- Prefer provider-neutral interfaces and adapters over hard-coding one gateway, bank, merchant or accountant workflow.
+- Keep payment, student identity, academic records and entitlement authorization separated by explicit server-side policies and least privilege.
+- Test negative cases: unauthorised roll numbers, forged payment callbacks, duplicate webhooks, replay attempts, mismatched settlement accounts, staff role escalation, revoked offline access and cross-cohort leakage.
+- Do not use real-money transactions or activate production payment methods until the provider account, credentials, legal/compliance requirements, settlement destination and test-mode verification are confirmed.
+- The owner's broad direction to build and configure the product is not evidence that external merchant/bank accounts or approvals already exist. Do not spend money, sign up for paid services, expose secrets, or perform irreversible production financial actions without the relevant explicit approval and verified prerequisites.
+- These requirements are product direction and acceptance criteria; they are not a claim that the payment/finance system or offline entitlement controls are already implemented.
