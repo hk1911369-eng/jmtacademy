@@ -90,6 +90,43 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
     .filter((item:any) => item.status === 'active' && item.admission_fee_paid
       && item.paid_through && item.paid_through >= periodEnd)
     .map((item:any) => item.course_id))];
+  let continueLesson: {
+    lessonId:string; lessonTitle:string; courseId:string; courseTitle:string;
+    positionSeconds:number; durationSeconds:number|null;
+  } | null = null;
+  if (eligibleCourseIds.length) {
+    const { data: playbackRows } = await supabase.from('lesson_playback_progress')
+      .select('lesson_id,position_seconds,duration_seconds,last_viewed_at')
+      .eq('student_id', user.id)
+      .gte('last_viewed_at', new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString())
+      .order('last_viewed_at', { ascending: false })
+      .limit(20);
+    const playbackLessonIds = [...new Set((playbackRows ?? []).map((row:any) => row.lesson_id))];
+    if (playbackLessonIds.length) {
+      const [{ data: playbackLessons }, { data: completedPlayback }] = await Promise.all([
+        supabase.from('lessons').select('id,title,course_id')
+          .in('id', playbackLessonIds).in('course_id', eligibleCourseIds).eq('is_published', true),
+        supabase.from('lesson_progress').select('lesson_id')
+          .eq('student_id', user.id).eq('completed', true).in('lesson_id', playbackLessonIds),
+      ]);
+      const lessonById = new Map((playbackLessons ?? []).map((lesson:any) => [lesson.id, lesson]));
+      const completedIds = new Set((completedPlayback ?? []).map((row:any) => row.lesson_id));
+      const latestCheckpoint = (playbackRows ?? []).find((row:any) =>
+        lessonById.has(row.lesson_id) && !completedIds.has(row.lesson_id) && Number(row.position_seconds) >= 5
+      );
+      if (latestCheckpoint) {
+        const lesson:any = lessonById.get(latestCheckpoint.lesson_id);
+        continueLesson = {
+          lessonId: lesson.id,
+          lessonTitle: lesson.title,
+          courseId: lesson.course_id,
+          courseTitle: courseNames.get(lesson.course_id) ?? 'Your course',
+          positionSeconds: Number(latestCheckpoint.position_seconds),
+          durationSeconds: latestCheckpoint.duration_seconds === null ? null : Number(latestCheckpoint.duration_seconds),
+        };
+      }
+    }
+  }
   let learningRecommendations: { lessonId:string; lessonTitle:string; courseId:string; conceptTitle:string; masteryScore:number|null; rootCauseFor:string|null }[] = [];
   if (weakConceptIds.length && eligibleCourseIds.length) {
     const { data: prerequisiteEdges } = await supabase.from('concept_prerequisites')
@@ -205,7 +242,7 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
       {params.learning_error && <p className="form-error">{params.learning_error==='payment_due'?'Your current month tuition must be approved before opening lessons. Offline students receive the recorded library as part of their paid offline course.':'Course access is available only after payment approval.'}</p>}
       {params.profile_success && <p className="form-success">Profile updated.</p>}{params.profile_error && <p className="form-error">Profile could not be updated. Check your name and Bangladesh mobile number.</p>}
       <div className="portal-stats"><article><b>{activeCount}</b><span>Active courses</span></article><article><b>{pendingCount}</b><span>Payments under review</span></article><article><b>{applications?.length ?? 0}</b><span>Course applications</span></article></div>
-      <LearningOSDashboard goals={learningGoals} revisionTasks={revisionTasks} mastery={conceptMastery} mistakes={mistakeMemory} recommendations={learningRecommendations} courseNames={courseNames} upcomingExams={upcomingExams} upcomingAssignments={upcomingAssignments} />
+      <LearningOSDashboard goals={learningGoals} revisionTasks={revisionTasks} mastery={conceptMastery} mistakes={mistakeMemory} recommendations={learningRecommendations} courseNames={courseNames} upcomingExams={upcomingExams} upcomingAssignments={upcomingAssignments} continueLesson={continueLesson} />
       <h2 id="profile">Student profile</h2>
       {avatarUrl&&<p><Image src={avatarUrl} alt="Your profile" width={100} height={100} unoptimized style={{width:100,height:100,objectFit:'cover',borderRadius:16}}/></p>}
       <form action={updateStudentDetails} className="auth-form portal-card" encType="multipart/form-data">
