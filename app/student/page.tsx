@@ -113,6 +113,7 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
       const completedIds = new Set((completedPlayback ?? []).map((row:any) => row.lesson_id));
       const latestCheckpoint = (playbackRows ?? []).find((row:any) =>
         lessonById.has(row.lesson_id) && !completedIds.has(row.lesson_id) && Number(row.position_seconds) >= 5
+        && (row.duration_seconds === null || Number(row.position_seconds) < Number(row.duration_seconds) - 5)
       );
       if (latestCheckpoint) {
         const lesson:any = lessonById.get(latestCheckpoint.lesson_id);
