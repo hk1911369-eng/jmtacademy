@@ -258,3 +258,19 @@ These are connected strategic priorities, not isolated products. The Learning Ex
 - Exact next action: obtain the Render base-service Supabase project reference (project ref only, not any key or credential), then decide whether a preview can be isolated to JMT Test without exposing production dependencies.
 
 - Final handoff verification: GitHub read-back returned blob `50496739abbae054a8c2b358f789f1c5dd41a578`; the resulting commit is `cffd150a2d12b012f1a77d0d809578a8a7e96748`, and PR #64 now points to that exact head (open/draft/mergeable). PR #65 comments, reviews and inline threads were also explicitly checked and are all empty.
+
+
+## 18. Resume verification — 15 November 2026
+- Re-read the full current handoff, North Star and permanent benchmark standard, plus the 15 Nov continuity checkpoint. The active task remains Student Today; no new feature request or changed owner decision was supplied.
+- Reconfirmed PR metadata:
+  - #64 open/draft/unmerged/mergeable, head `59138773f0188144d81e09519bb0cd6a7d38af9e`, base main.
+  - #65 open/draft/unmerged/mergeable, head `8dae210b135bb44322fa9fe206377720823f8f28`.
+  - #66 open/draft/unmerged/mergeable, head `638bd0307f9044b34ef263a65f807bfef705c912`, base main.
+  - #67 open/draft/unmerged/mergeable, head `da2f632c688ae2077a07cc3be0993b51f9cb5747`, base #66.
+- Refreshed exact changed-file lists for #66 (6 files) and #67 (14 files). Refreshed exact-head workflow runs: #66 CI, Quality and LMS Quality all success; #67 same three all success. An older #67 LMS Quality run is cancelled and superseded by successful exact-head run. PR #66/#67 comments remain empty.
+- Re-read Render service details for `jmtacademy-web`: public Node web service, Free plan, Singapore, deploys `main`, auto-deploy enabled, PR previews disabled, preview generation off, public IP allowlist, no configured health-check path. Current live deployment remains `dep-dbs2jbu7bikc73ee5d2g` on main commit `141d49343d80452c0871cec77fbc02367346e847`. No environment variable values or Supabase reference are exposed in the service response.
+- Re-read JMT Test project `cullxqklmbdiosibgois`: ACTIVE_HEALTHY, ap-south-1. This does not identify the service's configured target.
+- New source-code/config discovery: root `.env.example` on main documents `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`, but both are placeholders (`YOUR_PROJECT`, `YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY`). `PROJECT_CONFIGURATION.md` contains product/payment configuration only. No Render Blueprint manifest or actual service URL value was found in the inspected repository root/source search. Therefore repository code cannot independently prove the deployed Supabase project reference; do not infer it from JMT Test's existence.
+- Connected Render tool catalog exposes `get_service`, deploy/log/metrics actions and write-only `update_environment_variables`; no environment-variable readback and no service update action for PR-preview configuration. Do not use a write-only update to discover current values.
+- No code, database, hosting setting, environment variable, deploy, payment, merge or PR state was changed. No new tests were run; existing CI evidence was refreshed, not rerun. Authenticated UI/device QA remains unverified; unified calendar remains unimplemented.
+- **Single next action unchanged:** obtain only the non-secret Supabase project reference configured for `jmtacademy-web` from an owner-controlled secure Render Dashboard view (or a verified non-production preview URL). Never request credentials or keys in chat. Compare it with JMT Test ref `cullxqklmbdiosibgois`; if production or ambiguous, keep previews disabled. Only then verify preview-specific test-only overrides and billing before creating a preview and obtaining a secure test-student session for authenticated QA.
