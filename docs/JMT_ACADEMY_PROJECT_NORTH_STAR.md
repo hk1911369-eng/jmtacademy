@@ -309,3 +309,5 @@ Product takeaway: JMT's catalogue must be cohort-aware and linked to syllabus ve
 - Added a research-backed practice design brief using school-classroom evidence on retrieval practice, spacing, interleaving and feedback. The brief flags limited evidence from non-WEIRD contexts and calls for local teacher/student validation.
 - Added HSC 2028 / 2026–27 ICT chapter anchors from the official NCTB-hosted syllabus PDF. Only the six chapter headings are represented; subtopics and assessment weights remain un-inferred and the dataset is not publishable before teacher review.
 - Details and tests are in PR #42. No Supabase data or Render production settings were changed.
+
+- Live-site recheck after a 503 interstitial showed the new Render instance became ready and the health endpoint, homepage and course catalogue returned HTTP 200. Render's official Free-tier docs confirm idle services spin down after 15 minutes and show a loading page on restart; the cold-start delay remains a production UX/SEO risk until the service plan is reviewed.
