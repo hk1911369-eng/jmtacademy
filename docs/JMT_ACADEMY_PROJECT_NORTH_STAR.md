@@ -444,3 +444,162 @@ Automate repeatable verification and operational checks where safe: provider con
 - Do not use real-money transactions or activate production payment methods until the provider account, credentials, legal/compliance requirements, settlement destination and test-mode verification are confirmed.
 - The owner's broad direction to build and configure the product is not evidence that external merchant/bank accounts or approvals already exist. Do not spend money, sign up for paid services, expose secrets, or perform irreversible production financial actions without the relevant explicit approval and verified prerequisites.
 - These requirements are product direction and acceptance criteria; they are not a claim that the payment/finance system or offline entitlement controls are already implemented.
+
+
+## 16. Owner's definitive product priorities and top-ten feature charter (2026-11-14)
+
+This section consolidates the owner's explicit direction about what JMT Academy must become. It is a durable product charter for future conversations, research, design, implementation, testing and release decisions. Read it together with the earlier research, implementation, payment, offline-eligibility and safety requirements; it does not replace them.
+
+### 16.1 The three highest strategic priorities — in this order
+
+**Priority 1 — JMT Learning Experience OS (the foundation of the entire product).**
+
+JMT must deliver an exceptional, education-centred, operating-system-level user experience. This is not a cosmetic redesign and not merely a focus-mode feature. It governs the information architecture, visual language, interaction patterns, navigation, personalisation, learning flow, feedback, mobile experience and quality of every screen and feature.
+
+The intended outcome is that students naturally choose JMT as their trusted academic home because it makes learning clear, satisfying, productive and easy to continue. Optimise for meaningful learning, mastery, confidence and healthy return-to-study behaviour—not raw screen time, compulsive engagement or addictive mechanics.
+
+Non-negotiable design requirements:
+- A distinctive, coherent, premium JMT design system: typography, colour, spacing, layout, icons, illustration, motion, transitions, component states and responsive behavior. Original JMT identity; do not copy ACS or another product.
+- Student-first information architecture. The next useful academic action (continue a lesson, revise a topic, solve a question, attend class, ask the AI Teacher, complete a lab or review feedback) should be easy to discover and quick to reach.
+- A personalised academic home showing relevant courses, timetable, goals, upcoming classes/exams, syllabus progress, revision priorities, recent work, weak areas and next recommended actions. Personalisation must be explainable, controllable and privacy-respecting.
+- A connected learning journey: planner, course, lesson, notes, AI Teacher, practice, assessment, revision, lab and progress should work as one coherent system, not isolated modules.
+- Deep-focus workspace: optional focus mode, low-distraction lesson and practice views, full-screen study, useful notes, timer/break controls, progress and quick return to the current learning task. Respect user settings and accessibility needs.
+- Ethical engagement: meaningful progress, achievable goals, mastery feedback, genuine achievements and encouraging coaching. No manipulative infinite scroll, artificial urgency, deceptive streak loss, dark patterns, unnecessary notification spam or attention traps.
+- Frictionless navigation and search, consistent back/forward behavior, clear loading/empty/error/success states, autosave where safe, recovery from interruption and no needless repeated data entry.
+- Mobile-first excellence, especially on Android and lower-bandwidth connections: touch-friendly controls, responsive layouts, efficient assets, readable content, resilient network handling and performance budgets. Desktop must also feel deliberate, not stretched mobile UI.
+- Accessible by design: keyboard and assistive-technology support, semantic structure, sufficient contrast, scalable text, captions/transcripts where relevant, reduced-motion support and clear language.
+- Intelligent, user-controlled notifications that support classes, deadlines and study plans without interruption overload.
+- Beautiful, understandable feedback: mastery, syllabus coverage, improvement, mistakes, milestones and progress visualisations that explain what to do next without shaming students.
+- One shared design system and interaction standard across student, teacher, parent, staff and admin areas, with role-appropriate complexity.
+- Validate with real student tasks and usability testing; measure task completion, time-to-learning-action, learning continuity, accessibility, performance, error rates and student-reported clarity—not time-on-site as a success metric.
+
+Every new page, component, workflow and feature must pass a Learning Experience OS review. A feature is not complete merely because its API works or its page renders.
+
+**Priority 2 — JMT Intelligence Engine.**
+
+Build the trustworthy academic intelligence layer: Exam Question Predictor AI, AI Teacher, personalised learning, adaptive revision, mastery and mistake memory, recommendations and academic analytics. Preserve the distinct Predictor and AI Teacher requirements in Sections 1, 2 and 9: verified sources, provenance, chronological leakage-safe validation, uncertainty, teacher review, bilingual support, privacy and no false claims of exact prediction.
+
+**Priority 3 — Complete Learning Ecosystem.**
+
+Deliver the connected academic and institutional system: courses, lessons, live and recorded classes, assessments, virtual labs, academic tools, community, teacher/parent/admin workspaces, offline-batch entitlements, secure finance/payments, reporting, support, integrations and automation.
+
+These are strategic priorities, not three isolated products. The Experience OS is the foundation through which the Intelligence Engine and complete ecosystem are experienced.
+
+### 16.2 The ten signature product pillars — detailed scope
+
+**1. Exam Question Predictor AI**
+- Build a provenance-tracked corpus of authentic, lawful historical board, college and admission questions.
+- Classify by exam, year, board, subject, paper, chapter, topic, question type, marks and cognitive demand.
+- Map to the correct syllabus version and cohort; detect syllabus changes and coverage gaps.
+- Analyse recurrence, topic coverage and question patterns only where corpus completeness supports it.
+- Produce evidence-based revision priorities, practice sets and transparent explanations with sample size, years, uncertainty and source traceability.
+- Back-test chronologically on unseen years; prevent target-paper leakage; report calibration and performance by subject/question type.
+- Never promise exact future questions or imply that a trend guarantees an exam question.
+
+**2. JMT AI Teacher**
+- Curriculum- and textbook-grounded tutor for multiple subjects, with Bengali and English support.
+- Explain concepts, definitions, formulas, derivations, diagrams, examples and calculations step by step.
+- Use hints-first teaching, Socratic prompts, worked examples, quizzes and misconception correction.
+- Provide source references, confidence/uncertainty and escalation to a qualified teacher when sources are missing or disputed.
+- Adapt difficulty and practice to student progress with privacy, consent and teacher oversight.
+- Keep teacher-reviewed academic content distinct from unverified generated drafts.
+
+**3. Personal Academic Command Centre**
+- Personal annual academic planner and dashboard.
+- Class timetable with time, subject, teacher, room/link and recurring schedules.
+- Weekday/weekend availability, sleep/wake preferences and realistic study-time allocation.
+- Goals, syllabus/chapter completion, exam countdowns, revision plan and upcoming deadlines.
+- Missed-class archive, catch-up workflow and recovery plan.
+- Adaptive spaced revision, weak-topic prioritisation, mastery/mistake memory and Exam War Room.
+- Clear daily/weekly views, progress history and editable student-controlled preferences.
+
+**4. Virtual Lab Network**
+- Curriculum-mapped interactive Physics, Chemistry, Biology, Higher Mathematics and ICT labs.
+- Physics examples: projectile motion with graphs, double pendulum, ray optics, gas laws, electrochemical cell, spring oscillator and wave interference.
+- Chemistry examples: kinetics, equilibrium, electrochemistry and safe conceptual experiments.
+- Biology examples: photosynthesis, inheritance, microscope and cell division.
+- Practical instructions, variables, simulation controls, observations, graphs, lab notebook/evidence and assessment.
+- Teacher review and feedback; device/accessibility requirements and safety boundaries documented.
+- Prefer open, accessible resources after provenance, licence and quality review; do not imply a simulation replaces a supervised physical lab where it does not.
+
+**5. JMT Learning Community**
+- Subject/chapter-based discussions, doubt solving, peer help and teacher participation.
+- Share notes and learning resources with preview, download and clear attribution/rights handling.
+- Compare notes, bookmark useful explanations and report incorrect or unsafe content.
+- Healthy academic rankings/leaderboards (including top 1–2–3 where appropriate) based on transparent criteria, with privacy controls and no humiliation.
+- Moderation, reporting, anti-spam, safeguarding, abuse prevention and teacher/admin governance.
+- Encourage collaboration and knowledge sharing rather than addictive feeds or popularity contests.
+
+**6. Smart Examination and Assessment System**
+- Question bank with source, syllabus mapping, difficulty, topic, marks and review status.
+- Chapter tests, topic practice, timed model tests and configurable examination workflows.
+- Appropriate automatic grading plus human/teacher marking for subjective responses.
+- Clear answer explanations, rubrics, result breakdowns and mistake analysis.
+- Student progress over time, teacher assignment/assessment tools and privacy-conscious cohort analytics.
+- Fairness, accessibility, attempt integrity and auditability; do not overstate automated marking accuracy.
+
+**7. Academic Productivity Toolkit**
+- Scientific calculator with broad advanced functionality comparable in capability to a modern advanced scientific calculator; original JMT interface and assets.
+- Mathematics matrix/vector operations, formula tools, graph plotting and step-by-step learning aids.
+- ICT HTML/CSS/JavaScript live preview, SQL run/view sandbox and C programming output environment.
+- Safe isolated execution, resource/time limits, input/output handling and no arbitrary access to production systems.
+- Formula library, unit conversions, notes and subject-linked utilities.
+- Tools must teach and explain, not merely output answers.
+
+**8. Live Classes and Complete Learning Archive**
+- Live teaching, class schedules, attendance/participation records and class reminders.
+- Recorded lessons, organised by course, batch, subject, chapter and lesson.
+- Notes, attachments, transcripts/captions where available, bookmarks and resume playback.
+- Catch-up pathways for missed classes and links to relevant practice/revision.
+- Clear access rules for online enrolments, offline batches, scholarships and other entitlements.
+- Offline-batch free recorded-class benefits only for students whose roll numbers are entered and authorised by permitted staff/teachers/admins; enforce server-side as detailed in Section 15.2.
+
+**9. Unified Teacher, Parent and Admin Workspace**
+- Teacher dashboard for assigned batches, class plans, attendance, homework, feedback, assessments and student progress.
+- Parent-facing, permission-controlled visibility into relevant attendance, goals, progress and notices.
+- Admin controls for users, roles, courses, batches, enrolment, roster authorisation, publishing, notices, settings and support.
+- Scoped staff access, least privilege, maker-checker approvals for sensitive operations, audit trails and secure exports.
+- Offline roll-number roster management with duplicate detection, cohort/batch binding, transfer, revocation and history.
+- Operational dashboards and reports that distinguish verified data from estimates or incomplete data.
+
+**10. Advanced Payment and Financial Management**
+- Provider-neutral payment gateway adapters and multiple configurable payment methods.
+- Admin-governed provider, merchant/business identity and account configuration, with test/verification before activation.
+- Protected settlement bank/account destinations; masked sensitive details and server-side secrets.
+- Finance roles, accountant assignments, staff-specific scopes, separation of duties and maker-checker approval.
+- Fee plans, discounts, scholarships, commissions/taxes where applicable, currencies and settlement schedules.
+- Payment intents/attempts, references, provider IDs, receipts, pending/failed/expired states, refunds and chargebacks.
+- Manual/offline payment evidence submission and explicit human verification; screenshots alone never prove payment.
+- Signed webhooks, idempotency, replay protection, reconciliation, immutable status history and audit logs.
+- Financial dashboards and exportable reconciliation/audit reports.
+- No real-money activation before genuine provider onboarding, credentials, legal/compliance checks, settlement destination and test-mode verification.
+
+### 16.3 Cross-cutting excellence requirements
+
+All ten pillars must share:
+- Security and privacy by design, least privilege, server-side authorization, secure secrets, auditability and threat modelling.
+- Accessibility, inclusive language, Bengali/English usability and responsive mobile-first design.
+- Performance, resilience, graceful degradation, low-bandwidth support, observability and reliable error recovery.
+- Accurate academic content, source provenance, copyright/licence compliance and teacher review.
+- Data integrity, clear ownership, retention controls, backups and tested recovery.
+- Well-defined APIs, modular architecture, provider-neutral integrations and documented extension points.
+- Automated unit, integration, security, accessibility and end-to-end tests, plus human usability testing.
+- Honest status labels: planned, in research, in development, implemented, tested, production-verified. Never describe a planned or partial feature as shipped.
+
+### 16.4 Product quality and ethical engagement doctrine
+
+The goal is to make JMT the place students prefer for effective study because it is useful, beautiful, calm, trustworthy and academically powerful. Do not optimise for compulsive usage, time-on-site, notification volume or artificial engagement. Student wellbeing, agency, focus, mastery and learning outcomes take precedence. Students must be able to pause, leave, control reminders, customise focus settings and understand why recommendations are shown.
+
+### 16.5 Required workflow for future design and implementation
+
+For each feature or screen:
+1. State the student/teacher/admin problem and the learning outcome.
+2. Map the complete journey and dependencies across existing JMT modules.
+3. Produce an original JMT design consistent with the Learning Experience OS.
+4. Define responsive, accessible, loading, empty, error, offline/low-bandwidth and success states.
+5. Specify permissions, privacy, data provenance and abuse/security cases.
+6. Define measurable acceptance criteria and tests before calling it complete.
+7. Implement in a reviewable branch/test environment; run relevant tests and inspect the actual experience.
+8. Record exact status, evidence, limitations and next steps in the project log.
+
+**Standing instruction:** do not forget, dilute, reorder or reduce the Learning Experience OS to a minor feature. It is strategic priority number one and the quality standard for the entire JMT Academy. The top-ten pillars above are the consolidated product charter; preserve all details and extend them with traceable decisions rather than silently replacing them.
