@@ -43,6 +43,9 @@ export default async function StaffPracticePage({
     ? await db.from('learning_concepts').select('id,title,subject_id')
       .in('subject_id', subjectIds).eq('is_published', true).order('title')
     : { data: [] as { id: string; title: string; subject_id: string }[] };
+  const { data: myQuestions } = await db.from('student_practice_questions')
+    .select('id,question_text,review_status,review_note,created_at,reviewed_at,is_published')
+    .eq('created_by', user.id).order('created_at', { ascending: false }).limit(20);
 
   const subjectNames = new Map((subjects ?? []).map(subject => [subject.id, subject.name]));
   const courseNames = new Map((courses ?? []).map(course => [course.id, course.title]));
@@ -137,6 +140,16 @@ export default async function StaffPracticePage({
         </fieldset>
         <button type="submit" className="practice-submit-button">Submit for independent review</button>
       </form>}
+      {(myQuestions ?? []).length > 0 && <section className="portal-card practice-submission-history">
+        <h2>Your recent submissions</h2>
+        <p className="muted">Questions remain hidden from students until they pass independent review.</p>
+        {(myQuestions ?? []).map(item => <article className="practice-question-card" key={item.id}>
+          <p><b>{item.review_status.replaceAll('_', ' ').toUpperCase()}</b> · {new Date(item.created_at).toLocaleDateString('en-GB', { timeZone: 'Asia/Dhaka' })}</p>
+          <p>{item.question_text}</p>
+          {item.review_note && <p className="muted"><b>Reviewer feedback:</b> {item.review_note}</p>}
+          {item.review_status === 'rejected' && <p className="muted">Use this feedback to correct the item, then submit the revised question as a new version. This rejected version stays unpublished.</p>}
+        </article>)}
+      </section>}
     </section>
   </PortalLayout>;
 }
