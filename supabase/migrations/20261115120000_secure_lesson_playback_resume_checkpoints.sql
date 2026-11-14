@@ -33,7 +33,12 @@ CREATE POLICY "students read own entitled lesson playback progress"
   FOR SELECT TO authenticated
   USING (
     student_id = (SELECT auth.uid())
-    AND (SELECT public.current_role())::text = 'student'
+    AND EXISTS (
+      SELECT 1 FROM public.profiles p
+      WHERE p.id = (SELECT auth.uid())
+        AND p.role::text = 'student'
+        AND p.is_active IS TRUE
+    )
     AND EXISTS (
       SELECT 1
       FROM public.lessons l
@@ -69,8 +74,13 @@ BEGIN
     RAISE EXCEPTION 'Authentication required' USING ERRCODE = '28000';
   END IF;
 
-  IF (SELECT public.current_role())::text IS DISTINCT FROM 'student' THEN
-    RAISE EXCEPTION 'Student role required' USING ERRCODE = '42501';
+  IF NOT EXISTS (
+    SELECT 1 FROM public.profiles p
+    WHERE p.id = auth.uid()
+      AND p.role::text = 'student'
+      AND p.is_active IS TRUE
+  ) THEN
+    RAISE EXCEPTION 'Active student profile required' USING ERRCODE = '42501';
   END IF;
 
   IF p_lesson_id IS NULL
