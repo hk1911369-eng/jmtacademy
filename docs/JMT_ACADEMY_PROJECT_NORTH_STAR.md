@@ -285,3 +285,10 @@ Product takeaway: JMT's catalogue must be cohort-aware and linked to syllabus ve
 - JMT Test has eight additional tables for practice questions/attempts, virtual-lab catalogue and lab notebooks/practicals/evidence/review history, plus assignment submission version history.
 - Migration histories differ; do not replay or synchronize migration histories blindly. Production remains unchanged.
 - Full report: docs/JMT_SUPABASE_PRIMARY_TEST_SCHEMA_BOUNDARY_AUDIT_2026-11-14.md on PR #42.
+
+
+## HSC 2027 Bangla candidate list — secondary mirror (14 November 2026)
+- Located a Prothom Alo-hosted PDF that presents the 2024–25 NCTB HSC Bangla First Paper syllabus and exposes 12 prose, 12 poems, one novel and one drama.
+- The official NCTB signed circular independently confirms the 12+12 count and the syllabus attachment, but the secondary PDF has not been byte-compared with the NCTB attachment.
+- Added candidate structured file data/curriculum/hsc-2027-2024-25-bangla-first-paper-candidate-secondary-mirror.json on PR #42.
+- Candidate records are marked secondary-mirror, teacher-review-required and not publishable. HSC 2027 carry-forward remains secondary-reported until the 2025–26 NCTB File 1 attachment is retrieved.
