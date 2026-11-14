@@ -628,3 +628,32 @@ Acceptance tests:
 - **Open:** exact subject-by-subject mapping of which HSC subjects have 25-mark practical components and their practical rubrics; must be transcribed from official subject-specific documents.
 - **Open:** HSC setter/moderator manual direct PDF and contents.
 - **Do not use:** third-party "HSC 2026 short syllabus" claims where they contradict the official full-syllabus notice for regular candidates.
+
+
+## 13. Research tranche 21 — ACS benchmark refresh and NCTB 2026–27 source retrieval (14 November 2026)
+
+The detailed tranche is recorded in [JMT ACS Benchmark and NCTB Source Tranche 21](JMT_ACS_BENCHMARK_AND_NCTB_SOURCE_TRANCHE_21_2026-11-14.md).
+
+### 13.1 ACS benchmark refresh
+- Reconfirmed ACS as the ACS Group / Apar's Classroom (ASG Shop) ecosystem, spanning ACS Future School, ASG Shop, Rhombus Publications, Achieve, ACS Engineering School and ACS Mart.
+- Refreshed first-party ACS Future School, Apar's Classroom HSC 2027/2028 catalogues, Achieve, Rhombus and Google Play listing on 14 November 2026.
+- New public delta: Google Play listing advertises a Python Lab for the new HSC ICT curriculum. The app listing showed 4.6 rating, 100K+ downloads and update date 12 November 2026; review-count fields were inconsistent, and user comments are anecdotal.
+- ACS Future School Curiosity AI subdomain returned Cloudflare 525, so its workflow could not be inspected.
+- Preserved the product owner's 11 November first-hand benchmark requirements: annual planner/sleep-wake/availability/goals; community notes/doubts/rankings/downloads; teacher homework oversight; projectile-motion graphs; HTML/SQL/C and mathematics matrix/vector labs; scientific calculator; focus/Islamic modes; live classes and notifications.
+- Mapped those requirements against the actual JMT branch code inventory. Projectile-motion and multiple simulation models exist; the full annual planner, Python/HTML/SQL/C lab environment, matrix/vector labs, full scientific calculator, live-class workflow and some community features remain unverified or incomplete.
+
+### 13.2 NCTB 2026–27 notice retrieval
+- The official NCTB notice index lists the 2026–27 higher-secondary/equivalent prescribed syllabus notice dated 1 October 2026.
+- The official detail page still did not expose an original attachment URL in the current extraction.
+- A third-party archived one-page scan claims to preserve the NCTB notice; PDF extraction contains an ICT syllabus with six chapter headings. Treat this as secondary archived-scan evidence until matched to an original NCTB-hosted file.
+- Secondary news reports say Bangla, English and ICT syllabuses/marks distributions for Class XI (2026–27) were published around 2 October. These are discovery/corroboration, not canonical curriculum data.
+- Cohort boundary is critical: 2026–27 Class XI maps to HSC 2028, not HSC 2027. HSC 2027 belongs to the 2025–26 intake and must be sourced separately.
+
+### 13.3 Revised next actions
+1. Obtain original NCTB-hosted attachments for Bangla, English and ICT, then visually verify and map them.
+2. Complete HSC 2027 (2025–26 intake) syllabus and exam-blueprint extraction separately.
+3. Extract and review the five HSC-26 question-setter/moderator ZIP archives; link discovery is done, content inspection is not.
+4. Continue the ACS walkthrough benchmark, especially Python Lab and Curiosity AI when accessible.
+5. Convert the first-hand ACS list into an implementation gap/acceptance matrix and continue the actual historical question corpus work.
+
+**Status boundary:** No moderator ZIP contents were inspected, no complete HSC 2027/2028 curriculum was verified, no historical question corpus was completed, and no predictor or AI Teacher model was trained/deployed by this tranche.
