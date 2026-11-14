@@ -45,6 +45,8 @@ test('server action validates untrusted checkpoint values and writes only throug
   assert.ok(action.includes("rpc('save_lesson_playback_checkpoint'"));
   assert.ok(action.includes('Number.isFinite(positionSeconds)'));
   assert.ok(action.includes('positionSeconds > 86400'));
+  assert.ok(action.includes('durationSeconds < 1 || durationSeconds > 86400'));
+  assert.ok(action.includes('const safeDuration = durationSeconds === null ? null : Math.floor(durationSeconds)'));
   assert.ok(action.includes('p_lesson_id: lessonId'));
   assert.ok(action.includes('p_position_seconds: safePosition'));
 });
@@ -81,6 +83,8 @@ test('lesson player restores only after metadata, saves periodically and on paus
 test('learning page reads only the signed-in student checkpoint and does not resume completed lessons', async () => {
   const page = await readFile(new URL('../app/learn/[courseId]/page.tsx', import.meta.url), 'utf8');
   assert.ok(page.includes("from('lesson_playback_progress')"));
+  assert.ok(page.includes("lessons!inner(id,title,course_id)"));
+  assert.ok(page.includes(".in('lessons.course_id', eligibleCourseIds)"));
   assert.ok(page.includes("profile?.role === 'student'"));
   assert.ok(page.includes('initialPositionSeconds={done.has(l.id) ? 0'));
   assert.ok(page.includes('completed={done.has(l.id)}'));
