@@ -16,6 +16,11 @@ CREATE TABLE public.lesson_playback_progress (
 CREATE INDEX lesson_playback_progress_student_recent_idx
   ON public.lesson_playback_progress(student_id, last_viewed_at DESC);
 
+-- Keep privileged SECURITY DEFINER code outside PostgREST's exposed public schema.
+CREATE SCHEMA IF NOT EXISTS private;
+REVOKE ALL ON SCHEMA private FROM PUBLIC, anon, authenticated;
+GRANT USAGE ON SCHEMA private TO authenticated;
+
 ALTER TABLE public.lesson_playback_progress ENABLE ROW LEVEL SECURITY;
 
 -- Supabase grants are separate from RLS policies. Remove default client write
@@ -45,7 +50,7 @@ CREATE POLICY "students read own entitled lesson playback progress"
     )
   );
 
-CREATE OR REPLACE FUNCTION public.save_lesson_playback_checkpoint(
+CREATE OR REPLACE FUNCTION private.save_lesson_playback_checkpoint(
   p_lesson_id uuid,
   p_position_seconds integer,
   p_duration_seconds integer DEFAULT NULL
@@ -140,12 +145,30 @@ BEGIN
 END;
 $;
 
+REVOKE ALL ON FUNCTION private.save_lesson_playback_checkpoint(uuid, integer, integer)
+  FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION private.save_lesson_playback_checkpoint(uuid, integer, integer)
+  TO authenticated;
+
+-- Expose only a SECURITY INVOKER RPC wrapper; the privileged implementation stays private.
+CREATE OR REPLACE FUNCTION public.save_lesson_playback_checkpoint(
+  p_lesson_id uuid,
+  p_position_seconds integer,
+  p_duration_seconds integer DEFAULT NULL
+)
+RETURNS boolean
+LANGUAGE sql
+SECURITY INVOKER
+SET search_path = pg_catalog, public, private, pg_temp
+AS $
+  SELECT private.save_lesson_playback_checkpoint($1, $2, $3);
+$;
 REVOKE ALL ON FUNCTION public.save_lesson_playback_checkpoint(uuid, integer, integer)
   FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.save_lesson_playback_checkpoint(uuid, integer, integer)
   TO authenticated;
 
-CREATE OR REPLACE FUNCTION public.clear_completed_lesson_playback_checkpoint()
+CREATE OR REPLACE FUNCTION private.clear_completed_lesson_playback_checkpoint()
 RETURNS trigger
 LANGUAGE plpgsql
 SECURITY DEFINER
@@ -160,7 +183,7 @@ BEGIN
 END;
 $$;
 
-REVOKE ALL ON FUNCTION public.clear_completed_lesson_playback_checkpoint()
+REVOKE ALL ON FUNCTION private.clear_completed_lesson_playback_checkpoint()
   FROM PUBLIC, anon, authenticated;
 
 DROP TRIGGER IF EXISTS clear_completed_lesson_playback_checkpoint ON public.lesson_progress;
@@ -168,4 +191,4 @@ CREATE TRIGGER clear_completed_lesson_playback_checkpoint
   AFTER INSERT OR UPDATE OF completed ON public.lesson_progress
   FOR EACH ROW
   WHEN (NEW.completed IS TRUE)
-  EXECUTE FUNCTION public.clear_completed_lesson_playback_checkpoint();
+  EXECUTE FUNCTION private.clear_completed_lesson_playback_checkpoint();
