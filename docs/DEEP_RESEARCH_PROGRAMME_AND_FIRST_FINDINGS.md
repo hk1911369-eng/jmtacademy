@@ -689,3 +689,9 @@ The earlier tranche-21 note described the 2026–27 ICT scan as third-party arch
 - Added `data/curriculum/hsc-2028-2026-27-nctb-core-subjects.json` with source-linked, versioned records for ICT (6 chapters), Bangla First Paper (12 prose works, 12 poems, one novel, one drama) and English First Paper (8 units, 29 lessons).
 - The JSON was fetched back from the branch and parsed successfully; record counts and source IDs were verified.
 - All records are marked `source_extracted_needs_teacher_review`. This is not yet teacher-approved curriculum content and must not drive released course completion claims or predictor weights until reviewed.
+
+
+### 14.6 Retrieval QA correction
+A live scrape of the official NCTB HSC 2027 Bangla First Paper notice returned HTTP 200 and confirmed the NCTB issuer, but did not expose the “File 1” attachment href. The search index confirms that the notice lists File 1; its actual PDF URL remains unresolved.
+
+The Dhaka Board HSC-26 moderator index was reopened and its five subject links were followed. The browser reader reports unsupported `application/zip` (or a generic empty “OK”) for these ZIP URLs. A separate Firecrawl attempt returned a verification/challenge response. No archive payload or contents were inspected. This is a retrieval-tool limitation, not evidence that the source archive itself is unavailable or invalid.
