@@ -51,3 +51,13 @@ These changes are on the draft PR branch, not `main`. They have not changed the 
 - No secret values, credentials or student data were accessed or disclosed.
 
 **Deletion decision: NOT READY.** The repository-side fix is prepared for review; live configuration and end-to-end validation remain outstanding.
+
+
+## Live-site cold-start recheck — 14 November 2026, 15:57 UTC
+
+- A simultaneous Firecrawl check of the new homepage, course catalogue and `/api/health` initially received Render's HTTP 503 “Application loading” interstitial.
+- Render confirmed the service remained `not_suspended`; the latest deploy remained `live`/succeeded. Runtime logs then showed a new Next.js instance starting and becoming ready in approximately 6.5 seconds.
+- After startup, `/api/health` returned HTTP 200 with `status=ok`, `app=jmt-academy` and `database=reachable`; the homepage and `/courses` each returned HTTP 200.
+- This behaviour is consistent with Render's documented Free web-service idle spin-down: after 15 minutes without inbound traffic, the service spins down and shows a loading page while starting on the next request. Render documents a typical spin-up time of about one minute. See https://render.com/docs/free and https://render.com/docs/troubleshooting-deploys.
+- The replacement service remains on the Free plan. The transient 503 was therefore a cold-start delay, not evidence of a failed deploy or database outage. It is still a production-readiness concern for first-time visitors and search crawlers.
+- The live Render health-check path remains blank. The Blueprint on this PR branch now declares `/api/health`, but no Render setting or Blueprint sync has been applied.
