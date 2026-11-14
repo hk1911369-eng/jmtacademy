@@ -52,11 +52,20 @@ export function LessonVideoPlayer({
       saving.current = true;
       setSaveStatus('saving');
       try {
-        const result = await saveLessonPlaybackCheckpoint(
+        let result = await saveLessonPlaybackCheckpoint(
           checkpoint.lessonId,
           checkpoint.positionSeconds,
           checkpoint.durationSeconds,
         );
+        if (result.deferred) {
+          // The database deliberately throttles writes; retry once after its 2-second window.
+          await new Promise(resolve => window.setTimeout(resolve, 2100));
+          result = await saveLessonPlaybackCheckpoint(
+            checkpoint.lessonId,
+            checkpoint.positionSeconds,
+            checkpoint.durationSeconds,
+          );
+        }
         if (result.ok) {
           lastSavedPosition.current = checkpoint.positionSeconds;
           setSaveStatus('saved');
