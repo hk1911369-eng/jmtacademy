@@ -67,3 +67,20 @@ The title identifies Cantonment English School & College and its 2025–2026 XI�
 ## Release boundary
 
 This tranche is a source-gap audit. It does not complete the HSC 2027 Curriculum Atlas, approve any chapter list, complete the historical question corpus, train or validate the Exam Question Predictor, or deploy AI Teacher content.
+
+
+## 25. Secondary corroboration of the HSC 2027 Bangla carry-forward (14 November 2026)
+
+Two independent Bangladeshi news reports dated 27 November 2025 describe the NCTB memo issued on 26 November 2025:
+- Dhaka Post: https://www.dhakapost.com/national/412688
+- Prothom Alo: https://www.prothomalo.com/education/examination/6gnl078cvr
+
+Both report that for the 2025–26 XI–XII academic session, the existing 2024–25 Bangla First Paper syllabus remains in force, and that it continues for subsequent academic sessions until further instruction. Dhaka Post additionally reports that the memo was sent to the relevant education directorates and boards.
+
+**Evidence status:** this is now independently corroborated secondary reporting of the carry-forward decision, not merely an uncorroborated search lead. However, the signed NCTB memo and its attachment are still not retrieved from an official source. Therefore:
+- The carry-forward may be recorded as **secondary-corroborated / primary attachment pending**.
+- The 2024–25 Bangla First Paper syllabus may be used as a candidate reference for HSC 2027 only with that explicit evidence label.
+- The 26 candidate entries in the existing secondary-mirror JSON must remain teacher-review-required and non-publishable until the official syllabus attachment is obtained and compared.
+- Do not promote this secondary evidence to official-verified status or infer the 2025–26 reading list solely from these articles.
+
+A targeted Exa follow-up search did not surface the signed 26 November 2025 NCTB memo/PDF. The official NCTB notice index currently surfaced by the retrieval tools does not expose that attachment. No attachment URL has been guessed.
