@@ -14,7 +14,8 @@ test('playback checkpoint storage is isolated from lesson completion and has str
   assert.ok(migration.includes('GRANT SELECT ON TABLE public.lesson_playback_progress TO authenticated'));
   assert.doesNotMatch(migration, /GRANT\s+(?:INSERT|UPDATE|DELETE)[^;]*lesson_playback_progress/i);
   assert.ok(migration.includes('student_id = (SELECT auth.uid())'));
-  assert.ok(migration.includes("(SELECT public.current_role())::text = 'student'"));
+  assert.ok(migration.includes("p.role::text = 'student'"));
+  assert.ok(migration.includes('p.is_active IS TRUE'));
 });
 
 test('database checkpoint RPC revalidates lesson, student role, payment and Bangladesh billing entitlement', async () => {
@@ -22,7 +23,8 @@ test('database checkpoint RPC revalidates lesson, student role, payment and Bang
   assert.ok(migration.includes('public.save_lesson_playback_checkpoint'));
   assert.ok(migration.includes('SECURITY DEFINER'));
   assert.ok(migration.includes('SET search_path = pg_catalog, public, pg_temp'));
-  assert.ok(migration.includes("IS DISTINCT FROM 'student'"));
+  assert.ok(migration.includes("p.role::text = 'student'"));
+  assert.ok(migration.includes('p.is_active IS TRUE'));
   assert.ok(migration.includes('l.is_published IS TRUE'));
   assert.ok(migration.includes("e.status = 'active'"));
   assert.ok(migration.includes('e.admission_fee_paid IS TRUE'));
