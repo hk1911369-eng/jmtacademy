@@ -142,3 +142,80 @@ This is the first source-verification pass. It records what was actually found, 
 3. Build a source register and subject/topic map first; do not begin predictor-frequency calculations until a sufficiently complete, authenticated, rights-cleared set of papers exists.
 4. Do not infer exact chapter weighting or predicted topics from the existence of moderator manuals alone.
 5. Preserve the distinction between official syllabus, official question-setting guidance, past papers, and JMT teacher-created explanations.
+
+
+## 9. Recovered prior decisions and work — authoritative continuity update (2026-11-14)
+
+This section corrects the earlier abbreviated snapshot. The project already had substantial research and product decisions before this North Star document was created. Do not restart those workstreams or overwrite their findings.
+
+### 9.1 ACS benchmark — user's actual intent and first-hand feature observations
+
+The user's reference to “ACS” means the Bangladesh ACS Group / Apar's Classroom (ASG Shop) ecosystem, as established by the existing JMT research documents. The user is an ACS student and supplied first-hand benchmark observations on 11 November 2026.
+
+**Critical boundary:** ACS is a benchmark, not a clone target. The user wants JMT to be materially better (described as “hundred times or more better”), while preserving original JMT design, code, content and brand.
+
+First-hand feature requirements supplied by the user:
+- Annual academic planner: class schedule/timing, weekday and weekend availability, archive/catch-up for missed classes, sleep/wake preferences, goals and syllabus completion.
+- Community: notes, doubts/questions, peer help, discussion, rankings/top 1–2–3, compare notes and downloads.
+- Teacher homework oversight and feedback.
+- Physics projectile-motion (“Prasher Goti”) lab with graphs.
+- ICT HTML live preview, SQL run/view and C-program output.
+- Mathematics matrix and vector labs.
+- Scientific calculator comparable in functionality to Casio FX-991CW, but implemented with original JMT UI/assets.
+- Optional focus mode and user-controlled Islamic/routine mode.
+- Live classes, notifications and app-level learning workflows.
+
+These are user-provided observations, not independently verified public feature claims. Screenshots/videos were expected as a future supplement but none were found in retrieved context. Do not claim to have received them.
+
+### 9.2 Existing product decisions and roadmap
+
+- Commit `3211b780e8f5074058be7d465dc6a4a08b96ebda` expanded `docs/LEARNING_OS_PRODUCT_ROADMAP.md` with the benchmark-driven scope: Personal Academic Command Centre, JMT Learning Community, Curriculum-linked Virtual Lab Network, productivity tools, teacher/parent workspaces, unified learning intelligence and AI.
+- Strategic priority was: (1) planner and student-facing parity foundation, (2) community and knowledge sharing, (3) curriculum labs, (4) learning intelligence, (5) AI layer, (6) parent/offline/institution scale.
+- The expanded scope is a target, not proof that each feature is implemented.
+
+### 9.3 Research already completed before this update
+
+The existing PR #42 branch `audit/jmt-master-prompt-follow-through` contains a substantial body of prior research and implementation work:
+- `docs/DEEP_RESEARCH_PROGRAMME_AND_FIRST_FINDINGS.md` — ACS ecosystem mapping, feature research, curriculum and admission source discovery, predictor evaluation protocol and research limitations.
+- Twenty numbered research tranches, including HSC source integrity, official NCTB notice discovery, HSC assessment operations, university admission sources and book/publisher/author registries.
+- `docs/JMT_BOOK_AUTHOR_KNOWLEDGE_REGISTRY.md` and subject-specific publisher/edition registries spanning Physics, Chemistry, Higher Mathematics, Biology, ICT, language subjects, Statistics and Agriculture.
+- `docs/JMT_ATOMIC_ACCEPTANCE_BACKLOG_2026-11-11.md`, `docs/JMT_EXPANDED_LEARNING_PLATFORM_SCOPE.md`, `docs/JMT_OFFLINE_MEDIA_AI_ARCHITECTURE.md`, `docs/VIRTUAL_LAB_MODEL_REGISTER.md` and `docs/VIRTUAL_LAB_OPEN_SOURCE_REVIEW.md`.
+- Official-source discovery for NCTB, Dhaka/Rajshahi boards, DU, GST and agriculture admission. BUET and medical admission primary-source extraction remained incomplete.
+- Predictor protocol requires rolling-origin/chronological holdouts, target-paper leakage exclusion, transparent baselines, calibration and separate evaluation of paper-content forecasting vs student-performance forecasting.
+- AI Teacher architecture is grounded retrieval over approved resources, hints-first pedagogy, Bengali/English, citations, uncertainty, teacher escalation, privacy and cost controls.
+
+At the 14 November recovery check, PR #42 head was `f94069cd17bc959c80a10b8fa8f0e2bbce44903f`; its Quality checks workflow run `43513738260` had succeeded for that exact head. PR #42 was still open/unmerged and its work was not thereby deployed to production. Recheck the branch and CI before relying on this snapshot.
+
+### 9.4 Actual implementation foundations found in PR #42 branch
+
+- Learning OS subject catalogue/concept graph, learning events, study goals, mastery/mistake memory, adaptive spaced revision and Exam War Room revision plans.
+- Student practice question model/engine, guarded grading and privacy-conscious teacher analytics.
+- Teacher learning/practice dashboards, assignment and assessment workflows.
+- Database-driven virtual-lab catalogue, lab notebook evidence, practical assessment and teacher review.
+- Existing simulation components include projectile motion, double pendulum, ray optics, gas laws, electrochemical cell, photosynthesis, inheritance, microscope, spring oscillator, wave interference, chemistry kinetics/equilibrium and cell division.
+- Notifications actions/migrations exist.
+- Offline/media/AI architecture is documented, but full offline content sync and AI tutor remain gated.
+
+Feature gaps from the branch path inventory (must be rechecked against current code before implementation):
+- Complete annual availability/sleep-wake planner and automatic catch-up/plan repair.
+- Unified community note library with quality ranking, side-by-side comparison and download workflow.
+- Secure ICT HTML/SQL/C/Python coding environments; the ACS Google Play listing now advertises Python Lab.
+- Dedicated matrix/vector labs.
+- Full student scientific calculator (the existing lab-analysis calculator is not equivalent).
+- Focus/routine modes and verified live-class workflow.
+- End-to-end offline content download/sync.
+- AI Teacher implementation/evaluation and Predictor dataset/backtests.
+
+### 9.5 AI model selection and cost constraint
+
+No specific model or provider was selected in the recovered prior discussion. The user's preference is to choose the best genuinely free option based on quality, reliability, privacy, education suitability, Bengali/English performance and sustainability. Avoid provider lock-in; keep a model-independent service layer and distinguish free API tiers from self-hosted open weights. AI was deliberately deferred until core platform foundations, secure learning records, assessments and evaluation data are ready. Never imply a model was selected, trained or deployed unless that later happens and is verified.
+
+### 9.6 Latest continuation point — research tranche 21
+
+On 14 November 2026, work resumed on the existing PR #42 research branch and added:
+- `docs/JMT_ACS_BENCHMARK_AND_NCTB_SOURCE_TRANCHE_21_2026-11-14.md`
+- Section 13 in `docs/DEEP_RESEARCH_PROGRAMME_AND_FIRST_FINDINGS.md`
+
+New findings: current ACS first-party site/app refresh; public Google Play release note for Python Lab; current HSC 2027/2028 Apar's Classroom cycle catalogues; NCTB official index lists the 1 October 2026 2026–27 higher-secondary syllabus notice; a third-party archived scan exposes six ICT chapter headings but the original NCTB attachment remains unretrieved. The 2026–27 Class XI notice must not be applied to HSC 2027; it belongs to the next cohort (HSC 2028), subject to official cohort mapping.
+
+**Default next task:** continue from tranche 21. Retrieve original NCTB attachments for Bangla, English and ICT; separately verify HSC 2027 syllabus for the 2025–26 intake; obtain and inspect the five HSC-26 moderator ZIP archives; then continue ACS walkthrough/gap research and build the historical question corpus. Do not write another generic AI blueprint.
