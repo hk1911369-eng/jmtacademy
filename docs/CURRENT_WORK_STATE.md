@@ -46,14 +46,14 @@ At the start of every JMT work session, including a new chat:
 - PR #65: https://github.com/hk1911369-eng/jmtacademy/pull/65 — still open, draft, unmerged; branch `feat/jmt-learning-experience-os-first-pass`; head `8dae210b135bb44322fa9fe206377720823f8f28`. Five changed files cover multi-subject homepage tagline fallback and correction of unconditional offline-recording copy. Offline roll-number enforcement is not included. The latest status endpoint returned no commit-status entries; do not claim CI green without checking workflow runs.
 - PR #66: https://github.com/hk1911369-eng/jmtacademy/pull/66 — new open, draft, unmerged implementation slice; branch `feat/student-today-next-action`; latest head `638bd0307f9044b34ef263a65f807bfef705c912`; 9 commits ahead of main, 0 behind; 6 changed files.
 - PR #66 adds a deterministic next-action selector, accessible card before dashboard metrics, responsive CSS, unit/regression tests and a feature-specific benchmark record. It prioritises the most recently overdue pending revision for a course in the active-enrolment map, then the nearest assignment/exam within 7 days, then an evidence-backed recommendation; fallback is study goal or course discovery.
-- CI on the latest PR #66 head: `CI` and `LMS quality checks` are in progress; `Quality checks` is queued. Earlier CI on the previous head `b53e67af0aa6920ccff77fbd7726ccdee5655cd0` succeeded, but the other two earlier runs were cancelled after the branch advanced. **No final green status is established on the latest head.**
+- CI on latest PR #66 head: `CI` passed (TypeScript, regression tests, ESLint); `LMS quality checks` passed (ESLint, guardrail tests, TypeScript, production build, production dependency audit); the separate `Quality checks` workflow remains in progress. Thus two latest-head workflows are green and one is not yet complete. Previous-head runs are historical only.
 - PR #66 is not merged, not deployed and not visually verified in a browser. Do not merge or deploy automatically.
 - PR #42 remains open, draft, unmerged; last refreshed head `5574013d5ee2e6f02a7a487ca30ecd4e7ca3927a`. It contains extensive security parity, research and Learning OS foundations; it is not live on main.
 - PR #64 remains open, draft, unmerged; its North Star branch head was `66e1f09bbea5b1f0e52e53473ad0379cb1b55056` before this handoff update. It contains the durable project charter and benchmark standard.
 - Do not merge or deploy automatically.
 
 ## 4. The single next action (do this first on resume)
-**First action on resume: refresh PR #66 workflow runs and check-runs for the exact current head `638bd0307f9044b34ef263a65f807bfef705c912`.** If any check fails, inspect its logs, fix the root cause on `feat/student-today-next-action`, and re-check the new head. Do not treat the earlier-head CI success as current verification. Keep PR #66 draft and unmerged.
+**First action on resume: refresh the remaining Quality checks workflow for PR #66 exact head `638bd0307f9044b34ef263a65f807bfef705c912`.** Two latest-head workflows have already passed, including the LMS production build and dependency audit. If the remaining workflow fails, inspect logs and fix the root cause on `feat/student-today-next-action`, then re-check the new head. Keep PR #66 draft and unmerged.
 
 After latest-head checks pass, continue the same Student Today task with the next required slice: design and implement secure **Continue Where You Stopped**. First inspect all current lesson/video/player code and the authorised `lesson_progress` / `learning_events` schema and policies. The current `lesson_progress` table only stores completion, completion time and update time; the current player is a native video element in a server-rendered learning page. Define a minimal privacy-safe, server-authorised checkpoint model and client playback-save/recovery behavior; benchmark it against Edrolo and other strong learning products; set acceptance criteria for pause, refresh, seek, duplicate updates, throttling, expired sessions, revoked access, network loss, device changes and course entitlement. Do not expose media access or let students forge completion/mastery. Use a separate reviewable PR; no production migration or release without the required review and approval.
 
@@ -132,5 +132,12 @@ These are connected strategic priorities, not isolated products. The Learning Ex
 - Created PR #66 on `feat/student-today-next-action`; current head `638bd0307f9044b34ef263a65f807bfef705c912`. Files: `components/learning-os-dashboard.tsx`, `app/globals.css`, `lib/learning-next-action.mjs`, `lib/learning-next-action.d.mts`, `tests/learning-next-action.test.mjs`, `docs/JMT_STUDENT_TODAY_NEXT_ACTION_BENCHMARK_2026-11-15.md`.
 - Added an active-course filter so stale revision tasks from courses the student is no longer enrolled in do not become the primary action.
 - No Supabase calls that mutate data/schema, no payment changes, no Render/Vercel deployments, no production changes, no merges.
-- CI on the latest PR #66 head: CI and LMS quality checks in progress; Quality checks queued. Previous-head CI success is historical only. Full tests/typecheck/lint/build on latest head are not yet verified.
+- CI on the latest PR #66 head: CI passed; LMS quality checks passed including production build and dependency audit; separate Quality checks workflow was still in progress at the last poll. Tests/typecheck/lint/build have passed in the successful workflows; await the remaining workflow's final result.
 - PR #65, #42 and #64 remain draft/unmerged as described in Section 3.
+
+
+### CI status update (latest poll)
+- PR #66 latest head: `638bd0307f9044b34ef263a65f807bfef705c912`.
+- CI run: https://github.com/hk1911369-eng/jmtacademy/actions/runs/43626925289 — success.
+- LMS quality checks: https://github.com/hk1911369-eng/jmtacademy/actions/runs/43626925294 — success, including production build and dependency audit.
+- Quality checks: https://github.com/hk1911369-eng/jmtacademy/actions/runs/43626925319 — in progress at last poll.
