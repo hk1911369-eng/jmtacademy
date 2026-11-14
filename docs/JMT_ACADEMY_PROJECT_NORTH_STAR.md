@@ -248,3 +248,14 @@ The tranche-22 source register now includes a follow-up retrieval audit:
 - Official NCTB HSC 2027 Bangla First Paper notice page is HTTP 200 and identifies NCTB, but its “File 1” PDF href was not exposed by the page extraction. The PDF URL remains unresolved; never guess an object-storage path.
 - Dhaka Board HSC-26 manual links are present on the official index. Following Physics, Biology, Higher Math, ICT and Chemistry links through the browser reader returns unsupported ZIP content-type / no archive body; a separate Firecrawl attempt encountered a verification response. No ZIP content has been inspected.
 - This distinction matters: the retrieval layer cannot read the archive, but the official source links are present. Continue through a legitimate file-capable browser or a supplied archive, without bypassing verification.
+
+
+## 12. ACS public catalogue benchmark refresh (14 November 2026)
+
+The research branch now contains `data/benchmark/acs-public-product-benchmark-2026-11-14.json`, a structured public-source snapshot:
+- ACS Group's official hub describes a six-brand network and self-reports 1M+ learners (not independently audited).
+- Apar's Classroom/ASG Shop has separate HSC 2027 and HSC 2028 catalogues spanning Physics, Higher Math, Chemistry, Biology, English, Bangla and ICT/EBI.
+- The app marketplace displayed 103 courses at capture time and exposes cohort, cycle, pricing and some enrollment metadata; these are dynamic snapshot fields.
+- Public course descriptions include board + admission preparation offers and multi-cycle sequencing.
+
+Product takeaway: JMT's catalogue must be cohort-aware and linked to syllabus versions, real lesson/cycle release status, tests, revision and mastery—not merely a list of course cards. Continue treating the user's first-hand planner/community/labs/homework/calculator/focus/live-class observations as a separate benchmark; do not claim public verification of those private app workflows.
