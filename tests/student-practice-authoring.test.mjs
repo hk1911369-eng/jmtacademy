@@ -11,7 +11,10 @@ test('staff authoring validates content and relies on course-subject RLS and dat
   assert.match(action, /options\.length < 2 \|\| options\.length > 6/);
   assert.match(action, /correctOption >= options\.length/);
   assert.match(action, /created_by: user\.id/);
-  assert.match(action, /is_published: isPublished/);
+  assert.match(action, /is_published: false/);
+  assert.match(action, /source_kind: sourceKind/);
+  assert.match(action, /source_reference: sourceReference/);
+  assert.match(action, /review_status: 'pending_review'/);
   assert.match(migration, /guard_student_practice_question_scope/);
   assert.match(migration, /practice question subject must belong to its course/i);
   assert.match(migration, /practice question concept must belong to its subject/i);
@@ -24,7 +27,8 @@ test('practice authoring page only offers courses assigned to staff or courses t
   assert.match(page, /\.eq\('teacher_id', user\.id\)/);
   assert.match(page, /from\('course_subjects'\)/);
   assert.match(page, /createStudentPracticeQuestion/);
-  assert.match(page, /Publish immediately/);
+  assert.match(page, /Submit for independent review/);
+  assert.doesNotMatch(page, /name="is_published"/);
   assert.match(page, /from\('learning_concepts'\)/);
   assert.match(page, /name="concept_id"/);
 });
