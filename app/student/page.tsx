@@ -96,20 +96,21 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
   } | null = null;
   if (eligibleCourseIds.length) {
     const { data: playbackRows } = await supabase.from('lesson_playback_progress')
-      .select('lesson_id,position_seconds,duration_seconds,last_viewed_at')
+      .select('lesson_id,position_seconds,duration_seconds,last_viewed_at,lessons!inner(id,title,course_id)')
       .eq('student_id', user.id)
+      .in('lessons.course_id', eligibleCourseIds)
+      .eq('lessons.is_published', true)
       .gte('last_viewed_at', new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString())
       .order('last_viewed_at', { ascending: false })
       .limit(20);
     const playbackLessonIds = [...new Set((playbackRows ?? []).map((row:any) => row.lesson_id))];
     if (playbackLessonIds.length) {
-      const [{ data: playbackLessons }, { data: completedPlayback }] = await Promise.all([
-        supabase.from('lessons').select('id,title,course_id')
-          .in('id', playbackLessonIds).in('course_id', eligibleCourseIds).eq('is_published', true),
-        supabase.from('lesson_progress').select('lesson_id')
-          .eq('student_id', user.id).eq('completed', true).in('lesson_id', playbackLessonIds),
-      ]);
-      const lessonById = new Map((playbackLessons ?? []).map((lesson:any) => [lesson.id, lesson]));
+      const { data: completedPlayback } = await supabase.from('lesson_progress').select('lesson_id')
+        .eq('student_id', user.id).eq('completed', true).in('lesson_id', playbackLessonIds);
+      const lessonById = new Map((playbackRows ?? []).map((row:any) => [
+        row.lesson_id,
+        Array.isArray(row.lessons) ? row.lessons[0] : row.lessons,
+      ]));
       const completedIds = new Set((completedPlayback ?? []).map((row:any) => row.lesson_id));
       const latestCheckpoint = (playbackRows ?? []).find((row:any) =>
         lessonById.has(row.lesson_id) && !completedIds.has(row.lesson_id) && Number(row.position_seconds) >= 5
