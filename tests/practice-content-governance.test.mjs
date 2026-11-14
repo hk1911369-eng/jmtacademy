@@ -15,6 +15,8 @@ test('practice questions require source provenance and verified rights before pu
   assert.match(migration, /open_license_verified/);
   assert.match(migration, /public_domain_verified/);
   assert.match(migration, /A source reference is required for non-original practice content/);
+  assert.match(migration, /Approval requires a review note documenting answer and rights checks/);
+  assert.match(migration, /Rejection requires a reason for the author/);
 });
 
 test('only an independent administrator can approve and publish practice content', async () => {
@@ -64,6 +66,8 @@ test('admin review page exposes source and rights evidence and uses the guarded 
   assert.match(page, /reviewStudentPracticeQuestion/);
   assert.match(page, /name="decision" value="approve"/);
   assert.match(page, /name="decision" value="reject"/);
+  assert.match(page, /Choose only after checking the evidence/);
+  assert.match(page, /required placeholder="Explain the answer check/);
   assert.match(action, /db\.rpc\('review_student_practice_question'/);
   assert.match(nav, /href: '\/admin\/practice-review'/);
 });
