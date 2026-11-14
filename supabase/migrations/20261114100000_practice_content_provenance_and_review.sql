@@ -142,6 +142,9 @@ BEGIN
   END IF;
 
   IF p_decision = 'approve' THEN
+    IF length(btrim(COALESCE(p_review_note,''))) < 10 THEN
+      RAISE EXCEPTION 'Approval requires a review note documenting answer and rights checks' USING ERRCODE = '22023';
+    END IF;
     IF p_rights_status IS NULL OR p_rights_status NOT IN ('original','permission_verified','open_license_verified','public_domain_verified') THEN
       RAISE EXCEPTION 'Verified content rights are required for approval' USING ERRCODE = '23514';
     END IF;
@@ -161,6 +164,9 @@ BEGIN
         is_published = true
     WHERE id = p_question_id;
   ELSE
+    IF length(btrim(COALESCE(p_review_note,''))) < 5 THEN
+      RAISE EXCEPTION 'Rejection requires a reason for the author' USING ERRCODE = '22023';
+    END IF;
     UPDATE public.student_practice_questions
     SET review_status = 'rejected',
         rights_status = CASE WHEN rights_status = 'restricted' THEN 'restricted' ELSE 'pending_review' END,
