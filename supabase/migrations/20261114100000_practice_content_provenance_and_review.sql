@@ -37,6 +37,13 @@ LANGUAGE plpgsql
 SET search_path = pg_catalog, public, pg_temp
 AS $$
 BEGIN
+  IF TG_OP = 'UPDATE'
+    AND (NEW.review_status IS DISTINCT FROM OLD.review_status OR NEW.rights_status IS DISTINCT FROM OLD.rights_status)
+    AND public.current_role() IS DISTINCT FROM 'admin'::public.app_role THEN
+    RAISE EXCEPTION 'Only an administrator can change practice review status or rights verification'
+      USING ERRCODE = '42501';
+  END IF;
+
   IF TG_OP = 'UPDATE' AND (
     NEW.course_id IS DISTINCT FROM OLD.course_id
     OR NEW.subject_id IS DISTINCT FROM OLD.subject_id
@@ -59,7 +66,7 @@ BEGIN
     NEW.reviewed_at := NULL;
     NEW.review_note := '';
     NEW.rights_status := 'pending_review';
-  END IF;
+  END IF
 
   IF NEW.source_kind <> 'original' AND length(btrim(NEW.source_reference)) = 0 THEN
     RAISE EXCEPTION 'A source reference is required for non-original practice content'
