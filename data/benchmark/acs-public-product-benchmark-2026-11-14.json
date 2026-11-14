@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0.0",
+  "benchmark_id": "jmt-acs-public-product-benchmark-2026-11-14",
+  "captured_at": "2026-11-14",
+  "subject": "Public product and catalogue observations for the ACS / Apar's Classroom ecosystem",
+  "sources": [
+    {
+      "source_id": "ACS-GROUP-HUB-001",
+      "url": "https://www.acsedtech.com/",
+      "publisher": "ACS Group",
+      "source_type": "first_party",
+      "observations": [
+        "The site presents ACS as a six-brand network.",
+        "It describes coverage from Class 6 through university engineering.",
+        "Brand positioning includes school, college/admission, books/publications, offline exams and marketplace."
+      ],
+      "caveat": "The 1M+ learner figure is a first-party marketing claim, not independently audited."
+    },
+    {
+      "source_id": "ASG-SHOP-COURSES-001",
+      "url": "https://aparsclassroom.com/shop/",
+      "publisher": "Apar's Classroom / ASG Shop",
+      "source_type": "first_party",
+      "observations": [
+        "Separate HSC 2027 and HSC 2028 academic cycle catalogue sections are publicly visible.",
+        "HSC 2028 course families include Physics, Higher Math, Biology, Chemistry, English, Bangla and ICT/EBI.",
+        "HSC 2027 course families include Physics, Higher Math, Chemistry, Biology, English and combined Bangla/English/ICT programmes.",
+        "The catalogue includes academic courses and admission programmes."
+      ],
+      "caveat": "Course catalogue presence is not proof of lesson quality, completion, live delivery or student outcomes."
+    },
+    {
+      "source_id": "ASG-APP-COURSES-001",
+      "url": "https://app.aparsclassroom.com/shop/courses/",
+      "publisher": "Apar's Classroom",
+      "source_type": "first_party",
+      "observations": [
+        "The page displayed 103 courses at capture time.",
+        "Listings expose cohort, subject/category, cycle count, price and some enrolled-student counts.",
+        "Examples of visible HSC 2027 offerings include Physics, Higher Math, Chemistry, Biology, English and Bangla; ICT is separately visible on catalogue pages.",
+        "HSC 2028 listings include Physics, Higher Math, Chemistry, Biology, English, Bangla and EBI."
+      ],
+      "caveat": "Counts, prices and enrolments are dynamic snapshots, may be incomplete, and are not independently audited."
+    },
+    {
+      "source_id": "ACS-HSC27-CATALOGUE-001",
+      "url": "https://aparsclassroom.com/shop/academic/HSC_27/",
+      "publisher": "Apar's Classroom",
+      "source_type": "first_party",
+      "observations": [
+        "HSC 2027 academic cycle page has named subject-specific course offers.",
+        "Course pages advertise cycle structures and selected course descriptions.",
+        "Some programme descriptions explicitly combine board preparation and admission preparation."
+      ],
+      "caveat": "Marketing claims and course page text require independent validation."
+    },
+    {
+      "source_id": "ACS-HSC28-CATALOGUE-001",
+      "url": "https://aparsclassroom.com/shop/academic/HSC_28/",
+      "publisher": "Apar's Classroom",
+      "source_type": "first_party",
+      "observations": [
+        "HSC 2028 academic cycle page has Physics, Higher Math, Chemistry, Biology, English, Bangla and ICT/EBI course families.",
+        "The page advertises six-cycle structures for some core science subjects."
+      ],
+      "caveat": "Catalogue listing does not prove all cycle materials are released or reviewed."
+    }
+  ],
+  "user_supplied_benchmark_requirements": [
+    {
+      "area": "Academic planner",
+      "features": [
+        "Annual planner",
+        "Class schedules and weekday/weekend availability",
+        "Sleep/wake preferences",
+        "Goals and syllabus completion",
+        "Archive missed classes and automatic catch-up planning"
+      ],
+      "source": "User's first-hand ACS benchmark observations (11 November 2026)",
+      "verification": "user_observed_not_publicly_verified"
+    },
+    {
+      "area": "Community",
+      "features": [
+        "Notes and doubts",
+        "Peer help and discussion",
+        "Rankings and top 1-2-3",
+        "Compare notes and downloads"
+      ],
+      "source": "User's first-hand ACS benchmark observations (11 November 2026)",
+      "verification": "user_observed_not_publicly_verified"
+    },
+    {
+      "area": "Teacher workflow",
+      "features": [
+        "Teacher homework oversight",
+        "Feedback and progress visibility"
+      ],
+      "source": "User's first-hand ACS benchmark observations (11 November 2026)",
+      "verification": "user_observed_not_publicly_verified"
+    },
+    {
+      "area": "Virtual labs and coding",
+      "features": [
+        "Projectile motion with graphs",
+        "HTML live preview",
+        "SQL run/view",
+        "C-program output",
+        "Matrix and vector labs"
+      ],
+      "source": "User's first-hand ACS benchmark observations (11 November 2026)",
+      "verification": "user_observed_not_publicly_verified"
+    },
+    {
+      "area": "Learning utilities",
+      "features": [
+        "Scientific calculator comparable in capability to Casio FX-991CW",
+        "Focus mode",
+        "User-controlled routine/Islamic mode"
+      ],
+      "source": "User's first-hand ACS benchmark observations (11 November 2026)",
+      "verification": "user_observed_not_publicly_verified"
+    },
+    {
+      "area": "Class delivery",
+      "features": [
+        "Live classes",
+        "Notifications and app learning workflows"
+      ],
+      "source": "User's first-hand ACS benchmark observations (11 November 2026)",
+      "verification": "user_observed_not_publicly_verified"
+    }
+  ],
+  "jmt_strategy": {
+    "positioning": "Use ACS as a benchmark, not a clone target. Build original JMT design, content, code and brand, with measurable quality advantages.",
+    "benchmark_dimensions": [
+      "Cohort-aware curriculum coverage",
+      "Planner and plan repair",
+      "Course sequencing and lesson quality",
+      "Teacher feedback loops",
+      "Question bank and assessment analytics",
+      "Community knowledge quality and safety",
+      "Interactive virtual labs and coding environments",
+      "AI Teacher groundedness and pedagogy",
+      "Exam predictor backtest performance",
+      "Accessibility, offline support and low-bandwidth reliability"
+    ],
+    "guardrail": "Do not convert competitor marketing claims into JMT requirements without evidence. Evaluate the user-supplied observations separately from public catalogue evidence."
+  },
+  "limitations": [
+    "Public course catalogue does not provide reliable access to all course lessons or internal student features.",
+    "User-observed ACS app features have not been independently re-observed in this research tranche.",
+    "No competitor account was accessed, no private student data was collected, and no paid course was purchased.",
+    "This is a public benchmark snapshot, not a complete product teardown."
+  ]
+}
