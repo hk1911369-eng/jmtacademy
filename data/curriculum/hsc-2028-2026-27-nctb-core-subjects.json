@@ -1,0 +1,310 @@
+{
+  "schema_version": "1.0.0",
+  "dataset_id": "jmt-curriculum-hsc-2028-2026-27-core-nctb",
+  "created_at": "2026-11-14",
+  "cohort": {
+    "label": "HSC 2028",
+    "academic_session": "2026-27",
+    "class_intake": "XI in 2026-27",
+    "note": "Cohort mapping is based on the 2026-27 Class XI intake and expected HSC 2028 examination year; confirm against official board cohort records before production use."
+  },
+  "issuer": "National Curriculum and Textbook Board (NCTB), Bangladesh",
+  "records": [
+    {
+      "source_id": "NCTB-2026-27-ICT-001",
+      "subject": {
+        "name_en": "Information and Communication Technology",
+        "name_bn": "তথ্য ও যোগাযোগ প্রযুক্তি",
+        "subject_code": null,
+        "paper": null
+      },
+      "document": {
+        "title_bn": "২০২৬-২০২৭ শিক্ষাবর্ষে উচ্চ মাধ্যমিক ও সমমান শ্রেণির জন্য নির্ধারিত পাঠ্যসূচি",
+        "publication_date": null,
+        "official_url": "https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-nctb/2026/9/78491622-b852-466c-af8b-783718732428.pdf",
+        "file_type": "PDF",
+        "extraction": "PDF text extraction; issuer/title/signature area present"
+      },
+      "status": "source_extracted_needs_teacher_review",
+      "units": [
+        {
+          "number": 1,
+          "title_bn": "তথ্য ও যোগাযোগ প্রযুক্তি: বিশ্ব ও বাংলাদেশ প্রেক্ষিত",
+          "title_en": "Information and Communication Technology: World and Bangladesh Perspective"
+        },
+        {
+          "number": 2,
+          "title_bn": "কমিউনিকেশন সিস্টেমস ও নেটওয়ার্কিং",
+          "title_en": "Communication Systems and Networking"
+        },
+        {
+          "number": 3,
+          "title_bn": "সংখ্যা পদ্ধতি ও ডিজিটাল ডিভাইস",
+          "title_en": "Number Systems and Digital Devices"
+        },
+        {
+          "number": 4,
+          "title_bn": "ওয়েব ডিজাইন পরিচিতি এবং HTML",
+          "title_en": "Introduction to Web Design and HTML"
+        },
+        {
+          "number": 5,
+          "title_bn": "প্রোগ্রামিং ভাষা",
+          "title_en": "Programming Language"
+        },
+        {
+          "number": 6,
+          "title_bn": "ডেটাবেজ ম্যানেজমেন্ট সিস্টেম",
+          "title_en": "Database Management System"
+        }
+      ],
+      "verification_notes": [
+        "Official-hosted NCTB object-storage PDF located and parsed.",
+        "Verify the scan/signature visually and confirm whether later amendments exist.",
+        "Do not assume this document alone specifies all assessment/marks distribution."
+      ]
+    },
+    {
+      "source_id": "NCTB-2026-27-BAN1-001",
+      "subject": {
+        "name_en": "Bangla First Paper",
+        "name_bn": "বাংলা প্রথম পত্র",
+        "subject_code": null,
+        "paper": "1st"
+      },
+      "document": {
+        "title_bn": "২০২৬-২০২৭ শিক্ষাবর্ষে উচ্চ মাধ্যমিক ও সমমান শ্রেণির জন্য নির্ধারিত পাঠ্যসূচি",
+        "publication_date": null,
+        "official_url": "https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-nctb/2026/9/5be8f27e-5220-4c2f-8cf6-7bb42c7d2648.pdf",
+        "file_type": "PDF",
+        "extraction": "PDF text extraction; issuer/title/signature area present"
+      },
+      "status": "source_extracted_needs_teacher_review",
+      "sections": {
+        "prose": [
+          {
+            "title_bn": "বাংলার নব লেখকদিগের প্রতি নিবেদন",
+            "author_bn": "বঙ্কিমচন্দ্র চট্টোপাধ্যায়"
+          },
+          {
+            "title_bn": "অপরিচিতা",
+            "author_bn": "রবীন্দ্রনাথ ঠাকুর"
+          },
+          {
+            "title_bn": "সাহিত্যে খেলা",
+            "author_bn": "প্রমথ চৌধুরী"
+          },
+          {
+            "title_bn": "বিলাসী",
+            "author_bn": "শরৎচন্দ্র চট্টোপাধ্যায়"
+          },
+          {
+            "title_bn": "অর্ধাঙ্গী",
+            "author_bn": "রোকেয়া সাখাওয়াত হোসেন"
+          },
+          {
+            "title_bn": "যৌবনের গান",
+            "author_bn": "কাজী নজরুল ইসলাম"
+          },
+          {
+            "title_bn": "জীবন ও বৃক্ষ",
+            "author_bn": "মোতাহের হোসেন চৌধুরী"
+          },
+          {
+            "title_bn": "গন্তব্য কাবুল",
+            "author_bn": "সৈয়দ মুজতবা আলী"
+          },
+          {
+            "title_bn": "মাসি-পিসি",
+            "author_bn": "মানিক বন্দ্যোপাধ্যায়"
+          },
+          {
+            "title_bn": "কপিলদাস মুমুর শেষ কাজ",
+            "author_bn": "শওকত আলী"
+          },
+          {
+            "title_bn": "নেকলেস",
+            "author_bn": "গী দ্য মোপাসাঁ"
+          },
+          {
+            "title_bn": "রেইনকোট",
+            "author_bn": "আখতারুজ্জামান ইলিয়াস"
+          }
+        ],
+        "poems": [
+          {
+            "title_bn": "ঋতু বর্ণন",
+            "author_bn": "আলাওল"
+          },
+          {
+            "title_bn": "বিভীষণের প্রতি মেঘনাদ",
+            "author_bn": "মাইকেল মধুসূদন দত্ত"
+          },
+          {
+            "title_bn": "সোনার তরী",
+            "author_bn": "রবীন্দ্রনাথ ঠাকুর"
+          },
+          {
+            "title_bn": "বিদ্রোহী",
+            "author_bn": "কাজী নজরুল ইসলাম"
+          },
+          {
+            "title_bn": "সুচেতনা",
+            "author_bn": "জীবনানন্দ দাশ"
+          },
+          {
+            "title_bn": "প্রতিদান",
+            "author_bn": "জসীমউদ্দীন"
+          },
+          {
+            "title_bn": "তাহারেই পড়ে মনে",
+            "author_bn": "সুফিয়া কামাল"
+          },
+          {
+            "title_bn": "পদ্মা",
+            "author_bn": "ফররুখ আহমদ"
+          },
+          {
+            "title_bn": "আঠারো বছর বয়স",
+            "author_bn": "সুকান্ত ভট্টাচার্য"
+          },
+          {
+            "title_bn": "ফেব্রুয়ারি ১৯৬৯",
+            "author_bn": "শামসুর রহমান"
+          },
+          {
+            "title_bn": "আমি কিংবদন্তির কথা বলছি",
+            "author_bn": "আবু জাফর ওবায়দুল্লাহ"
+          },
+          {
+            "title_bn": "প্রত্যাবর্তনের লজ্জা",
+            "author_bn": "আল মাহমুদ"
+          }
+        ],
+        "supplementary_reader": {
+          "novel": {
+            "title_bn": "লালসালু",
+            "author_bn": "সৈয়দ ওয়ালীউল্লাহ"
+          },
+          "drama": {
+            "title_bn": "সিরাজ-উদ-দৌলা",
+            "author_bn": "সিকান্দার আবু জাফর"
+          }
+        }
+      },
+      "verification_notes": [
+        "Official-hosted NCTB PDF parsed.",
+        "Literary titles and author spellings should be visually compared against the scan and current textbook before publication.",
+        "Rights for full literary works remain separate; this metadata record does not grant reproduction rights."
+      ]
+    },
+    {
+      "source_id": "NCTB-2026-27-ENG1-001",
+      "subject": {
+        "name_en": "English First Paper",
+        "name_bn": "ইংরেজি প্রথম পত্র",
+        "subject_code": "107",
+        "paper": "1st"
+      },
+      "document": {
+        "title_bn": "২০২৬-২০২৭ শিক্ষাবর্ষে উচ্চ মাধ্যমিক ও সমমান শ্রেণির জন্য নির্ধারিত পাঠ্যসূচি",
+        "publication_date": null,
+        "official_url": "https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-nctb/2026/9/82c3294f-8f1d-4ab0-a85f-993766ded7bb.pdf",
+        "file_type": "PDF",
+        "extraction": "PDF text extraction; NCTB issuer/title visible"
+      },
+      "status": "source_extracted_needs_teacher_review",
+      "units": [
+        {
+          "number": 1,
+          "title": "Myths and Literature",
+          "lessons": [
+            "Myths of Bengal",
+            "Icarus",
+            "The Legend of Gazi",
+            "Khona"
+          ]
+        },
+        {
+          "number": 2,
+          "title": "Education and Life",
+          "lessons": [
+            "The Parrot’s Tale",
+            "Education and Technology",
+            "Children in School",
+            "Civic Engagement"
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Art and Craft",
+          "lessons": [
+            "What is Beauty",
+            "Folk Music",
+            "Art",
+            "Craft"
+          ]
+        },
+        {
+          "number": 4,
+          "title": "History",
+          "lessons": [
+            "July Uprising: A Transformative Movement",
+            "Transformative Speeches",
+            "Great Women"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "Human Rights",
+          "lessons": [
+            "Are We Aware of These Rights-I",
+            "Are We Aware of These Rights-II",
+            "Rights to Health and Education",
+            "Coal Miners",
+            "Frederick Douglass"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Dreams",
+          "lessons": [
+            "What is a Dream",
+            "Dreams in Literature"
+          ]
+        },
+        {
+          "number": 7,
+          "title": "Youthful Achievers",
+          "lessons": [
+            "Brojen Das: On Crossing the English Channel",
+            "Scaling a Mountain Peak",
+            "The Unbeaten Girls"
+          ]
+        },
+        {
+          "number": 8,
+          "title": "Relationships",
+          "lessons": [
+            "Family Relationship",
+            "Warmth in Relationships",
+            "A Mother in Mannville",
+            "Love"
+          ]
+        }
+      ],
+      "verification_notes": [
+        "Official-hosted NCTB PDF parsed.",
+        "Subject code 107 is stated in the PDF.",
+        "Confirm whether English Second Paper has a separate cohort-specific syllabus/marks document."
+      ]
+    }
+  ],
+  "global_notes": [
+    "All three records belong to the 2026-27 academic session / HSC 2028 intake, not the HSC 2027 cohort.",
+    "These are source-extracted curriculum records, not yet teacher-approved learning outcomes or predictor features.",
+    "Do not infer question frequency, marks weight or exam probability from syllabus presence alone.",
+    "Use the official NCTB PDFs as canonical sources; third-party mirrors are discovery aids only.",
+    "Record every future amendment as a new version rather than overwriting the source."
+  ]
+}
