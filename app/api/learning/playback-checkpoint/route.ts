@@ -37,11 +37,12 @@ export async function POST(request: Request) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return Response.json({ ok: false }, { status: 401, headers: { 'Cache-Control': 'no-store' } });
 
-  const { error } = await supabase.rpc('save_lesson_playback_checkpoint', {
+  const { data, error } = await supabase.rpc('save_lesson_playback_checkpoint', {
     p_lesson_id: payload.lessonId,
     p_position_seconds: positionSeconds,
     p_duration_seconds: durationSeconds,
   });
   if (error) return Response.json({ ok: false }, { status: 403, headers: { 'Cache-Control': 'no-store' } });
+  if (data !== true) return Response.json({ ok: false, retry: true }, { status: 429, headers: { 'Cache-Control': 'no-store', 'Retry-After': '2' } });
   return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
 }
