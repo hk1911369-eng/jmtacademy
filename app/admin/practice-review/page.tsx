@@ -69,7 +69,7 @@ export default async function PracticeReviewPage({ searchParams }: { searchParam
             <label>Reviewer note <textarea name="review_note" rows={2} maxLength={2000} required placeholder="Explain the answer check, syllabus fit and permission evidence (or rejection reason)…"/></label>
             <div className="practice-authoring-grid">
               <button type="submit" name="decision" value="approve" className="practice-submit-button">Approve and publish</button>
-              <button type="submit" name="decision" value="reject" className="quiet-button">Reject / return for revision</button>
+              <button type="submit" name="decision" value="reject" className="quiet-button">Reject and keep unpublished</button>
             </div>
           </form>
         </article>;
