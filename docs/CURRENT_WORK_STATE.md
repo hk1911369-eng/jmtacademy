@@ -22,6 +22,8 @@ At the start of every JMT work session, including a new chat:
 - Workflow: user problem → best-in-class benchmark → evidence/failure modes → original JMT design → measurable acceptance criteria → implementation → automated + human verification → honest status/evidence.
 - Do not copy protected branding, UI, code, assets, copyrighted content or private data.
 - Keep the strategic order: (1) JMT Learning Experience OS and world-class student-first UX; (2) JMT Intelligence Engine (separate AI Teacher and Exam Question Predictor); (3) Complete Learning Ecosystem.
+- **Quality is non-negotiable across the entire product.** Strategic priority/intensity determines sequencing, investment focus and dependency order; it NEVER means lower quality, weaker UX, less research, less testing or inferior execution for another feature. Every feature must be best-in-class within its own category and deliver an exceptional, coherent JMT experience. The Learning Experience OS is a shared quality foundation across every feature, not the only feature that deserves excellence.
+- The owner's Top 10 signature-feature ranking is a portfolio/intensity ranking, NOT a quality ranking or permission to neglect lower-ranked features. Preserve the exact order in Section 9. Every one of the ten must be unmatched in its own relevant dimensions, subject to evidence and measurable verification.
 - Ethical study engagement, not compulsive engagement. No dark patterns or infinite-scroll traps.
 - Distinguish idea/designed, code on main, code on draft PR, tests passing, test-environment verified and production verified. Never inflate feature counts using routes, migrations or function counts.
 - Do not restart work or ask the owner to repeat details already available in this repository.
@@ -73,7 +75,7 @@ After this inspection, update this file with the actual verified state and the n
 ## 7. New owner requests / feature intake
 Add each new owner-requested feature here with its exact intent, date, priority, relevant cohort/roles, dependencies, benchmark needed and disposition. Do not silently discard it or allow it to derail an in-progress task without recording the decision.
 
-**Current new requests:** None beyond the active dashboard task recorded in Section 2.
+**Current new requests:** Owner clarified that prioritisation/intensity must never be interpreted as permission to deliver inferior quality to lower-ranked features. This applies portfolio-wide and is recorded as a permanent rule in Section 1 and the Top 10 list in Section 9.
 
 ## 8. Update format required after every meaningful work session
 Replace the relevant sections above and record:
@@ -87,3 +89,19 @@ Replace the relevant sections above and record:
 - Date/time in Asia/Dhaka and the exact GitHub file SHA/commit after read-back verification.
 
 **Never mark a task done because a document was written or code was committed. Done means acceptance criteria passed and the stated verification evidence exists.**
+
+## 9. Owner's Top 10 signature features — ranked by strategic intensity, NOT quality
+**Critical interpretation:** This ranking determines strategic intensity, sequencing and focus only. It does not mean #1 gets excellence while #10 gets an ordinary implementation. Every single feature must be designed, benchmarked, built and verified to be best-in-class in its own category. The target is an unmatched overall JMT experience across the complete product.
+
+1. **Exam Question Predictor AI** — evidence-based exam preparation and question-pattern intelligence.
+2. **JMT AI Teacher** — personal, curriculum-grounded AI teaching experience.
+3. **Personal Academic Command Centre** — one intelligent home for each student's academic life.
+4. **Virtual Lab Network** — interactive practical learning and virtual experiments.
+5. **JMT Learning Community** — high-quality academic community for students and teachers.
+6. **Smart Examination & Assessment System** — advanced examinations, evaluation and performance insights.
+7. **Academic Productivity Toolkit** — tools for planning, studying and academic productivity.
+8. **Live Classes & Complete Learning Archive** — connected live teaching, recordings and learning continuity.
+9. **Unified Teacher, Parent & Admin Workspace** — coordinated ecosystem for academic stakeholders.
+10. **Advanced Payment & Financial Management** — secure, transparent and reliable financial operations.
+
+**Portfolio-wide acceptance rule:** No feature may be deliberately downgraded because of its rank. Each feature requires its own category-specific benchmark research, measurable quality criteria, accessibility/security/reliability review where relevant, and honest verification. Shared foundations such as the Learning Experience OS must improve all features consistently. Rank may affect what is tackled first, never the quality bar.
