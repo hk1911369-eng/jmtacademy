@@ -14,7 +14,7 @@
 - Title: “২০২৫-২৬ শিক্ষাবর্ষ থেকে একাদশ- দ্বাদশ শ্রেণির বাংলা প্রথম পত্রের পাঠ্যসূচি”
 - Notice/publication date: 26 November 2025.
 - Official page metadata confirms the notice date and identifies “File 1”.
-- The official page's attachment href was not exposed by the available page extractors; do not infer or fabricate its storage URL.
+- The official page exposes the notice title, date and File 1 presence, but the attachment href and attachment text were not exposed by the available page extractors; do not infer or fabricate its storage URL.
 
 ### B. Prior-year NCTB notice and signed circular
 
@@ -31,11 +31,11 @@
 A contemporaneous 27 November 2025 report quotes the NCTB decision as continuing the existing 2024–25 XI–XII Bangla First Paper syllabus for the 2025–26 intake, until further instruction:
 - https://www.prothomalo.com/education/examination/6gnl078cvr
 
-This is secondary corroboration only. The NCTB notice remains the controlling source.
+This is secondary corroboration only. The NCTB notice is the controlling primary record, but its attachment text has not yet been retrieved; therefore the carry-forward interpretation remains provisional pending direct attachment verification.
 
 ## 2. Safe conclusion for JMT
 
-The 2025–26 HSC 2027 intake should be mapped to the 2024–25 Bangla First Paper syllabus, because the NCTB's 26 November 2025 notice explicitly carries that syllabus forward. This is not permission to reuse the 2026–27 / HSC 2028 curriculum.
+Contemporary reporting quotes the 26 November 2025 NCTB decision as continuing the existing 2024–25 Bangla First Paper syllabus for the 2025–26 intake. Record this as a reported carry-forward, pending retrieval of the official File 1 attachment or the full signed notice text. This is not permission to reuse the 2026–27 / HSC 2028 curriculum.
 
 The source chain is strong enough to record the carry-forward rule, but not enough to publish the complete item-level reading list until the official 2024–25 syllabus attachment (or the 2025–26 notice's File 1) is retrieved and visually/textually checked.
 
@@ -49,8 +49,8 @@ The source chain is strong enough to record the carry-forward rule, but not enou
 
 ## 4. Data and release treatment
 
-- Add cohort rule: HSC 2027 / 2025-26 intake / Bangla First Paper -> 2024-25 NCTB syllabus, carried forward by NCTB notice dated 2025-11-26.
+- Add provisional cohort note: HSC 2027 / 2025-26 intake / Bangla First Paper -> contemporary report says the 2024-25 NCTB syllabus continues; primary attachment verification is pending.
 - Keep attachment-level reading-list records pending.
-- Mark source status as official_carry_forward_verified_attachment_pending.
+- Mark source status as official_notice_found_secondary_carry_forward_reported_attachment_pending.
 - Require teacher review after attachment retrieval.
 - Do not use this finding to infer other subject syllabuses, question patterns, marks distributions or the HSC 2028 cohort.
