@@ -92,7 +92,6 @@ test('invalid and distant dates do not create a false urgent action', () => {
 test('dashboard renders the primary action before summary metrics and provides a goal anchor', async () => {
   const { readFile } = await import('node:fs/promises');
   const component = await readFile(new URL('../components/learning-os-dashboard.tsx', import.meta.url), 'utf8');
-  const page = await readFile(new URL('../app/student/page.tsx', import.meta.url), 'utf8');
   assert.ok(component.includes('learning-os-next-action'));
   assert.ok(component.indexOf('learning-os-next-action') < component.indexOf('learning-os-stats'));
   assert.ok(component.includes('aria-labelledby="learning-os-next-action-title"'));
