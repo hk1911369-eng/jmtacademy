@@ -234,3 +234,9 @@ New verified primary-source files:
 These are official-hosted object-storage files identifying NCTB and supersede the earlier third-party ICT scan as the canonical source. HSC 2027 (2025–26 intake) remains a separate source gap; its NCTB Bangla First Paper notice dated 26 November 2025 has been found but the attachment is not yet extracted. Five HSC-26 Dhaka Board moderator ZIPs remain blocked by the board anti-bot page; none has been analysed.
 
 **Next task:** continue the source register, retrieve the HSC 2027 Bangla First Paper attachment and science-subject official sources, then extract and teacher-review syllabus maps. Do not start model training or reuse HSC 2028 syllabus for HSC 2027.
+
+
+### 10.1 Structured curriculum data artifact and regression test (2026-11-14)
+- The active research branch now contains `data/curriculum/hsc-2028-2026-27-nctb-core-subjects.json`, with official NCTB source links and extracted ICT, Bangla First Paper and English First Paper records.
+- Added `tests/curriculum-source-register.test.mjs` to validate JSON structure, official source provenance, subject record counts, extracted chapter/unit counts and the HSC 2027/HSC 2028 cohort boundary.
+- All extracted records remain pending teacher review; this is not a published curriculum or exam prediction dataset.
