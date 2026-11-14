@@ -603,3 +603,20 @@ For each feature or screen:
 8. Record exact status, evidence, limitations and next steps in the project log.
 
 **Standing instruction:** do not forget, dilute, reorder or reduce the Learning Experience OS to a minor feature. It is strategic priority number one and the quality standard for the entire JMT Academy. The top-ten pillars above are the consolidated product charter; preserve all details and extend them with traceable decisions rather than silently replacing them.
+
+
+## 17. Mandatory best-in-class benchmark-before-build rule (2026-11-14)
+
+The owner has explicitly directed that every feature, workflow and subfeature must be benchmarked against the strongest credible product, app, website, open-source system or research for that exact job before design and implementation. JMT must study what works, what fails, the evidence quality and the trade-offs, then create an original JMT solution that is materially better for its users. This applies to every part of the product, not only the ten headline pillars.
+
+The durable operating standard is now recorded in:
+- `docs/JMT_BEST_IN_CLASS_FEATURE_BENCHMARK_STANDARD_2026-11-14.md`
+- Branch: `docs/jmt-academy-project-north-star`
+- Initial benchmark document commit: `e5be70d64004ade63b9d3bcd8ac41ece6ad317f0`
+- Read-back verified: content, benchmark rubric, feature mapping, source evidence, current JMT baseline and feature-record template were fetched back from GitHub successfully.
+
+**Required rule:** no feature goes directly from idea to code. Benchmark the relevant best-in-class reference, document first-party and independent evidence separately, surface trade-offs/failure modes, define an original JMT advantage, set measurable acceptance criteria and test plans, then implement and verify. “100x better” is an ambition; it must be translated into pre-defined metrics and demonstrated, never asserted without comparable evidence. Never copy protected UI, branding, assets, content, private data or source code.
+
+The benchmark document also records the first comparison map for the Learning Experience OS, Predictor, AI Teacher, Planner, Virtual Labs, Community, Assessment, Academic Toolkit, Live Classes, Teacher/Parent/Admin and Bangladesh Payments/Finance, together with current main-branch, draft PR #42, production/test database and live-site evidence. Its status labels must be respected: main code, draft-only, test-only, test-verified and production-verified are not interchangeable.
+
+This is a standing product and engineering rule for every future conversation and delivery. Read the benchmark standard together with this North Star before substantial work.
