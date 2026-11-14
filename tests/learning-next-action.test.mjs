@@ -7,6 +7,7 @@ const now = new Date('2026-11-15T06:00:00.000Z');
 test('prioritises the most recently overdue revision over future deadlines', () => {
   const action = selectNextLearningAction({
     now,
+    courseNames: new Map([['course-1', 'Physics']]),
     revisionTasks: [
       { id: 'old', title: 'Old review', scheduled_for: '2026-10-01T00:00:00.000Z', course_id: 'course-1', priority: 5 },
       { id: 'recent', title: 'Recent review', scheduled_for: '2026-11-14T00:00:00.000Z', course_id: 'course-1', priority: 2 },
@@ -17,6 +18,14 @@ test('prioritises the most recently overdue revision over future deadlines', () 
   assert.equal(action.title, 'Review Recent review');
   assert.equal(action.href, '/learn/course-1');
   assert.match(action.description, /overdue/);
+});
+
+test('does not surface a revision task for a course the student is no longer enrolled in', () => {
+  const action = selectNextLearningAction({
+    now,
+    revisionTasks: [{ title: 'Old course review', scheduled_for: '2026-11-14T00:00:00.000Z', course_id: 'inactive-course', priority: 5 }],
+  });
+  assert.equal(action.kind, 'explore');
 });
 
 test('chooses the nearest upcoming assignment or exam within seven days', () => {
