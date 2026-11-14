@@ -61,3 +61,36 @@ test('dataset warns against mixing HSC 2027 and HSC 2028 or treating extracted c
   assert.ok(dataset.global_notes.some(note => /not the HSC 2027 cohort/i.test(note)));
   assert.ok(dataset.global_notes.some(note => /teacher-approved/i.test(note)));
 });
+
+
+const hsc2027BanglaCandidatePath = new URL('../data/curriculum/hsc-2027-2024-25-bangla-first-paper-candidate-secondary-mirror.json', import.meta.url);
+
+test('HSC 2027 Bangla candidate dataset is kept separate and not publishable', async () => {
+  const dataset = JSON.parse(await readFile(hsc2027BanglaCandidatePath, 'utf8'));
+  assert.equal(dataset.targetCohort.intake, '2025-26');
+  assert.equal(dataset.targetCohort.exam, 'HSC 2027');
+  assert.equal(dataset.curriculumVersion, '2024-25');
+  assert.equal(dataset.sourceStatus, 'candidate_secondary_mirror_needs_primary_attachment_verification');
+  assert.equal(dataset.teacherReviewRequired, true);
+  assert.equal(dataset.publishable, false);
+  assert.equal(dataset.items.length, 26);
+});
+
+test('HSC 2027 Bangla candidate preserves the 12 prose, 12 poetry, novel and drama counts', async () => {
+  const dataset = JSON.parse(await readFile(hsc2027BanglaCandidatePath, 'utf8'));
+  const count = type => dataset.items.filter(item => item.type === type).length;
+  assert.equal(count('prose'), 12);
+  assert.equal(count('poetry'), 12);
+  assert.equal(count('novel'), 1);
+  assert.equal(count('drama'), 1);
+  assert.equal(dataset.validation.extractedCounts.prose, 12);
+  assert.equal(dataset.validation.extractedCounts.poetry, 12);
+});
+
+test('HSC 2027 Bangla candidate records retain provenance and never claim primary attachment verification', async () => {
+  const dataset = JSON.parse(await readFile(hsc2027BanglaCandidatePath, 'utf8'));
+  assert.match(dataset.provenance.officialNctbCircularUrl, /^https:\/\/nctb\.gov\.bd\//);
+  assert.match(dataset.provenance.secondaryHostedSyllabusPdf, /^https:\/\/media\.prothomalo\.com\//);
+  assert.match(dataset.carryForward.status, /primary_attachment_pending/);
+  assert.ok(dataset.items.every(item => item.title.trim().length > 0 && item.author.trim().length > 0));
+});
