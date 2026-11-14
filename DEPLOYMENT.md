@@ -3,17 +3,17 @@
 ## Current production service
 
 - Provider: Render Web Service
-- Service: `sanjay-kumar-chemistry-lms`
-- Repository: `hk1911369-eng/sanjay-kumar-chemistry-lms`
+- Service: `jmtacademy-web`
+- Repository: `hk1911369-eng/jmtacademy`
 - Branch: `main`
 - Region: Singapore
 - Runtime: Node.js 22
 - Build: `npm ci && npm run build`
 - Start: `npm start`
 - Health endpoint: `/api/health`
-- Production URL: https://sanjay-kumar-chemistry-lms.onrender.com
+- Production URL: https://jmtacademy-web.onrender.com
 
-The checked-in `render.yaml` is the desired Blueprint configuration. It names the existing service so Render can associate it during Blueprint setup/sync. Review the diff in Render before confirming any Blueprint sync; do not create a duplicate production service.
+The replacement service is the production target. The old Render service is treated as retired for planning and must not be reintroduced by a Blueprint sync. The Blueprint's production service name and repository must match the existing `jmtacademy-web` service. Review any Render plan before approving it; never accept a plan that creates a second production service or changes its database target.
 
 ## Environment variable names
 
@@ -31,11 +31,11 @@ Optional server-side rate limiting:
 Optional trusted proxy configuration:
 - `TRUST_CLOUDFLARE_IP_HEADER` (default unset/false). Keep unset on direct Render ingress. Set to `true` only when Cloudflare is the enforced edge, direct-origin bypass is blocked, and Cloudflare overwrites `CF-Connecting-IP`.
 
-Use the production Supabase project for the production service. A separate staging service must use the test Supabase project and its own environment variables; never point staging at production.
+For the production service, `APP_URL` and `NEXT_PUBLIC_SITE_URL` must both equal `https://jmtacademy-web.onrender.com`. Keep the production Supabase project configured on this service. Never point production at the JMT Test project.
 
 ## CI and deployment
 
-The GitHub Actions workflow runs dependency installation, ESLint, guardrail tests, TypeScript, production build and dependency audit. Configure Render's auto-deploy trigger to deploy only after checks pass when syncing the Blueprint. Confirm the CI status is green before promoting a commit.
+The GitHub Actions workflow runs dependency installation, ESLint, guardrail tests, TypeScript, production build and dependency audit. Configure Render's auto-deploy trigger to deploy only after checks pass. Confirm the CI status is green before a production release. A push to the main branch can trigger the connected production service; draft-branch documentation changes do not change the live production service.
 
 ## Database migrations
 
@@ -49,7 +49,7 @@ Never run `supabase db reset` against production. Never apply a demo purge as a 
 
 ## Rollback
 
-1. Open the Render service dashboard.
+1. Open the `jmtacademy-web` Render service dashboard.
 2. Open Events / Deploys and select the last known-good deployment.
 3. Use Render's rollback action to restore that deployment.
 4. Verify `/api/health`, public pages and sign-in.
