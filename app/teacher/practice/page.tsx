@@ -3,7 +3,7 @@ import { PortalLayout } from '@/components/portal-layout';
 import { createStudentPracticeQuestion } from '@/app/actions/student-practice-authoring';
 import { createClient } from '@/lib/supabase/server';
 
-type SearchParams = { created?: string; error?: string };
+type SearchParams = { submitted?: string; error?: string };
 
 export default async function StaffPracticePage({
   searchParams,
@@ -59,10 +59,10 @@ export default async function StaffPracticePage({
       <header className="practice-page-heading">
         <span className="auth-kicker">JMT ACADEMY · CONTENT AUTHORING</span>
         <h1>Practice question studio</h1>
-        <p className="muted">Create subject-linked questions for enrolled students. Answer keys remain private and are revealed only after a student submits an answer.</p>
+        <p className="muted">Create original or properly licensed subject-linked questions. Every submission is independently reviewed before students can see it.</p>
       </header>
 
-      {params.created && <p className="form-success">Practice question created successfully.</p>}
+      {params.submitted && <p className="form-success">Question submitted for independent review. It is not visible to students yet.</p>}
       {params.error === 'invalid' && <p className="form-error">Check the question, 2–6 options, correct answer, marks and course mapping.</p>}
       {params.error === 'save' && <p className="form-error">The question could not be saved. Check your course assignment and subject mapping.</p>}
 
@@ -72,7 +72,7 @@ export default async function StaffPracticePage({
       </section> : <form action={createStudentPracticeQuestion} className="portal-card practice-authoring-form">
         <div className="practice-authoring-intro">
           <h2>New practice question</h2>
-          <p className="muted">Questions start as drafts unless you explicitly publish them.</p>
+          <p className="muted">Questions remain unpublished until approved by an administrator who did not author them.</p>
         </div>
         <label>Course and subject
           <select name="course_subject" required defaultValue={choices[0].value}>
@@ -118,11 +118,24 @@ export default async function StaffPracticePage({
         <label>Explanation
           <textarea name="explanation" rows={3} maxLength={4000} placeholder="Explain why the correct option is right…"/>
         </label>
-        <label className="practice-publish-toggle">
-          <input type="checkbox" name="is_published"/>
-          <span><b>Publish immediately</b><small>Students with active paid access can see this question as soon as it is saved.</small></span>
-        </label>
-        <button type="submit" className="practice-submit-button">Save practice question</button>
+        <fieldset className="portal-card">
+          <legend>Source and reuse information</legend>
+          <label>Content origin
+            <select name="source_kind" defaultValue="original">
+              <option value="original">Original teacher-authored question</option>
+              <option value="official_document">Official syllabus / examination document</option>
+              <option value="licensed_resource">Licensed publisher or resource</option>
+              <option value="open_resource">Open-licensed resource</option>
+              <option value="teacher_material">Teacher-provided material</option>
+            </select>
+          </label>
+          <label>Source citation or internal reference <span className="muted">Required for anything not wholly original.</span>
+            <input name="source_reference" maxLength={1000} placeholder="Document title, URL, page, licence or permission record"/>
+          </label>
+          <label>Source year <input name="source_year" type="number" min="1900" max="2100" placeholder="e.g. 2025"/></label>
+          <p className="muted">Public availability does not automatically mean permission to reproduce. Do not paste copyrighted publisher questions unless reuse rights have been verified.</p>
+        </fieldset>
+        <button type="submit" className="practice-submit-button">Submit for independent review</button>
       </form>}
     </section>
   </PortalLayout>;
