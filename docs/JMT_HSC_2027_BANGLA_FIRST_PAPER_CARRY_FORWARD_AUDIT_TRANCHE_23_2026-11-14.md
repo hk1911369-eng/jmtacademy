@@ -54,3 +54,22 @@ The source chain is strong enough to record the carry-forward rule, but not enou
 - Mark source status as official_notice_found_secondary_carry_forward_reported_attachment_pending.
 - Require teacher review after attachment retrieval.
 - Do not use this finding to infer other subject syllabuses, question patterns, marks distributions or the HSC 2028 cohort.
+
+
+## 5. Candidate reading list extracted from a secondary-hosted PDF
+
+A Prothom Alo-hosted PDF presents itself as the NCTB 2024–25 higher-secondary Bangla First Paper syllabus. It contains the full candidate list below:
+- Secondary-hosted PDF: https://media.prothomalo.com/prothomalo-bangla/2024-11-24/vuyx0h7e/l6q6l2ng.pdf
+- PDF page 1; extracted text lines 0–129 in the research capture.
+- The signed NCTB circular independently confirms the attachment and the 12-prose / 12-poetry counts, but the secondary PDF has not been byte-compared with the NCTB-hosted attachment.
+
+**Prose (12):** বাংলার নবাব লেখকদিগের প্রতি নিবেদন; অপরিচিতা; সাহিত্যে খেলা; বিলাসী; অর্ধাঙ্গী; যৌবনের গান; জীবন ও বৃক্ষ; গন্তব্য কাবুল; মাসি-পিসি; কপিলদাস মুর্মুর শেষ কাজ; রেইনকোট; নেকলেস.
+
+**Poetry (12):** খণ্ড-বর্ণ; বিভীষণের প্রতি মেঘনাদ; সোনার তরী; বিদ্রোহী; সুচেতনা; প্রতিদান; তাহারেই পড়ে মনে; পদ্মা; ফেব্রুয়ারি ১৯৬৯; আঠার বছর বয়স; আমি কিংবদন্তির কথা বলছি; প্রত্যাবর্তনের লজ্জা.
+
+**Supplementary reading:** Novel — লালসালু; Drama — সিরাজউদ্দৌলা.
+
+The structured candidate is stored at:
+data/curriculum/hsc-2027-2024-25-bangla-first-paper-candidate-secondary-mirror.json
+
+**Status remains:** secondary mirror / teacher review required / not publishable. Do not silently treat these title-level records as an authenticated NCTB attachment until the original File 1 or an official NCTB-hosted copy is obtained and compared.
