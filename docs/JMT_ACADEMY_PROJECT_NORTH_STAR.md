@@ -219,3 +219,18 @@ On 14 November 2026, work resumed on the existing PR #42 research branch and add
 New findings: current ACS first-party site/app refresh; public Google Play release note for Python Lab; current HSC 2027/2028 Apar's Classroom cycle catalogues; NCTB official index lists the 1 October 2026 2026–27 higher-secondary syllabus notice; a third-party archived scan exposes six ICT chapter headings but the original NCTB attachment remains unretrieved. The 2026–27 Class XI notice must not be applied to HSC 2027; it belongs to the next cohort (HSC 2028), subject to official cohort mapping.
 
 **Default next task:** continue from tranche 21. Retrieve original NCTB attachments for Bangla, English and ICT; separately verify HSC 2027 syllabus for the 2025–26 intake; obtain and inspect the five HSC-26 moderator ZIP archives; then continue ACS walkthrough/gap research and build the historical question corpus. Do not write another generic AI blueprint.
+
+
+## 10. Research continuity update — tranche 22 (2026-11-14)
+
+The original research branch has advanced beyond the first tranche-21 snapshot. The current source register is `docs/JMT_NCTB_HSC_2027_2028_CURRICULUM_SOURCE_REGISTER_TRANCHE_22_2026-11-14.md` on branch `audit/jmt-master-prompt-follow-through`.
+
+New verified primary-source files:
+- NCTB 2026–27 ICT prescribed syllabus: https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-nctb/2026/9/78491622-b852-466c-af8b-783718732428.pdf (six chapters extracted).
+- NCTB 2026–27 Bangla First Paper syllabus: https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-nctb/2026/9/5be8f27e-5220-4c2f-8cf6-7bb42c7d2648.pdf (prose, poems, novel and drama list extracted).
+- NCTB 2026–27 English First Paper, code 107: https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-nctb/2026/9/82c3294f-8f1d-4ab0-a85f-993766ded7bb.pdf (eight units and lessons extracted).
+- NCTB general announcement dated 28 September 2026 confirms revised 2026–27 XI–XII textbooks for Literature, Bengali co-reader, ICT and English for Today, and that board assessment will consider their content: https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-nctb/2026/9/2bc5630e-eee1-4cd6-a945-cb39bda5b7ed.pdf.
+
+These are official-hosted object-storage files identifying NCTB and supersede the earlier third-party ICT scan as the canonical source. HSC 2027 (2025–26 intake) remains a separate source gap; its NCTB Bangla First Paper notice dated 26 November 2025 has been found but the attachment is not yet extracted. Five HSC-26 Dhaka Board moderator ZIPs remain blocked by the board anti-bot page; none has been analysed.
+
+**Next task:** continue the source register, retrieve the HSC 2027 Bangla First Paper attachment and science-subject official sources, then extract and teacher-review syllabus maps. Do not start model training or reuse HSC 2028 syllabus for HSC 2027.
