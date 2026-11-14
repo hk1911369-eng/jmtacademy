@@ -683,3 +683,9 @@ Detailed source register: [JMT NCTB HSC 2027/2028 Curriculum Source Register —
 The earlier tranche-21 note described the 2026–27 ICT scan as third-party archived evidence because that was the only version then accessible. This tranche supersedes that limitation: an official-hosted NCTB ICT PDF has now been found and parsed. Keep the third-party archive only as a discovery mirror; the official NCTB PDF is canonical.
 
 **Next:** retrieve the 2025–26 Bangla First Paper attachment for HSC 2027; find official subject-specific files for HSC 2027 Physics/Chemistry/Higher Mathematics/Biology/ICT and 2026–27 English/Bangla 2nd Paper; obtain the moderator ZIPs via a legitimate alternate official endpoint or user-supplied download; then teacher-review the curriculum map.
+
+
+### 14.5 Structured curriculum data artifact
+- Added `data/curriculum/hsc-2028-2026-27-nctb-core-subjects.json` with source-linked, versioned records for ICT (6 chapters), Bangla First Paper (12 prose works, 12 poems, one novel, one drama) and English First Paper (8 units, 29 lessons).
+- The JSON was fetched back from the branch and parsed successfully; record counts and source IDs were verified.
+- All records are marked `source_extracted_needs_teacher_review`. This is not yet teacher-approved curriculum content and must not drive released course completion claims or predictor weights until reviewed.
