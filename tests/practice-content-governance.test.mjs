@@ -66,6 +66,9 @@ test('admin review page exposes source and rights evidence and uses the guarded 
   assert.match(page, /reviewStudentPracticeQuestion/);
   assert.match(page, /name="decision" value="approve"/);
   assert.match(page, /name="decision" value="reject"/);
+  assert.match(page, /Reject and keep unpublished/);
+  assert.match(page, /Reviewer feedback/);
+  assert.match(page, /submit the revised question as a new version/);
   assert.match(page, /Choose only after checking the evidence/);
   assert.match(page, /required placeholder="Explain the answer check/);
   assert.match(action, /db\.rpc\('review_student_practice_question'/);
