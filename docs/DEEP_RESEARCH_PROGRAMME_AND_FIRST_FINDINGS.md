@@ -657,3 +657,29 @@ The detailed tranche is recorded in [JMT ACS Benchmark and NCTB Source Tranche 2
 5. Convert the first-hand ACS list into an implementation gap/acceptance matrix and continue the actual historical question corpus work.
 
 **Status boundary:** No moderator ZIP contents were inspected, no complete HSC 2027/2028 curriculum was verified, no historical question corpus was completed, and no predictor or AI Teacher model was trained/deployed by this tranche.
+
+
+## 14. Research tranche 22 — official NCTB subject PDFs recovered (14 November 2026)
+
+Detailed source register: [JMT NCTB HSC 2027/2028 Curriculum Source Register — Tranche 22](JMT_NCTB_HSC_2027_2028_CURRICULUM_SOURCE_REGISTER_TRANCHE_22_2026-11-14.md).
+
+### 14.1 Official NCTB primary PDFs found for 2026–27 (HSC 2028 intake)
+- ICT prescribed syllabus PDF: https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-nctb/2026/9/78491622-b852-466c-af8b-783718732428.pdf — six chapter titles extracted, including HTML, programming language and database management.
+- Bangla First Paper prescribed syllabus PDF: https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-nctb/2026/9/5be8f27e-5220-4c2f-8cf6-7bb42c7d2648.pdf — 12 prose works, 12 poems, one novel and one drama extracted.
+- English First Paper prescribed syllabus PDF (subject code 107): https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-nctb/2026/9/82c3294f-8f1d-4ab0-a85f-993766ded7bb.pdf — eight units and lesson titles extracted.
+- NCTB announcement, memo 37.06.0000.101.18.084.25, 28 September 2026: https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-nctb/2026/9/2bc5630e-eee1-4cd6-a945-cb39bda5b7ed.pdf — confirms revised 2026–27 Class XI–XII textbooks and says board assessment will consider those books' content.
+- This is official-hosted object storage under the NCTB office path, and the PDFs themselves identify NCTB. They are substantially stronger than the earlier third-party archived scan. Visual review of signatures/stamps and independent checksum capture remain release QA.
+
+### 14.2 HSC 2027 cohort (2025–26 intake)
+- Official NCTB notice identified: 2025–26 academic session Class XI–XII Bangla First Paper syllabus, dated 26 November 2025: https://nctb.gov.bd/pages/notices/695b9e5235ce18e1c05af63d. The notice's “File 1” attachment was indexed but its PDF URL/content was not exposed in the current scrape.
+- Official NCTB 2025–26 XI–XII textbook index located: https://nctb.gov.bd/pages/static-pages/6922e145933eb65569e2b37b.
+- Full HSC 2027 cohort syllabus/exam blueprint remains incomplete for Physics, Chemistry, Higher Mathematics, Biology, ICT and other papers. Do not borrow 2026–27/HSC 2028 subject scope for HSC 2027.
+
+### 14.3 Moderator manual retrieval
+- Five official HSC-26 ZIP URLs (Physics, Biology, Higher Mathematics, ICT, Chemistry) are listed in the source register.
+- Browser/download retrieval returned Dhaka Board anti-bot verification pages for all five. No ZIP payloads, archive hashes or page contents were obtained. Do not claim manual analysis.
+
+### 14.4 Research status correction
+The earlier tranche-21 note described the 2026–27 ICT scan as third-party archived evidence because that was the only version then accessible. This tranche supersedes that limitation: an official-hosted NCTB ICT PDF has now been found and parsed. Keep the third-party archive only as a discovery mirror; the official NCTB PDF is canonical.
+
+**Next:** retrieve the 2025–26 Bangla First Paper attachment for HSC 2027; find official subject-specific files for HSC 2027 Physics/Chemistry/Higher Mathematics/Biology/ICT and 2026–27 English/Bangla 2nd Paper; obtain the moderator ZIPs via a legitimate alternate official endpoint or user-supplied download; then teacher-review the curriculum map.
