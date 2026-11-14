@@ -44,7 +44,7 @@ test('verified lesson completion clears its playback checkpoint without changing
   assert.ok(migration.includes('DELETE FROM public.lesson_playback_progress'));
   assert.ok(migration.includes('AFTER INSERT OR UPDATE OF completed ON public.lesson_progress'));
   assert.ok(migration.includes('WHEN (NEW.completed IS TRUE)'));
-  assert.ok(migration.includes('REVOKE ALL ON FUNCTION public.clear_completed_lesson_playback_checkpoint()'));
+  assert.ok(migration.includes('REVOKE ALL ON FUNCTION private.clear_completed_lesson_playback_checkpoint()'));
 });
 
 test('server action validates untrusted checkpoint values and writes only through the guarded RPC', async () => {
