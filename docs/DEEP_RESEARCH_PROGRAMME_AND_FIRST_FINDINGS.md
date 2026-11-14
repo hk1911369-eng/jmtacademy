@@ -695,3 +695,24 @@ The earlier tranche-21 note described the 2026–27 ICT scan as third-party arch
 A live scrape of the official NCTB HSC 2027 Bangla First Paper notice returned HTTP 200 and confirmed the NCTB issuer, but did not expose the “File 1” attachment href. The search index confirms that the notice lists File 1; its actual PDF URL remains unresolved.
 
 The Dhaka Board HSC-26 moderator index was reopened and its five subject links were followed. The browser reader reports unsupported `application/zip` (or a generic empty “OK”) for these ZIP URLs. A separate Firecrawl attempt returned a verification/challenge response. No archive payload or contents were inspected. This is a retrieval-tool limitation, not evidence that the source archive itself is unavailable or invalid.
+
+
+## 15. ACS public catalogue benchmark — refreshed (14 November 2026)
+
+Structured snapshot: `data/benchmark/acs-public-product-benchmark-2026-11-14.json`.
+
+First-party sources refreshed:
+- ACS Group hub: https://www.acsedtech.com/ — presents a six-brand network spanning school, college/admission, books/publications, offline exams and marketplace; it self-reports 1M+ learners (marketing claim, not independently audited).
+- ASG Shop: https://aparsclassroom.com/shop/ — distinct HSC 2027 and HSC 2028 catalogues with subject course families across Physics, Higher Math, Chemistry, Biology, English, Bangla and ICT/EBI.
+- Apar's Classroom course marketplace: https://app.aparsclassroom.com/shop/courses/ — displayed 103 courses at capture time, with cohort/category, cycle, price and some enrollment metadata.
+- HSC 2027 catalogue: https://aparsclassroom.com/shop/academic/HSC_27/ — public cycle offers and some descriptions combine board preparation with admission preparation.
+- HSC 2028 catalogue: https://aparsclassroom.com/shop/academic/HSC_28/ — public cycle offers include six-cycle structures for some science subjects.
+
+### Product implications for JMT
+1. Cohort separation and subject coverage must be first-class, not a generic course filter.
+2. A course catalogue should connect to real cycle/lesson release status, teacher, subject, board syllabus version, tests, revision and outcomes—not just product cards.
+3. JMT should benchmark the whole learning loop: planner → lesson → practice → teacher feedback → mastery/revision → exam readiness.
+4. The user's ACS observations about planner, community, homework, labs, coding, calculator, focus/routine mode, live classes and notifications remain a separate first-hand benchmark list. They are not presented as independently verified public features in this tranche.
+5. JMT should not copy ACS branding, course copy, assets or proprietary content. Benchmark functional quality and build original implementations.
+
+**Limitations:** This was a public catalogue refresh, not a logged-in teardown. No paid course was purchased, no private data was accessed, and no claims about course quality or student outcomes were validated. The 1M+ claim, displayed course counts, prices and enrollment counts are dynamic/self-reported.
