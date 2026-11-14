@@ -16,6 +16,9 @@ ALTER TABLE public.student_practice_questions
   ADD COLUMN IF NOT EXISTS review_note text NOT NULL DEFAULT ''
     CHECK (length(review_note) <= 2000);
 
+GRANT INSERT (source_kind, source_reference, source_year)
+  ON public.student_practice_questions TO authenticated;
+
 UPDATE public.student_practice_questions
 SET review_status = CASE WHEN is_published IS TRUE THEN 'pending_review' ELSE 'draft' END,
     rights_status = 'pending_review',
@@ -130,7 +133,7 @@ BEGIN
   END IF;
 
   IF p_decision = 'approve' THEN
-    IF p_rights_status NOT IN ('original','permission_verified','open_license_verified','public_domain_verified') THEN
+    IF p_rights_status IS NULL OR p_rights_status NOT IN ('original','permission_verified','open_license_verified','public_domain_verified') THEN
       RAISE EXCEPTION 'Verified content rights are required for approval' USING ERRCODE = '23514';
     END IF;
     IF v_question.source_kind = 'original' AND p_rights_status <> 'original' THEN
