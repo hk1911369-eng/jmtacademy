@@ -18,6 +18,8 @@ ALTER TABLE public.student_practice_questions
 
 GRANT INSERT (source_kind, source_reference, source_year)
   ON public.student_practice_questions TO authenticated;
+GRANT UPDATE (rights_status, review_status, reviewed_by, reviewed_at, review_note, is_published)
+  ON public.student_practice_questions TO authenticated;
 
 UPDATE public.student_practice_questions
 SET review_status = CASE WHEN is_published IS TRUE THEN 'pending_review' ELSE 'draft' END,
@@ -64,6 +66,13 @@ BEGIN
       USING ERRCODE = '23514';
   END IF;
 
+  IF TG_OP = 'UPDATE'
+    AND (NEW.review_status IS DISTINCT FROM OLD.review_status OR NEW.rights_status IS DISTINCT FROM OLD.rights_status)
+    AND public.current_role() IS DISTINCT FROM 'admin'::public.app_role THEN
+    RAISE EXCEPTION 'Only an administrator can change practice review status or rights verification'
+      USING ERRCODE = '42501';
+  END IF;
+
   IF NEW.review_status = 'approved' THEN
     IF public.current_role() IS DISTINCT FROM 'admin'::public.app_role
       OR NEW.reviewed_by IS DISTINCT FROM auth.uid()
@@ -102,9 +111,9 @@ CREATE OR REPLACE FUNCTION public.review_student_practice_question(
 )
 RETURNS boolean
 LANGUAGE plpgsql
-SECURITY DEFINER
+SECURITY INVOKER
 SET search_path = pg_catalog, public, pg_temp
-AS $$
+AS $
 DECLARE
   v_question public.student_practice_questions%ROWTYPE;
 BEGIN
