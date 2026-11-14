@@ -79,6 +79,7 @@ const navigation: Record<PortalRole, NavGroup[]> = {
       { key: 'lab-notebooks', label: 'Practical assessment', href: '/teacher/lab-notebooks', icon: 'flask' },
       { key: 'lab-analytics', label: 'Practical analytics', href: '/teacher/lab-analytics', icon: 'chart' },
       { key: 'practice-library', label: 'Practice questions', href: '/teacher/practice', icon: 'book-open' },
+      { key: 'practice-review', label: 'Practice content review', href: '/admin/practice-review', icon: 'shield-check' },
       { key: 'learning-insights', label: 'Learning analytics', href: '/teacher/learning', icon: 'chart' },
     ]},
   ],
