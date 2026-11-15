@@ -281,3 +281,75 @@ button,.btn,.auth-submit,.portal-nav-link{touch-action:manipulation}
 .lesson-video-progress{display:grid;gap:8px;width:100%}
 .lesson-video-progress-status{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
 @media(max-width:760px){.learning-os-action-grid.has-continue{grid-template-columns:minmax(0,1fr)}}
+
+
+/* JMT unified academic calendar — agenda-first, readable on narrow screens. */
+.learning-calendar{margin:28px 0;padding:20px;border:1px solid var(--line);border-radius:18px;background:#fff;min-width:0}
+.learning-calendar-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.learning-calendar-heading h3{margin:3px 0 5px;color:var(--navy);font-size:clamp(18px,2vw,22px)}
+.learning-calendar-heading p{margin:0;color:var(--muted);font-size:13px}
+.learning-calendar-navigation{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.learning-calendar-navigation button,.learning-calendar-view-controls button,.learning-calendar-type-filters button{min-height:40px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);padding:8px 12px;font:inherit;font-size:12px;font-weight:750;cursor:pointer}
+.learning-calendar-navigation button[aria-label]{width:40px;padding:0;font-size:20px}
+.learning-calendar-navigation button:focus-visible,.learning-calendar-view-controls button:focus-visible,.learning-calendar-type-filters button:focus-visible,.learning-calendar-month-day:focus-visible,.learning-calendar-week-day h4 button:focus-visible,.learning-calendar-course-filter select:focus-visible{outline:3px solid #1769d2;outline-offset:2px}
+.learning-calendar-navigation .learning-calendar-today{background:#f1f6fd;border-color:#c8d9ee;color:#123b70}
+.learning-calendar-view-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:18px 0 12px}
+.learning-calendar-view-controls button[aria-pressed="true"],.learning-calendar-type-filters button[aria-pressed="true"]{background:#123b70;border-color:#123b70;color:#fff}
+.learning-calendar-view-controls strong{margin-left:auto;color:var(--navy);font-size:13px}
+.learning-calendar-filters{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:12px 0 15px;border-bottom:1px solid var(--line)}
+.learning-calendar-type-filters{display:flex;flex-wrap:wrap;gap:6px}
+.learning-calendar-type-filters button{min-height:36px;padding:6px 10px;font-size:11px}
+.learning-calendar-course-filter{display:grid;gap:4px;min-width:170px;color:var(--muted);font-size:11px;font-weight:700}
+.learning-calendar-course-filter select{min-height:38px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);padding:7px 10px;font:inherit;font-size:12px}
+.learning-calendar-warning{margin:12px 0;padding:10px 12px;border:1px solid #e8d6a8;border-radius:9px;background:#fffaf0;color:#6b4d12;font-size:12px}
+.learning-calendar-warning a{color:#123b70;font-weight:800}
+.learning-calendar-agenda{display:grid;gap:16px;padding-top:16px}
+.learning-calendar-agenda-day{display:grid;gap:8px}
+.learning-calendar-agenda-day>h4,.learning-calendar-selected-day>h4{margin:0;color:var(--navy);font-size:14px}
+.learning-calendar-event{display:flex;gap:12px;min-width:0;padding:12px 13px;border:1px solid var(--line);border-radius:11px;background:#fbfdff}
+.learning-calendar-event-copy{min-width:0}
+.learning-calendar-kind{display:inline-block;margin-bottom:4px;color:#315a83;font-size:10px;font-weight:850;letter-spacing:.04em;text-transform:uppercase}
+.learning-calendar-event h4{margin:0 0 3px;font-size:14px;line-height:1.4}
+.learning-calendar-event h4 a{color:var(--navy);text-decoration:none}
+.learning-calendar-event h4 a:hover{text-decoration:underline}
+.learning-calendar-event p{margin:2px 0;color:var(--muted);font-size:12px;line-height:1.5}
+.learning-calendar-event small{display:block;color:var(--muted);font-size:11px}
+.learning-calendar-conflict{color:#8b2c24!important;font-weight:800}
+.learning-calendar-empty{margin:0;padding:14px 0;color:var(--muted);font-size:13px}
+.learning-calendar-month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:14px 0}
+.learning-calendar-weekday{text-align:center;padding:5px 0;color:var(--muted);font-size:11px;font-weight:800}
+.learning-calendar-month-day{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;min-height:66px;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);text-align:left;cursor:pointer}
+.learning-calendar-month-day>span{font-size:13px;font-weight:800}
+.learning-calendar-month-day small{color:#315a83;font-size:10px;line-height:1.3}
+.learning-calendar-month-day.is-outside{background:#f8fafc;color:#9aa6b6}
+.learning-calendar-month-day.is-selected{border:2px solid #1769d2;background:#f1f6fd;padding:7px}
+.learning-calendar-selected-day{display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--line)}
+.learning-calendar-week-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;padding-top:14px}
+.learning-calendar-week-day{display:grid;align-content:start;gap:8px;min-width:0;padding:9px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.learning-calendar-week-day h4{margin:0;font-size:12px}
+.learning-calendar-week-day h4 button{border:0;background:transparent;padding:0;color:var(--navy);font:inherit;font-weight:800;text-align:left;cursor:pointer}
+.learning-calendar-week-day .learning-calendar-event{padding:8px;display:block}
+.learning-calendar-week-day .learning-calendar-event h4{font-size:12px}
+.learning-calendar-week-day .learning-calendar-event p{font-size:10px}
+.learning-calendar-week-day .learning-calendar-kind{font-size:9px}
+.learning-calendar-undated{display:grid;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.learning-calendar-undated>h4{margin:0;color:var(--navy);font-size:13px}
+.learning-calendar-undated .learning-calendar-event{background:#fffdf7}
+@media(max-width:760px){
+  .learning-calendar{padding:16px}
+  .learning-calendar-week-grid{grid-template-columns:1fr}
+  .learning-calendar-week-day{padding:12px}
+  .learning-calendar-week-day .learning-calendar-event{display:flex}
+}
+@media(max-width:520px){
+  .learning-calendar-heading{display:grid}
+  .learning-calendar-navigation{justify-content:flex-end}
+  .learning-calendar-view-controls strong{width:100%;margin:4px 0 0}
+  .learning-calendar-filters{align-items:stretch}
+  .learning-calendar-course-filter{width:100%}
+  .learning-calendar-month-grid{gap:3px}
+  .learning-calendar-month-day{min-height:52px;padding:5px}
+  .learning-calendar-month-day.is-selected{padding:4px}
+  .learning-calendar-month-day small{font-size:9px}
+  .learning-calendar-event{padding:10px}
+}
