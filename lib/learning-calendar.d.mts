@@ -28,3 +28,5 @@ export function buildLearningCalendarEvents(input?: {
   revisionTasks?: Array<{ id: string; title: string; course_id: string; scheduled_for: string; priority?: number }>;
   courseNames?: ReadonlyMap<string, string>;
 }): { events: LearningCalendarEvent[]; undated: LearningCalendarEvent[] };
+
+export function filterLearningCalendarEvents(events: LearningCalendarEvent[], enabledKinds: LearningCalendarKind[], courseId?: string): LearningCalendarEvent[];
