@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { createClient } from '@/lib/supabase/server';
 import { submitManualPayment } from '@/app/actions/payments';
 import { LearningOSDashboard } from '@/components/learning-os-dashboard';
+import { buildLearningCalendarEvents, getCalendarDateKey } from '@/lib/learning-calendar.mjs';
 import { updateStudentDetails } from '@/app/actions/student-management';
 import { MONTHLY_FEE_BDT, currentBangladeshBillingPeriod, billingMonthEnd } from '@/lib/pricing';
 
@@ -220,6 +221,35 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
   ].sort((a:any,b:any)=>new Date(a.starts_at).getTime()-new Date(b.starts_at).getTime()).slice(0,8);
   const upcomingAssignments = upcomingAssignmentResult.data ?? [];
 
+  const [calendarClassesResult, calendarAssignmentsResult, calendarQuizzesResult, calendarWrittenExamsResult, calendarRevisionResult] = await Promise.all([
+    activeCourseIds.length
+      ? supabase.from('live_classes').select('id,title,course_id,starts_at,ends_at,status').in('course_id',activeCourseIds).neq('status','cancelled').order('starts_at',{ascending:true}).limit(200)
+      : Promise.resolve({data:[] as any[],error:null}),
+    activeCourseIds.length
+      ? supabase.from('assignments').select('id,title,course_id,due_at,max_marks').in('course_id',activeCourseIds).eq('published',true).order('due_at',{ascending:true,nullsFirst:false}).limit(200)
+      : Promise.resolve({data:[] as any[],error:null}),
+    activeCourseIds.length
+      ? supabase.from('quizzes').select('id,title,course_id,starts_at,ends_at,duration_minutes,total_marks').in('course_id',activeCourseIds).eq('published',true).order('starts_at',{ascending:true,nullsFirst:false}).limit(200)
+      : Promise.resolve({data:[] as any[],error:null}),
+    activeCourseIds.length
+      ? supabase.from('written_exams').select('id,title,course_id,starts_at,ends_at,total_marks').in('course_id',activeCourseIds).eq('published',true).order('starts_at',{ascending:true,nullsFirst:false}).limit(200)
+      : Promise.resolve({data:[] as any[],error:null}),
+    supabase.from('revision_tasks').select('id,title,course_id,scheduled_for,priority').eq('student_id',user.id).eq('status','pending').order('scheduled_for',{ascending:true}).limit(200),
+  ]);
+  const calendarData = buildLearningCalendarEvents({
+    classes: calendarClassesResult.data ?? [],
+    assignments: calendarAssignmentsResult.data ?? [],
+    quizzes: calendarQuizzesResult.data ?? [],
+    writtenExams: calendarWrittenExamsResult.data ?? [],
+    revisionTasks: calendarRevisionResult.data ?? [],
+    courseNames,
+  });
+  const calendarInitialDateKey = getCalendarDateKey(new Date()) ?? new Date().toISOString().slice(0,10);
+  const calendarSourceErrorCount = [
+    calendarClassesResult, calendarAssignmentsResult, calendarQuizzesResult,
+    calendarWrittenExamsResult, calendarRevisionResult,
+  ].filter(result => Boolean(result.error)).length;
+
   function PaymentForm({ courseId, kind, amount, deliveryMode }: { courseId: string; kind: 'initial' | 'monthly'; amount: number; deliveryMode?: string }) {
     return <form action={submitManualPayment} className="auth-form payment-form">
       <input type="hidden" name="course_id" value={courseId}/>
@@ -244,7 +274,7 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
       {params.learning_error && <p className="form-error">{params.learning_error==='payment_due'?'Your current month tuition must be approved before opening lessons. Offline students receive the recorded library as part of their paid offline course.':'Course access is available only after payment approval.'}</p>}
       {params.profile_success && <p className="form-success">Profile updated.</p>}{params.profile_error && <p className="form-error">Profile could not be updated. Check your name and Bangladesh mobile number.</p>}
       <div className="portal-stats"><article><b>{activeCount}</b><span>Active courses</span></article><article><b>{pendingCount}</b><span>Payments under review</span></article><article><b>{applications?.length ?? 0}</b><span>Course applications</span></article></div>
-      <LearningOSDashboard goals={learningGoals} revisionTasks={revisionTasks} mastery={conceptMastery} mistakes={mistakeMemory} recommendations={learningRecommendations} courseNames={courseNames} upcomingExams={upcomingExams} upcomingAssignments={upcomingAssignments} continueLesson={continueLesson} />
+      <LearningOSDashboard goals={learningGoals} revisionTasks={revisionTasks} mastery={conceptMastery} mistakes={mistakeMemory} recommendations={learningRecommendations} courseNames={courseNames} upcomingExams={upcomingExams} upcomingAssignments={upcomingAssignments} continueLesson={continueLesson} calendarEvents={calendarData.events} undatedCalendarEvents={calendarData.undated} calendarInitialDateKey={calendarInitialDateKey} calendarSourceErrorCount={calendarSourceErrorCount} />
       <h2 id="profile">Student profile</h2>
       {avatarUrl&&<p><Image src={avatarUrl} alt="Your profile" width={100} height={100} unoptimized style={{width:100,height:100,objectFit:'cover',borderRadius:16}}/></p>}
       <form action={updateStudentDetails} className="auth-form portal-card" encType="multipart/form-data">
