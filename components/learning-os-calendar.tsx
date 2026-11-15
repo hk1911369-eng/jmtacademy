@@ -204,7 +204,7 @@ export function LearningOSCalendar({ events, undated, initialDateKey, sourceErro
               return (
                 <button type="button" key={day.dateKey} className={'learning-calendar-month-day' + (!day.inMonth ? ' is-outside' : '') + (day.dateKey === selectedDateKey ? ' is-selected' : '')}
                   aria-label={dateLabel(day.dateKey) + ', ' + count + ' events'} aria-pressed={day.dateKey === selectedDateKey}
-                  onClick={() => setSelectedDateKey(day.dateKey)}>
+                  onClick={() => { setSelectedDateKey(day.dateKey); setMonthKey(day.dateKey.slice(0, 7)); }}>
                   <span>{Number(day.dateKey.slice(-2))}</span>
                   {count > 0 && <small>{count} event{count === 1 ? '' : 's'}</small>}
                 </button>
