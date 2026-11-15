@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  buildLearningCalendarEvents, getCalendarDateKey, getCalendarMonthGrid,
+  buildLearningCalendarEvents, filterLearningCalendarEvents, getCalendarDateKey, getCalendarMonthGrid,
   getCalendarWeekDays, shiftCalendarDate, shiftCalendarMonth,
 } from '../lib/learning-calendar.mjs';
 
@@ -83,4 +83,15 @@ test('calendar component exposes accessible view controls, filters and explicit 
   assert.ok(component.includes('Some calendar sources could not be loaded'));
   assert.ok(component.includes('Asia/Dhaka'));
   assert.ok(component.includes('Schedule overlap with:'));
+});
+
+test('filters calendar items by event type and course and restores all items', () => {
+  const { events, undated } = buildLearningCalendarEvents({
+    classes: [{ id: 'c1', title: 'Physics class', course_id: 'physics', starts_at: '2026-11-16T03:00:00Z', ends_at: '2026-11-16T04:00:00Z' }],
+    assignments: [{ id: 'a1', title: 'Chemistry task', course_id: 'chemistry', due_at: '2026-11-17T03:00:00Z' }, { id: 'a2', title: 'Unscheduled task', course_id: 'physics', due_at: null }],
+  });
+  assert.equal(filterLearningCalendarEvents(events, ['class'], 'all').length, 1);
+  assert.equal(filterLearningCalendarEvents(events, ['class', 'assignment'], 'physics').length, 1);
+  assert.equal(filterLearningCalendarEvents(undated, ['assignment'], 'physics').length, 1);
+  assert.equal(filterLearningCalendarEvents([...events, ...undated], ['class', 'assignment'], 'all').length, 3);
 });
