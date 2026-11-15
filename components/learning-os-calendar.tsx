@@ -97,7 +97,7 @@ export function LearningOSCalendar({ events, undated, initialDateKey, sourceErro
   const rangeDays = useMemo(() => {
     if (view === 'week') return getCalendarWeekDays(selectedDateKey);
     if (view === 'month') return getCalendarMonthGrid(monthKey).map(item => item.dateKey);
-    return Array.from({ length: 14 }, (_, index) => shiftCalendarDate(selectedDateKey, index));
+    return Array.from({ length: 14 }, (_, index) => shiftCalendarDate(selectedDateKey, index) ?? selectedDateKey);
   }, [view, selectedDateKey, monthKey]);
 
   const rangeSet = useMemo(() => new Set(rangeDays), [rangeDays]);
@@ -180,6 +180,7 @@ export function LearningOSCalendar({ events, undated, initialDateKey, sourceErro
               {item.label}
             </button>
           ))}
+          <button type="button" aria-pressed={enabledKinds.length === kindFilters.length} onClick={() => setEnabledKinds(kindFilters.map(item => item.kind))}>All types</button>
         </div>
         <label className="learning-calendar-course-filter">Course
           <select value={courseFilter} onChange={event => setCourseFilter(event.target.value)}>
