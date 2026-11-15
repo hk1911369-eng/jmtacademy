@@ -222,21 +222,23 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
   const upcomingAssignments = upcomingAssignmentResult.data ?? [];
 
   const calendarCourseIds = eligibleCourseIds;
+  const calendarWindowStart = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  const calendarWindowEnd = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
   const [calendarClassesResult, calendarAssignmentsResult, calendarQuizzesResult, calendarWrittenExamsResult, calendarRevisionResult] = await Promise.all([
     calendarCourseIds.length
-      ? supabase.from('live_classes').select('id,title,course_id,starts_at,ends_at,status').in('course_id',calendarCourseIds).neq('status','cancelled').order('starts_at',{ascending:true}).limit(200)
+      ? supabase.from('live_classes').select('id,title,course_id,starts_at,ends_at,status').in('course_id',calendarCourseIds).neq('status','cancelled').gte('starts_at',calendarWindowStart).lte('starts_at',calendarWindowEnd).order('starts_at',{ascending:true}).limit(200)
       : Promise.resolve({data:[] as any[],error:null}),
     calendarCourseIds.length
-      ? supabase.from('assignments').select('id,title,course_id,due_at,max_marks').in('course_id',calendarCourseIds).eq('published',true).order('due_at',{ascending:true,nullsFirst:false}).limit(200)
+      ? supabase.from('assignments').select('id,title,course_id,due_at,max_marks').in('course_id',calendarCourseIds).eq('published',true).or('due_at.is.null,and(due_at.gte.'+calendarWindowStart+',due_at.lte.'+calendarWindowEnd+')').order('due_at',{ascending:true,nullsFirst:false}).limit(200)
       : Promise.resolve({data:[] as any[],error:null}),
     calendarCourseIds.length
-      ? supabase.from('quizzes').select('id,title,course_id,starts_at,ends_at,duration_minutes,total_marks').in('course_id',calendarCourseIds).eq('published',true).order('starts_at',{ascending:true,nullsFirst:false}).limit(200)
+      ? supabase.from('quizzes').select('id,title,course_id,starts_at,ends_at,duration_minutes,total_marks').in('course_id',calendarCourseIds).eq('published',true).or('starts_at.is.null,and(starts_at.gte.'+calendarWindowStart+',starts_at.lte.'+calendarWindowEnd+')').order('starts_at',{ascending:true,nullsFirst:false}).limit(200)
       : Promise.resolve({data:[] as any[],error:null}),
     calendarCourseIds.length
-      ? supabase.from('written_exams').select('id,title,course_id,starts_at,ends_at,total_marks').in('course_id',calendarCourseIds).eq('published',true).order('starts_at',{ascending:true,nullsFirst:false}).limit(200)
+      ? supabase.from('written_exams').select('id,title,course_id,starts_at,ends_at,total_marks').in('course_id',calendarCourseIds).eq('published',true).or('starts_at.is.null,and(starts_at.gte.'+calendarWindowStart+',starts_at.lte.'+calendarWindowEnd+')').order('starts_at',{ascending:true,nullsFirst:false}).limit(200)
       : Promise.resolve({data:[] as any[],error:null}),
     calendarCourseIds.length
-      ? supabase.from('revision_tasks').select('id,title,course_id,scheduled_for,priority').eq('student_id',user.id).in('course_id',calendarCourseIds).eq('status','pending').order('scheduled_for',{ascending:true}).limit(200)
+      ? supabase.from('revision_tasks').select('id,title,course_id,scheduled_for,priority').eq('student_id',user.id).in('course_id',calendarCourseIds).eq('status','pending').gte('scheduled_for',calendarWindowStart).lte('scheduled_for',calendarWindowEnd).order('scheduled_for',{ascending:true}).limit(200)
       : Promise.resolve({data:[] as any[],error:null}),
   ]);
   const calendarData = buildLearningCalendarEvents({
