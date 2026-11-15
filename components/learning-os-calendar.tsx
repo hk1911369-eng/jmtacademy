@@ -118,7 +118,7 @@ export function LearningOSCalendar({ events, undated, initialDateKey, sourceErro
     ? monthLabel(monthKey)
     : view === 'week'
       ? dateLabel(rangeDays[0]) + ' – ' + dateLabel(rangeDays[6])
-      : dateLabel(selectedDateKey) + ' onward';
+      : dateLabel(selectedDateKey) + ' – ' + dateLabel(rangeDays[13]);
 
   function navigate(amount: number) {
     if (view === 'month') {
