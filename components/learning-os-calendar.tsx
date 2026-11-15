@@ -192,13 +192,13 @@ export function LearningOSCalendar({ events, undated, initialDateKey, sourceErro
 
       {sourceErrorCount > 0 && (
         <p className="learning-calendar-warning" role="status">
-          Some calendar sources could not be loaded. The events shown may be incomplete. <Link href="/student#learning-calendar">Refresh dashboard</Link>
+          Some calendar sources could not be loaded. The events shown may be incomplete. <a href="/student">Reload dashboard</a>
         </p>
       )}
 
       {view === 'month' ? (
         <>
-          <div className="learning-calendar-month-grid" aria-label="Monthly calendar">
+          <div className="learning-calendar-month-grid" role="group" aria-label="Monthly calendar">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => <span className="learning-calendar-weekday" key={day}>{day}</span>)}
             {monthDays.map(day => {
               const count = filteredEvents.filter(event => event.dateKey === day.dateKey).length;
@@ -218,7 +218,7 @@ export function LearningOSCalendar({ events, undated, initialDateKey, sourceErro
           </div>
         </>
       ) : view === 'week' ? (
-        <div className="learning-calendar-week-grid">
+        <div className="learning-calendar-week-grid" role="group" aria-label="Week view">
           {rangeDays.map(day => {
             const dayEvents = filteredEvents.filter(event => event.dateKey === day);
             return (
