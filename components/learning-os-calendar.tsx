@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import {
-  getCalendarMonthGrid, getCalendarWeekDays, shiftCalendarDate, shiftCalendarMonth,
+  filterLearningCalendarEvents, getCalendarMonthGrid, getCalendarWeekDays, shiftCalendarDate, shiftCalendarMonth,
 } from '@/lib/learning-calendar.mjs';
 import type { LearningCalendarEvent, LearningCalendarKind } from '@/lib/learning-calendar.mjs';
 
@@ -87,12 +87,8 @@ export function LearningOSCalendar({ events, undated, initialDateKey, sourceErro
     return [...unique.entries()].sort((a, b) => a[1].localeCompare(b[1]));
   }, [events, undated]);
 
-  const filteredEvents = useMemo(() => events.filter(event =>
-    enabledKinds.includes(event.kind) && (courseFilter === 'all' || event.courseId === courseFilter),
-  ), [events, enabledKinds, courseFilter]);
-  const filteredUndated = useMemo(() => undated.filter(event =>
-    enabledKinds.includes(event.kind) && (courseFilter === 'all' || event.courseId === courseFilter),
-  ), [undated, enabledKinds, courseFilter]);
+  const filteredEvents = useMemo(() => filterLearningCalendarEvents(events, enabledKinds, courseFilter), [events, enabledKinds, courseFilter]);
+  const filteredUndated = useMemo(() => filterLearningCalendarEvents(undated, enabledKinds, courseFilter), [undated, enabledKinds, courseFilter]);
 
   const rangeDays = useMemo(() => {
     if (view === 'week') return getCalendarWeekDays(selectedDateKey);
