@@ -80,7 +80,7 @@ Security requirements:
 | Regression | Existing Next Best Action, Continue Where You Stopped, revision completion, goal creation and academic-center links continue to work. |
 
 ## 6. Known limitations and explicit non-goals for this slice
-- No structured recurring weekly timetable yet; only persisted `live_classes` sessions appear as class events.
+- No structured recurring weekly timetable yet; only persisted, RLS-visible `live_classes` sessions appear as class events. Offline physical classroom sessions are not surfaced in this first slice and must be added through a separate roll-number/cohort/batch-entitlement-aware timetable.
 - No external Google/Apple calendar export or iCal import in this implementation.
 - No offline write queue, local calendar cache, push notifications or reminder scheduler.
 - No student drag-and-drop rescheduling of official classes/exams/deadlines.
