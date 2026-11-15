@@ -221,20 +221,23 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
   ].sort((a:any,b:any)=>new Date(a.starts_at).getTime()-new Date(b.starts_at).getTime()).slice(0,8);
   const upcomingAssignments = upcomingAssignmentResult.data ?? [];
 
+  const calendarCourseIds = eligibleCourseIds;
   const [calendarClassesResult, calendarAssignmentsResult, calendarQuizzesResult, calendarWrittenExamsResult, calendarRevisionResult] = await Promise.all([
-    activeCourseIds.length
-      ? supabase.from('live_classes').select('id,title,course_id,starts_at,ends_at,status').in('course_id',activeCourseIds).neq('status','cancelled').order('starts_at',{ascending:true}).limit(200)
+    calendarCourseIds.length
+      ? supabase.from('live_classes').select('id,title,course_id,starts_at,ends_at,status').in('course_id',calendarCourseIds).neq('status','cancelled').order('starts_at',{ascending:true}).limit(200)
       : Promise.resolve({data:[] as any[],error:null}),
-    activeCourseIds.length
-      ? supabase.from('assignments').select('id,title,course_id,due_at,max_marks').in('course_id',activeCourseIds).eq('published',true).order('due_at',{ascending:true,nullsFirst:false}).limit(200)
+    calendarCourseIds.length
+      ? supabase.from('assignments').select('id,title,course_id,due_at,max_marks').in('course_id',calendarCourseIds).eq('published',true).order('due_at',{ascending:true,nullsFirst:false}).limit(200)
       : Promise.resolve({data:[] as any[],error:null}),
-    activeCourseIds.length
-      ? supabase.from('quizzes').select('id,title,course_id,starts_at,ends_at,duration_minutes,total_marks').in('course_id',activeCourseIds).eq('published',true).order('starts_at',{ascending:true,nullsFirst:false}).limit(200)
+    calendarCourseIds.length
+      ? supabase.from('quizzes').select('id,title,course_id,starts_at,ends_at,duration_minutes,total_marks').in('course_id',calendarCourseIds).eq('published',true).order('starts_at',{ascending:true,nullsFirst:false}).limit(200)
       : Promise.resolve({data:[] as any[],error:null}),
-    activeCourseIds.length
-      ? supabase.from('written_exams').select('id,title,course_id,starts_at,ends_at,total_marks').in('course_id',activeCourseIds).eq('published',true).order('starts_at',{ascending:true,nullsFirst:false}).limit(200)
+    calendarCourseIds.length
+      ? supabase.from('written_exams').select('id,title,course_id,starts_at,ends_at,total_marks').in('course_id',calendarCourseIds).eq('published',true).order('starts_at',{ascending:true,nullsFirst:false}).limit(200)
       : Promise.resolve({data:[] as any[],error:null}),
-    supabase.from('revision_tasks').select('id,title,course_id,scheduled_for,priority').eq('student_id',user.id).eq('status','pending').order('scheduled_for',{ascending:true}).limit(200),
+    calendarCourseIds.length
+      ? supabase.from('revision_tasks').select('id,title,course_id,scheduled_for,priority').eq('student_id',user.id).in('course_id',calendarCourseIds).eq('status','pending').order('scheduled_for',{ascending:true}).limit(200)
+      : Promise.resolve({data:[] as any[],error:null}),
   ]);
   const calendarData = buildLearningCalendarEvents({
     classes: calendarClassesResult.data ?? [],
