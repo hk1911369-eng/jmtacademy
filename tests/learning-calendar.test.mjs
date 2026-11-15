@@ -40,6 +40,7 @@ test('flags only proven timed overlaps and not adjacent or deadline-only items',
     assignments: [{ id: 'a1', title: 'Deadline', course_id: 'x', due_at: '2026-11-16T03:30:00Z' }],
   });
   assert.equal(events.find(item => item.id === 'class:c1').conflict, true);
+  assert.equal(events.find(item => item.id === 'class:c1').conflictWith.includes('Class B'), false);
   assert.equal(events.find(item => item.id === 'class:c2').conflict, true);
   assert.equal(events.find(item => item.id === 'class:c3').conflict, true);
   assert.equal(events.find(item => item.id === 'written_exam:e1').conflict, true);
@@ -66,4 +67,17 @@ test('calculates Sunday-first week and 42-day month grids across boundaries', ()
   assert.equal(getCalendarMonthGrid('2026-11')[0].dateKey, '2026-11-01');
   assert.equal(shiftCalendarDate('2026-12-31', 1), '2027-01-01');
   assert.equal(shiftCalendarMonth('2026-12', 1), '2027-01');
+});
+
+test('calendar component exposes accessible view controls, filters and explicit failure/empty states', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const component = await readFile(new URL('../components/learning-os-calendar.tsx', import.meta.url), 'utf8');
+  assert.ok(component.includes("useState<View>('agenda')"));
+  assert.ok(component.includes('aria-pressed={view === item}'));
+  assert.ok(component.includes('aria-label="Filter event types"'));
+  assert.ok(component.includes('aria-label="Monthly calendar"'));
+  assert.ok(component.includes('Undated work'));
+  assert.ok(component.includes('Some calendar sources could not be loaded'));
+  assert.ok(component.includes('Asia/Dhaka'));
+  assert.ok(component.includes('Schedule overlap with:'));
 });
