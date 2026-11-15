@@ -57,6 +57,9 @@ test('excludes invalid dates and cancelled classes safely', () => {
   });
   assert.equal(result.events.length, 0);
   assert.equal(result.undated.length, 0);
+  const reversed = buildLearningCalendarEvents({ classes: [{ id: 'reversed', title: 'Reversed interval', course_id: 'x', starts_at: '2026-11-16T04:00:00Z', ends_at: '2026-11-16T03:00:00Z' }] });
+  assert.equal(reversed.events[0].endAt, null);
+  assert.equal(reversed.events[0].conflict, false);
 });
 
 test('calculates Sunday-first week and 42-day month grids across boundaries', () => {
