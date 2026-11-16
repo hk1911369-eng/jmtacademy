@@ -620,3 +620,36 @@ The durable operating standard is now recorded in:
 The benchmark document also records the first comparison map for the Learning Experience OS, Predictor, AI Teacher, Planner, Virtual Labs, Community, Assessment, Academic Toolkit, Live Classes, Teacher/Parent/Admin and Bangladesh Payments/Finance, together with current main-branch, draft PR #42, production/test database and live-site evidence. Its status labels must be respected: main code, draft-only, test-only, test-verified and production-verified are not interchangeable.
 
 This is a standing product and engineering rule for every future conversation and delivery. Read the benchmark standard together with this North Star before substantial work.
+
+
+## 18. Owner direction — whole-platform world-class visual design and experience (17 November 2026)
+
+The owner has clarified that exceptional design is a platform-wide requirement, not a login-page task. JMT must feel like one coherent, premium, modern learning destination from the public website through every authenticated workspace and learning workflow. This requirement supplements (and does not replace) the strategic Top 3, Top 10, active implementation work or existing security/business rules.
+
+### 18.1 Scope: the complete experience
+- **Public website and discovery:** a distinctive, memorable identity; high-quality editorial layout; compelling but truthful hero and storytelling; useful course/programme discovery; subject and learning-path exploration; faculty/academy trust information only when verified; clear admissions, pricing, FAQs, support and contact journeys; responsive navigation and meaningful search/filter/empty states.
+- **Student Learning Experience OS:** personalised academic home, clear next action, course/lesson journeys, lesson player and resume, planner/calendar, revision/practice, assessments, progress explanations, learning community, AI Teacher and Exam Question Predictor entry points.
+- **Teacher workspace:** efficient class/course preparation, content and question-bank authoring, assessment/marking, student insight and safe communication.
+- **Parent/guardian experience:** consent-aware visibility into relevant progress, attendance, schedules and support needs; never expose private student interactions or sensitive data by default.
+- **Staff/admin/finance/support:** coherent operational queues, permissions, auditability, exception handling and responsive workflows.
+- **Shared foundations:** design tokens, typography, spacing, color, surfaces, iconography, motion, component states, navigation patterns, responsive breakpoints, Bengali/English localization, accessibility and low-bandwidth behavior.
+
+### 18.2 Design ambition and acceptance bar
+- Do not accept a generic template, a plain login-first redesign, decorative gradients, arbitrary cards, stock-photo wallpaper or a long feature inventory as a premium experience.
+- Establish a distinctive original JMT visual language with clear information architecture, strong hierarchy, deliberate whitespace, purposeful imagery, coherent typography, meaningful data visualization and consistent interaction behavior.
+- Each page must have a clear primary user goal, an obvious next action, sensible progressive disclosure and excellent loading, empty, error, success, disabled and permission-denied states.
+- The public website must be as carefully designed as the signed-in product. A premium homepage cannot compensate for weak student, teacher, parent or admin experiences.
+- Mobile-first must mean deliberately designed for Android touch use, not a desktop page squeezed into a narrow viewport. Verify 320px–430px layouts, tablet and desktop; keyboard and screen-reader behavior; WCAG 2.2 AA; reduced motion; readable Bengali; and slow/interrupted connectivity.
+- Prefer real product evidence and authentic, context-appropriate imagery over synthetic AI-generated artwork where a better rights-cleared asset exists. Images must support the content and remain fast, responsive, art-directed and accessible.
+- Use user-task success, time-to-first-useful-action, navigation error rate, task completion, comprehension, accessibility defects, Core Web Vitals, mobile layout integrity and recovery success as measurable quality signals. Establish baselines before claiming superiority; do not claim “best ever” or 100x without comparable evidence.
+
+### 18.3 Free asset and open-source permission
+The owner explicitly authorises the team to use suitable free internet resources and free/open-source repositories to improve the design, including properly licensed photographs, illustrations, icons, fonts, video, UI components and libraries. This is permission to use resources that are genuinely free and legally compatible; it is not permission to ignore their terms.
+- Preferred photo/video discovery: Pexels and Unsplash under their current official licences. Verify the individual asset page, licence at download time, and any model/property/trademark/privacy concerns. Do not imply that a depicted person, institution or brand endorses JMT.
+- Openverse and Wikimedia Commons may be used only after checking the exact file's source, licence, attribution, share-alike, modification and commercial-use conditions. Openverse is an index, not a blanket licence grant.
+- Prefer public-domain/CC0 or permissive open-source assets where the rights are clear. Keep a per-asset register with source URL, creator, exact licence/version, retrieval date, required attribution, modifications, local file path and any release/brand caveats. Preserve required notices in the repository.
+- Check open-source code/components separately from visual assets; record exact package, version and licence, inspect dependencies and security posture, and retain notices. “Free download” does not automatically mean open source, public domain or unrestricted commercial use.
+- Avoid paid-only, sponsored, editorial-only, unclear-rights, scraped, watermarked or licence-incompatible assets. Never use competitor branding, proprietary UI screenshots or copied designs.
+
+### 18.4 Design process and release gate
+For the next dedicated visual-design phase, audit the actual current JMT website and all major role journeys, benchmark strong education and product experiences, then explore three meaningfully different original JMT visual directions before choosing one shared system. Validate the chosen direction across representative public, student, teacher and admin screens before scaling it. Keep current Student Today QA and release gates intact; do not silently replace active engineering work with a visual redesign or deploy a redesign to production without the existing approvals.
