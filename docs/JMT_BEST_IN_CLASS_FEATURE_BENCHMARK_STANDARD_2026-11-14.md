@@ -418,3 +418,42 @@ Do not set an arbitrary “time-on-site” or streak target. Do not claim learni
 - **JMT differentiation:** connect the next action to JMT course access, official cohort/syllabus version, teacher feedback, offline/online schedule, lesson, assessment, virtual lab and evidence-backed revision in a single student-controlled home.
 - **Implementation status:** partial foundations exist in main. The complete integrated experience, unified calendar, verified resume flow, student pilot, full mobile/accessibility testing and production learning outcome measurement remain open.
 - **Next implementation slice:** design and test the student home information hierarchy and next-action card, then add a real resume/continue path using the current authorised lesson-progress model. Do not build another dashboard island.
+
+
+## 12. Whole-platform visual design, UX and asset-rights benchmark (owner direction: 17 November 2026)
+
+### User problem and outcome
+The owner rejects a login-only or template-level interpretation of quality. The desired outcome is a cohesive, recognisable, exceptionally usable JMT Academy experience across public discovery, student learning, AI learning, teacher, parent/guardian, staff, admin, finance and support surfaces. The public website and authenticated product must both meet the same high standard.
+
+### Benchmark method and design decision
+- Audit actual current JMT routes, source components, responsive behavior and real states before proposing changes. Separate what exists on main, draft PRs and the QA branch.
+- Benchmark education-native journeys (Khan Academy, Duolingo, Moodle/MyStudyLife) alongside high-quality contemporary product/web design references selected for the specific user task. Inspect actual behavior and independent user feedback where available; do not copy their branding, layout or proprietary assets.
+- Explore three independent visual directions during the dedicated Product Design workflow, each with a coherent visual system and representative public/student screens. Compare clarity, distinctiveness, accessibility, content fit, mobile quality, implementation complexity and consistency across roles. Do not implement before the direction is selected and validated.
+- Translate the chosen direction into tokens, typography, layout rules, navigation, reusable components and state patterns. Apply consistently across the whole product rather than polishing one landing page.
+
+### Asset and software licensing policy
+- Official Pexels licence: https://www.pexels.com/license/ — allows free commercial and non-commercial use and modification, with no attribution required; prohibited uses include unaltered resale/redistribution, implying endorsement, trademark use and harmful depiction of identifiable people. Re-check the live licence and asset-specific concerns before each use.
+- Official Unsplash licence: https://unsplash.com/license — allows free commercial and non-commercial use without required attribution; prohibits selling images without significant modification and compiling images to replicate a competing service. Re-check current terms before use.
+- Openverse is a discovery index, not a blanket licence: inspect the original source page and exact CC/public-domain licence for every file. Respect attribution, share-alike, non-commercial and no-derivatives conditions; do not use NC/ND material for commercial JMT pages or edited assets.
+- Asset register required for each adopted image/illustration/video/font/icon: source URL, creator, exact licence/version, retrieval date, attribution text, modifications, file path and any model/property/brand release caveat. Retain licence notices in source control where required.
+- Open-source components, fonts and code libraries need independent package/version/licence/dependency checks. Do not equate “free tier” or “free download” with permissive commercial rights.
+
+### Measurable acceptance criteria
+1. Every high-priority public and authenticated route has a named primary user goal and one visually dominant next action; usability testing confirms users can identify it without facilitator help.
+2. Core tasks are tested across anonymous visitor, student, teacher, guardian (where enabled), staff and admin roles; role boundaries and data visibility are verified server-side.
+3. No horizontal overflow or clipped primary controls at 320, 360, 390, 430, tablet and desktop test widths; touch targets, focus states, keyboard order and screen-reader names are verified.
+4. WCAG 2.2 AA is the minimum target; test contrast, keyboard-only operation, focus visibility, labels/errors, zoom/reflow, reduced motion and Bengali/English content.
+5. Every route has designed loading, empty, error, success, disabled, offline/slow-network and permission-denied states appropriate to its function.
+6. Visual assets are responsive, optimised, dimensioned, lazy-loaded where appropriate, meaningful alt text is supplied, and no rights/attribution requirement is missing from the asset register.
+7. Performance is measured on representative Android/mobile and constrained-network conditions; record Core Web Vitals and task completion baselines before optimisation claims.
+8. Cross-role consistency is verified through shared tokens/components while preserving role-specific information architecture and permissions.
+9. No invented course, teacher, qualification, testimonial, contact, academy location, outcomes or AI claims are used to fill visual space.
+10. No release-critical security, privacy, academic correctness, child-safety, payment-integrity or accessibility defect is waived for visual polish.
+
+### Evidence from initial asset-policy research (17 November 2026)
+- Pexels official licence and restrictions: https://www.pexels.com/license/ .
+- Unsplash official licence and restrictions: https://unsplash.com/license .
+- Openverse/Creative Commons file-level rights caution: https://openverse.org/ and https://creativecommons.org/licenses/ .
+- Secondary 2026 asset roundups are discovery aids only; official licence pages govern the actual use. A search result or stock-library badge is not sufficient evidence of rights.
+
+**Status:** owner requirement accepted and recorded. This is a design/benchmark charter, not evidence that the full redesign or asset integration has been implemented. The next design exploration must occur through the supported Product Design workflow in Work, after the current authenticated QA gate is resolved or explicitly re-sequenced.
