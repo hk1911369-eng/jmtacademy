@@ -317,3 +317,9 @@ test('Learning OS roadmap covers the full subject-agnostic product vision', asyn
   assert.ok(roadmap.includes('Subject-agnostic by design'));
   assert.ok(roadmap.includes('Evidence before prediction'));
 });
+
+test('student payment-error copy does not promise unverified offline recording access', async () => {
+  const page = await readFile(new URL('../app/student/page.tsx', import.meta.url), 'utf8');
+  assert.equal(page.includes('Offline students receive the recorded library as part of their paid offline course.'), false);
+  assert.ok(page.includes('Your current month tuition must be approved before opening lessons.'));
+});
