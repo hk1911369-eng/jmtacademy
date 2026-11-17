@@ -3,7 +3,7 @@
 > **This is the one authoritative, replaceable handoff for the active work.**
 > Update this file whenever a meaningful task starts, changes, finishes, is blocked, or a new feature request is accepted. Replace the previous active-task state; do not leave stale “next task” instructions active. Keep durable product requirements in the North Star and benchmark standard, not duplicated here.
 
-**Last updated:** 18 November 2026 (Asia/Dhaka)
+**Last updated:** 18 November 2026 (Asia/Dhaka; Firecrawl continuity and exact-head CI refresh)
 **Canonical repository:** https://github.com/hk1911369-eng/jmtacademy  
 **Branch containing this handoff:** `docs/jmt-academy-project-north-star`
 
@@ -501,3 +501,20 @@ These are connected strategic priorities, not isolated products. The Learning Ex
 - PR #68 remains open/draft/unmerged. Updated head is `e3f3e55166ec75d692034c6a136df78e40c359f2`; no production changes or database migrations. Exact-head GitHub workflow results were not yet available at checkpoint update.
 - Triggered a deploy only on isolated QA Render service `jmtacademy-qa-20261116` (autoDeploy disabled), deployment `dep-dbu7ukk9v7es73dvjpn0`, targeting the updated PR #68 head. Initial status was `build_in_progress`; wait for live before checking the updated UI. No production service touched.
 - Next: verify QA deployment is live, smoke-test the corrected student copy and public/unauthenticated routes, check exact-head CI/Quality/LMS workflows, then continue source-level review. Authenticated Student Today and role verification remain pending.
+
+
+## 14. Firecrawl account continuity and credit-limit handling — 18 November 2026 (Asia/Dhaka)
+
+- Owner says they have never independently used or configured Firecrawl; the connected Firecrawl integration has been used by the assistant for JMT research/browser QA. Do not assume the owner knows a Firecrawl dashboard login, API key or account email, and do not ask them to disclose passwords or API keys in chat.
+- Owner's explicit cost instruction: keep using the currently connected Firecrawl capability normally while useful; do **not** add a payment method, accept the free-credit increase that authorises automatic paid upgrade, subscribe to Hobby, or incur any charge. When Firecrawl calls begin failing due to exhausted quota, stop repeated retries and tell the owner so they can arrange a replacement account.
+- Read-only Firecrawl credit check on 18 Nov 2026 returned `remainingCredits=99`, `planCredits=1000`, billing period `2026-11-11T15:36:40.546Z` through `2026-12-11T15:36:40.546Z`. This is consistent with the owner's email warning of approximately 90% use. No billing or account settings were changed.
+- If the owner changes accounts, JMT source of truth remains the canonical GitHub repository, Supabase projects, Render services, PRs and this handoff. Firecrawl credits, usage history, API keys, saved jobs/browser sessions and account-specific configuration are provider-account scoped and may not transfer. Reconnect/reauthorise the new Firecrawl account through the supported ChatGPT integration connection flow and verify that a harmless read-only call succeeds before resuming Firecrawl work. Never copy or request secrets in chat. If no new connection is available, continue with other approved research/browser tools where possible and report the limitation.
+- Firecrawl's credit-usage action can report current balance and historical usage, but cannot attribute credits to an individual job/URL/MCP client. Per-call results may report their own credits. No automatic background quota monitor is available here; check the balance during active work when relevant, and infer a hard quota blocker from explicit provider errors rather than assuming any unrelated failure means credits are exhausted.
+- This is an operational continuity preference, not a change to JMT product scope or the active Student Today task. Continue the existing handoff's next action; keep PRs #66–#68 draft/unmerged and production untouched.
+
+## 15. Exact-head documentation PR check refresh — 18 November 2026
+
+- Refreshed PR #64: open, draft, unmerged, mergeable; current head `1c8486635cd09eedc623f576d7cf1d4730688369`.
+- Queried GitHub workflow runs for that exact head. CI run `44169951558`, Quality checks run `44169951548`, and LMS quality checks run `44169951556` all completed with conclusion `success`. Combined status endpoint returned no separate status entries; workflow-run evidence is the source for these conclusions.
+- PRs #66, #67 and #68 were refreshed and remain open, draft, unmerged and mergeable, at the previously recorded heads. Their prior implementation and QA limitations remain as documented; no new exact-head check claims are made here.
+- No code, database, hosting, payment, environment or production changes were made in this continuity update.
