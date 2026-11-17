@@ -510,3 +510,11 @@ These are connected strategic priorities, not isolated products. The Learning Ex
 - The remote-browser keyboard issue is confirmed as an environment limitation: browser user agent is desktop Linux Chrome; focus can be programmatically set, but no Android system keyboard exists in this remote browser. No workaround or password automation attempted.
 - These checks are public/unauthenticated smoke and responsive checks only. They do not verify authenticated roles, student data, lesson resume, or calendar entitlement behavior. No credentials submitted; no test data written; no production changes; PRs #65–#68 remain draft/unmerged.
 - Next: continue source-level review and automated checks on the PR stack; authenticated role/Student Today acceptance remains pending a legitimate test session in a browser/device that can authenticate without bypassing the blocked password-entry restriction.
+
+
+## 13. PR #68 cross-stack entitlement-copy correction — 17 November 2026 (Asia/Dhaka)
+- Source review found PR #68's student payment-error message still claimed that offline students automatically receive the recorded library as part of a paid offline course. This was a stale copy path because PR #65 is a separate branch and its correction was not inherited by the stacked #66–#68 branch.
+- Removed that unverified entitlement promise from `app/student/page.tsx`; the payment error now states only that current-month tuition must be approved before opening lessons. Added a regression test to `tests/learning-os-foundation.test.mjs` to prevent the promise returning.
+- PR #68 remains open/draft/unmerged. Updated head is `e3f3e55166ec75d692034c6a136df78e40c359f2`; no production changes or database migrations. Exact-head GitHub workflow results were not yet available at checkpoint update.
+- Triggered a deploy only on isolated QA Render service `jmtacademy-qa-20261116` (autoDeploy disabled), deployment `dep-dbu7ukk9v7es73dvjpn0`, targeting the updated PR #68 head. Initial status was `build_in_progress`; wait for live before checking the updated UI. No production service touched.
+- Next: verify QA deployment is live, smoke-test the corrected student copy and public/unauthenticated routes, check exact-head CI/Quality/LMS workflows, then continue source-level review. Authenticated Student Today and role verification remain pending.
