@@ -50,7 +50,7 @@ At the start of every JMT work session, including a new chat:
 
 ## 3. Related active PR / dependencies — refreshed 18 November 2026
 
-- PR #64: https://github.com/hk1911369-eng/jmtacademy/pull/64 — open/draft/unmerged; docs branch head `dd488b2d8ebc6bb3ce46c1ef63f043c7fcaf38cc`; base main `141d49343d80452c0871cec77fbc02367346e847`. Exact-head CI, Quality and LMS quality checks all succeeded (runs 44168969574, 44168969379, 44168969806).
+- PR #64: https://github.com/hk1911369-eng/jmtacademy/pull/64 — open/draft/unmerged; branch `docs/jmt-academy-project-north-star`, base main `141d49343d80452c0871cec77fbc02367346e847`. This handoff update itself advances the docs branch head and triggers a fresh exact-head check set; always refresh PR #64's current head SHA and CI/Quality/LMS-quality conclusions before any review/merge decision. The immediately preceding head `dd488b2d8ebc6bb3ce46c1ef63f043c7fcaf38cc` had all three checks successful.
 - PR #65: https://github.com/hk1911369-eng/jmtacademy/pull/65 — open/draft/unmerged; head `8dae210b135bb44322fa9fe206377720823f8f28`; base main. Homepage identity and unsupported offline-recording copy corrections; not the offline entitlement implementation.
 - PR #66: https://github.com/hk1911369-eng/jmtacademy/pull/66 — open/draft/unmerged; head `638bd0307f9044b34ef263a65f807bfef705c912`; base main. Explainable next action.
 - PR #67: https://github.com/hk1911369-eng/jmtacademy/pull/67 — open/draft/unmerged; head `da2f632c688ae2077a07cc3be0993b51f9cb5747`; base exactly PR #66 head. Secure lesson resume.
