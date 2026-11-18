@@ -1,0 +1,69 @@
+name: Temporary dependency audit
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/temporary-dependency-audit.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install exact lockfile without implicit audit
+        run: npm ci --no-audit --no-fund
+      - name: Capture full dependency audit as structured evidence
+        shell: bash
+        run: |
+          set +e
+          npm audit --json > npm-audit.json
+          audit_exit=$?
+          echo "npm audit exit code: $audit_exit"
+          node <<'NODE'
+          const fs = require('node:fs');
+          let report;
+          try { report = JSON.parse(fs.readFileSync('npm-audit.json', 'utf8')); }
+          catch (error) {
+            console.error('Could not parse npm audit JSON:', error.message);
+            console.log(fs.readFileSync('npm-audit.json', 'utf8').slice(0, 12000));
+            process.exit(0);
+          }
+          console.log('AUDIT METADATA');
+          console.log(JSON.stringify(report.metadata?.vulnerabilities ?? null, null, 2));
+          console.log('VULNERABLE PACKAGES');
+          console.log(JSON.stringify(Object.values(report.vulnerabilities ?? {}).map(v => ({
+            name: v.name, severity: v.severity, isDirect: v.isDirect, range: v.range,
+            nodes: v.nodes, effects: v.effects, fixAvailable: v.fixAvailable,
+            via: (v.via ?? []).map(x => typeof x === 'string' ? x : ({
+              title: x.title, url: x.url, range: x.range, severity: x.severity
+            }))
+          })), null, 2));
+          NODE
+      - name: Inspect deprecated glob dependency paths
+        shell: bash
+        run: |
+          npm ls glob --all --json > glob-tree.json || true
+          node <<'NODE'
+          const fs = require('node:fs');
+          try {
+            const data = JSON.parse(fs.readFileSync('glob-tree.json', 'utf8'));
+            const found = [];
+            function walk(deps, path = '') {
+              for (const [name, dep] of Object.entries(deps ?? {})) {
+                const next = path ? path + ' > ' + name : name;
+                if (name === 'glob') found.push({ path: next, version: dep.version, problems: dep.problems ?? [] });
+                walk(dep.dependencies, next);
+              }
+            }
+            walk(data.dependencies);
+            console.log(JSON.stringify({ glob: found, problems: data.problems ?? [] }, null, 2));
+          } catch (error) { console.log('Could not parse npm ls output:', error.message); }
+          NODE
