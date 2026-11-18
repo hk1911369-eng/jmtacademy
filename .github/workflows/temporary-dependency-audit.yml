@@ -67,3 +67,48 @@ jobs:
             console.log(JSON.stringify({ glob: found, problems: data.problems ?? [] }, null, 2));
           } catch (error) { console.log('Could not parse npm ls output:', error.message); }
           NODE
+
+  candidate-eslint-update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install baseline lockfile
+        run: npm ci --no-audit --no-fund
+      - name: Test compatible TypeScript ESLint parser refresh
+        run: npm update @typescript-eslint/eslint-plugin @typescript-eslint/parser --package-lock-only --ignore-scripts --no-audit
+      - name: Install candidate lockfile
+        run: npm ci --no-audit --no-fund
+      - name: Capture candidate audit summary
+        shell: bash
+        run: |
+          npm audit --json > candidate-audit.json || true
+          node <<'NODE'
+          const fs = require('node:fs');
+          const report = JSON.parse(fs.readFileSync('candidate-audit.json', 'utf8'));
+          console.log('CANDIDATE AUDIT METADATA');
+          console.log(JSON.stringify(report.metadata?.vulnerabilities ?? null, null, 2));
+          console.log('CANDIDATE VULNERABLE PACKAGE NAMES');
+          console.log(JSON.stringify(Object.values(report.vulnerabilities ?? {}).map(v => ({
+            name: v.name, severity: v.severity, range: v.range, nodes: v.nodes, fixAvailable: v.fixAvailable
+          })), null, 2));
+          const lock = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'));
+          for (const [path, value] of Object.entries(lock.packages ?? {})) {
+            if (path.includes('@typescript-eslint') || path.endsWith('/minimatch') || path.endsWith('/picomatch')) {
+              console.log(path, value.version, 'dev=' + Boolean(value.dev));
+            }
+          }
+          NODE
+      - name: Verify candidate code quality
+        run: npm run typecheck && npm test && npm run lint
+      - name: Verify candidate production build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-not-a-real-key
+          APP_URL: https://example.invalid
+          NEXT_PUBLIC_SITE_URL: https://example.invalid
