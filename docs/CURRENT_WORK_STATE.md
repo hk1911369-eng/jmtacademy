@@ -3,7 +3,7 @@
 > **This is the one authoritative, replaceable handoff for the active work.**
 > Update this file whenever a meaningful task starts, changes, finishes, is blocked, or a new feature request is accepted. Replace the previous active-task state; do not leave stale “next task” instructions active. Keep durable product requirements in the North Star and benchmark standard, not duplicated here.
 
-**Last updated:** 18 November 2026 (Asia/Dhaka; exact-head checks refreshed, audit reconciled, owner-controlled browser takeover path found)
+**Last updated:** 19 November 2026 (Asia/Dhaka; resumed-state audit, exact-head checks and Render QA service/deployment list refreshed)
 **Canonical repository:** https://github.com/hk1911369-eng/jmtacademy  
 **Branch containing this handoff:** `docs/jmt-academy-project-north-star`
 
@@ -80,6 +80,16 @@ At the start of every JMT work session, including a new chat:
 - Do not invent provider accounts, credentials, official academic sources, test results or production verification.
 
 ## 6. Recently completed / last known checkpoint (brief; not the active next task)
+
+### Resume audit refresh — 19 November 2026
+- Re-read this handoff, the Project North Star and the permanent best-in-class benchmark standard from the canonical repository branch `docs/jmt-academy-project-north-star`. These three documents are present on that PR branch, not on default `main`; do not mistake a default-branch 404 for repository deletion. The current handoff blob before this update was `252fe8f553c34c3484a1af06dac569276f2fe762`.
+- PR #64 remains open, draft and unmerged; head remains `938c3a3658488c78e22c6519284e75483bc9cc43`, base `main` at `141d49343d80452c0871cec77fbc02367346e847`. Exact-head workflows refreshed on 19 Nov: CI run `44274372435` success; LMS Quality run `44274372369` success; Quality run `44274372340` success. PR #64 comments/reviews query returned no comments. Combined commit status endpoint returned no status rows; workflow runs are the available exact-head evidence.
+- PRs #65–#68 remain open, draft and unmerged; #67 remains stacked on #66 and #68 remains stacked on #67. PR #68 exact head remains `e3f3e55166ec75d692034c6a136df78e40c359f2`; its GitHub workflow query returned no runs. PR #68 comments query returned no comments. Do not describe GitHub checks for #68 as green.
+- Render service list refreshed: isolated QA service `jmtacademy-qa-20261116` (`srv-dbt15jt6e07s73b50l50`) remains on `feat/student-academic-calendar`, URL https://jmtacademy-qa-20261116.onrender.com, active/not suspended, Free/Singapore, auto-deploy off, PR previews off. Render's deployment list still reports `dep-dbu7ukk9v7es73dvjpn0` as **live** on exact PR #68 head `e3f3e55166ec75d692034c6a136df78e40c359f2`. A separate `get_deploy` read for that same service/deploy returned 404; record this discrepancy rather than claiming a fresh deployment-detail read succeeded. No Render settings or deployments were changed.
+- The previous Firecrawl interactive takeover URL was supplied in the earlier conversation, but the exact `scrapeId` and `conversationId` are not present in the retrievable project context for this resumed session. No owner sign-in confirmation is recorded. Do not create a replacement browser session or claim authenticated QA; first use the previously supplied live-view link if it is still available in chat history and obtain the owner's confirmation. No credentials were requested, entered or submitted.
+- GitHub branch listing confirms the docs handoff branch head is still `938c3a3658488c78e22c6519284e75483bc9cc43`; the docs branch is intentionally distinct from default `main`. No code, database, payment, production service or production deployment changes were made during this resume audit.
+
+
 - PR #66 implements explainable Student Today next action; PR #67 adds secure per-student lesson resume; PR #68 adds the unified academic calendar. Their detailed benchmark, implementation and security evidence is in the PR descriptions and benchmark documents.
 - PR #68 exact head `e3f3e55166ec75d692034c6a136df78e40c359f2` removes an unsupported offline-recording access promise and adds a regression test. GitHub read-back confirmed the forbidden sentence is absent and test is present.
 - Isolated QA deployment `dep-dbu7ukk9v7es73dvjpn0` is live on the exact PR #68 head. Render build's prebuild reported 169 tests passed, 0 failed; typecheck/lint were part of prebuild; Next.js reached Ready. Exact-lock audit run `44271846471` reported 14 dev-tree findings (9 high, 5 moderate); production-only audit passed. A candidate parser refresh was rejected because its severity profile worsened; no lockfile change was adopted. The `glob@7.2.3` deprecation remains under observation.
