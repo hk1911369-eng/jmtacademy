@@ -193,17 +193,25 @@ test('stale permissive learning-event policy is removed', async () => {
   assert.ok(migration.includes('DROP POLICY IF EXISTS "students record own learning events" ON public.learning_events'));
 });
 
-test('student Learning OS dashboard surfaces upcoming exams and assignment deadlines from active courses', async () => {
+test('student Learning OS dashboard surfaces one entitlement-scoped academic calendar', async () => {
   const page = await readFile(new URL('../app/student/page.tsx', import.meta.url), 'utf8');
   const component = await readFile(new URL('../components/learning-os-dashboard.tsx', import.meta.url), 'utf8');
+  const calendar = await readFile(new URL('../components/learning-os-calendar.tsx', import.meta.url), 'utf8');
+  assert.ok(page.includes("from('live_classes')"));
+  assert.ok(page.includes("from('assignments')"));
   assert.ok(page.includes("from('quizzes')"));
   assert.ok(page.includes("from('written_exams')"));
-  assert.ok(page.includes("from('assignments')"));
-  assert.ok(page.includes(".eq('published',true).gte('starts_at',nowIso)"));
-  assert.ok(page.includes(".eq('published',true).gte('due_at',nowIso)"));
-  assert.ok(page.includes('activeCourseIds'));
-  assert.ok(component.includes('Upcoming exams'));
-  assert.ok(component.includes('Upcoming assignments'));
+  assert.ok(page.includes("from('revision_tasks')"));
+  assert.ok(page.includes('calendarCourseIds = eligibleCourseIds'));
+  assert.ok(page.includes('calendarWindowStart'));
+  assert.ok(page.includes('calendarWindowEnd'));
+  assert.ok(page.includes('buildLearningCalendarEvents'));
+  assert.ok(component.includes('LearningOSCalendar'));
+  assert.ok(component.includes('calendarEvents'));
+  assert.ok(calendar.includes('Undated work'));
+  assert.ok(calendar.includes('Agenda'));
+  assert.ok(calendar.includes('Week'));
+  assert.ok(calendar.includes('Month'));
 });
 
 test('programme groups are universal and no longer restricted to chemistry-era cohorts', async () => {
@@ -308,4 +316,10 @@ test('Learning OS roadmap covers the full subject-agnostic product vision', asyn
   ]) assert.ok(roadmap.includes(feature), feature);
   assert.ok(roadmap.includes('Subject-agnostic by design'));
   assert.ok(roadmap.includes('Evidence before prediction'));
+});
+
+test('student payment-error copy does not promise unverified offline recording access', async () => {
+  const page = await readFile(new URL('../app/student/page.tsx', import.meta.url), 'utf8');
+  assert.equal(page.includes('Offline students receive the recorded library as part of their paid offline course.'), false);
+  assert.ok(page.includes('Your current month tuition must be approved before opening lessons.'));
 });
