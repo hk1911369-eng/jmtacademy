@@ -81,8 +81,9 @@ test('calendar component exposes accessible view controls, filters and explicit 
   assert.ok(component.includes('aria-label="Monthly calendar"'));
   assert.ok(component.includes('Undated work'));
   assert.ok(component.includes('Some calendar sources could not be loaded'));
-  assert.match(component, /selectedDayEvents\\.length[\\s\\S]*?No events found in the available data for this date/);
-  assert.match(component, /dayEvents\\.length[\\s\\S]*?No events found in the available data for this date/);
+  assert.ok(component.includes('selectedDayEvents.length ? eventList(selectedDayEvents) : ('));
+  assert.ok(component.includes('dayEvents.length ? eventList(dayEvents) : ('));
+  assert.ok(component.includes('sourceErrorCount > 0'));
   assert.ok(component.includes('Some undated work may be missing because a calendar source could not be loaded.'));
   assert.ok(component.includes('The available events may be incomplete; please refresh.'));
   assert.ok(component.includes('Asia/Dhaka'));
