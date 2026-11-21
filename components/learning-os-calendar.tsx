@@ -210,7 +210,13 @@ export function LearningOSCalendar({ events, undated, initialDateKey, sourceErro
           </div>
           <div className="learning-calendar-selected-day">
             <h4>{dateLabel(selectedDateKey)}</h4>
-            {selectedDayEvents.length ? eventList(selectedDayEvents) : <p className="learning-calendar-empty">No events on this date.</p>}
+            {selectedDayEvents.length ? eventList(selectedDayEvents) : (
+              <p className="learning-calendar-empty">
+                {sourceErrorCount > 0
+                  ? 'No events found in the available data for this date. Some sources could not be loaded.'
+                  : 'No events on this date.'}
+              </p>
+            )}
           </div>
         </>
       ) : view === 'week' ? (
@@ -220,7 +226,13 @@ export function LearningOSCalendar({ events, undated, initialDateKey, sourceErro
             return (
               <section className="learning-calendar-week-day" key={day}>
                 <h4><button type="button" onClick={() => { setSelectedDateKey(day); setView('agenda'); }}>{dateLabel(day)}</button></h4>
-                {dayEvents.length ? eventList(dayEvents) : <p className="learning-calendar-empty">No events</p>}
+                {dayEvents.length ? eventList(dayEvents) : (
+                  <p className="learning-calendar-empty">
+                    {sourceErrorCount > 0
+                      ? 'No events found in the available data for this date. Some sources could not be loaded.'
+                      : 'No events'}
+                  </p>
+                )}
               </section>
             );
           })}
@@ -234,7 +246,9 @@ export function LearningOSCalendar({ events, undated, initialDateKey, sourceErro
             </section>
           )) : (
             <p className="learning-calendar-empty">
-              {sourceErrorCount > 0 && events.length === 0 ? 'Calendar data could not be loaded. Please refresh.' : 'No scheduled learning events in this period.'}
+              {sourceErrorCount > 0
+                ? 'Some calendar sources could not be loaded. The available events may be incomplete; please refresh.'
+                : 'No scheduled learning events in this period.'}
             </p>
           )}
         </div>
@@ -242,7 +256,13 @@ export function LearningOSCalendar({ events, undated, initialDateKey, sourceErro
 
       <section className="learning-calendar-undated" aria-labelledby="learning-calendar-undated-title">
         <h4 id="learning-calendar-undated-title">Undated work</h4>
-        {selectedDayUndated.length ? eventList(selectedDayUndated) : <p className="learning-calendar-empty">No undated assignments or exams.</p>}
+        {selectedDayUndated.length ? eventList(selectedDayUndated) : (
+          <p className="learning-calendar-empty">
+            {sourceErrorCount > 0
+              ? 'Some undated work may be missing because a calendar source could not be loaded.'
+              : 'No undated assignments or exams.'}
+          </p>
+        )}
       </section>
     </section>
   );
