@@ -634,3 +634,17 @@ These are connected strategic priorities, not isolated products. The Learning Ex
   - Quality checks run `45070169586`: guardrail tests, ESLint, TypeScript, production build, production dependency audit — success.
 - Inspected each job's step summaries; all required steps and jobs concluded success. This supersedes the earlier no-runs handoff note in section 19. Exact-head checks are green; authenticated browser QA and human review remain outstanding.
 - PR #66 remains draft/open/unmerged. No deployment or merge was performed.
+
+
+## 21. Revision queue starvation fix and exact-head verification — 23 November 2026 (Asia/Dhaka)
+
+- Continued PR #66 source audit and found a second concrete defect: the student page fetched only the earliest eight pending revision tasks in ascending order. If a student had eight or more overdue items, those oldest items could crowd out newer overdue tasks and all upcoming revision work. This contradicted the selector's documented rule to prioritize the most recently overdue item.
+- Fixed on the same PR #66 branch. The page now fetches two bounded sets using the same server timestamp: the eight most recently overdue tasks (descending) and the eight nearest upcoming tasks (ascending). A deterministic queue helper deduplicates, validates date partitions, orders recent overdue work first and upcoming work next, and caps the displayed queue at eight. Added two regression tests for ordering, invalid/mispartitioned rows and duplicate IDs.
+- New exact PR #66 head: `95dbb20e3877a2b7ca8b7e89515a9fa5a52c0b67`. The first CI attempt caught a missing TypeScript declaration for the new helper. Added the exported type declaration to `lib/learning-next-action.d.mts`, pushed the correction, and verified the subsequent exact-head workflows.
+- All three GitHub Actions workflows on exact head `95dbb20e3877a2b7ca8b7e89515a9fa5a52c0b67` completed successfully:
+  - CI run `45070679125`: TypeScript check, regression tests, ESLint — success.
+  - LMS quality checks run `45070679139`: ESLint, regression tests, TypeScript, production build, production dependency audit — success.
+  - Quality checks run `45070679113`: regression tests, ESLint, TypeScript, production build, production dependency audit — success.
+- Inspected exact-head workflow logs and job steps. All reported 155 tests passed, 0 failed; lint and typecheck passed; both production builds and production dependency audits passed. The new revision queue regression test names were confirmed present in the executed LMS workflow logs. The temporary TypeScript declaration failure was corrected and the rerun on the final head is green.
+- PR #66 remains open, draft, unmerged and mergeable. No production deploy, DB write, schema migration, payment activation, secret change or merge occurred. Authenticated browser QA remains blocked by the owner's stated mobile keyboard constraint; do not ask for another login or bypass authentication.
+- **Next action:** continue auditing the Learning Experience OS student data pipeline for eligibility, freshness, date boundaries and false progress claims; inspect PR #67 playback and PR #68 calendar integration for cross-feature consistency; continue unauthenticated QA and preserve separate production/test environments.
