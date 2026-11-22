@@ -124,7 +124,7 @@ test('does not display NaN or unsupported percentages when mastery evidence is m
     assert.equal(action.kind, 'recommendation');
     assert.match(action.description, /not enough mastery evidence/);
     assert.equal(action.description.includes('NaN'), false);
-    assert.equal(/\\d+% mastery/.test(action.description), false);
+    assert.equal(/\d+% mastery/.test(action.description), false);
   }
 });
 
