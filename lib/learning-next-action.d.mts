@@ -14,3 +14,19 @@ export function selectNextLearningAction(input?: {
   courseNames?: ReadonlyMap<string, string>;
   now?: Date | string | number;
 }): NextLearningAction;
+
+export type RevisionQueueTask = {
+  id: string;
+  title: string;
+  scheduled_for: string;
+  priority: number;
+  course_id: string;
+  concept_id?: string | null;
+};
+
+export function buildRevisionTaskQueue(input?: {
+  overdueTasks?: RevisionQueueTask[];
+  upcomingTasks?: RevisionQueueTask[];
+  now?: Date | string | number;
+  limit?: number;
+}): RevisionQueueTask[];
