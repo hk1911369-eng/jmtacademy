@@ -3,7 +3,7 @@
 > **This is the one authoritative, replaceable handoff for the active work.**
 > Update this file whenever a meaningful task starts, changes, finishes, is blocked, or a new feature request is accepted. Replace the previous active-task state; do not leave stale “next task” instructions active. Keep durable product requirements in the North Star and benchmark standard, not duplicated here.
 
-**Last updated:** 23 November 2026 (Asia/Dhaka; Student Today unauthenticated QA recovery and source-level review)
+**Last updated:** 23 November 2026 (Asia/Dhaka; next-action evidence-integrity defect fixed and handoff refreshed)
 **Canonical repository:** https://github.com/hk1911369-eng/jmtacademy  
 **Branch containing this handoff:** `docs/jmt-academy-project-north-star`
 
@@ -613,3 +613,14 @@ These are connected strategic priorities, not isolated products. The Learning Ex
 - Calendar source review notes: week/agenda navigation advances seven days; the agenda view displays a 14-day range. The source-error warning is visible across calendar views and the undated-work section. This was inspection only; no new automated tests were run and no runtime authenticated data was exercised.
 - No database writes, migrations, fixture changes, environment/secret changes, production deployments/rollbacks, payment activation, PR merges or code changes occurred. The prior isolated QA build evidence remains 169/169 tests passed with typecheck, lint and build successful on 21 Nov; no new build/test claim is made for 23 Nov.
 - **Next action:** continue safe source-level review of the Student Today stack and identify a supported test-authentication approach that does not require the owner's password or circumvent account controls. If no such mechanism is available, preserve the authenticated QA blocker and proceed with independently verifiable code/test improvements. Keep PRs #66–#68 draft/unmerged and production untouched.
+
+
+## 19. Student Today recommendation evidence-integrity fix — 23 November 2026 (Asia/Dhaka)
+
+- Continued the existing Student Today task without requesting another owner login. Reviewed the actual PR #66 selector and its tests rather than changing unrelated components.
+- Found a concrete data-integrity defect in `lib/learning-next-action.mjs`: recommendation records with missing, null, non-numeric, negative or greater-than-100% mastery values could be rendered as `NaN%`, `0%` or another unsupported mastery claim. Null was especially subtle because JavaScript converts `Number(null)` to zero. Invalid/unknown evidence could also sort as the weakest measured score.
+- Fixed on existing PR #66 branch `feat/student-today-next-action`, without touching main or merging: commit `e2792cb118fcaf4278346214c206aed5a6efd736`. Selector now treats null/undefined/blank/non-finite/out-of-range values as unknown, ranks valid measured scores ahead of unknown scores, and uses an explicit no-evidence explanation rather than inventing a percentage. A missing concept title also falls back to a neutral label.
+- Added regression tests for undefined, null, non-numeric, out-of-range scores and ranking measured evidence ahead of unknown evidence. Test source readback verified; the assertion checks that no numeric mastery percentage appears for invalid evidence.
+- Verification status: GitHub PR #66 still open, draft, unmerged, mergeable; exact new head is `e2792cb118fcaf4278346214c206aed5a6efd736`. The GitHub workflow-run query and combined-status query returned no runs/statuses for this exact head. The environment has no direct repository checkout, and a local clone attempt failed because the runtime cannot resolve github.com. Therefore **the new tests have not been executed** and no pass claim is made. The earlier green checks were for the previous head and do not verify this fix. Existing CI workflows are configured for pull_request events targeting main; no new run was visible at time of this handoff.
+- No application runtime deployment was triggered, no production service was changed, no DB or fixtures were written, no credentials were used, and no PR was merged. The fix remains isolated in PR #66 pending exact-head CI and review.
+- **Next action:** inspect remaining Student Today data transformations for untrusted/missing evidence and similar false claims; seek an authorized CI execution route for the exact PR head; continue public-route/source QA. Keep authenticated browser QA explicitly blocked rather than bypassing it. Preserve the owner constraint: do not ask for another login or handle their password.
