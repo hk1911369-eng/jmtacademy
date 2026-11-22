@@ -107,3 +107,35 @@ test('dashboard renders the primary action before summary metrics and provides a
   assert.ok(component.includes('selectNextLearningAction'));
   assert.ok(component.includes('id="learning-os-goal-form"'));
 });
+
+test('does not display NaN or unsupported percentages when mastery evidence is missing or invalid', () => {
+  for (const masteryScore of [undefined, null, 'not-a-number', 1.5, -0.2]) {
+    const action = selectNextLearningAction({
+      now,
+      recommendations: [{
+        lessonId: 'lesson-unknown',
+        lessonTitle: 'Foundations',
+        courseId: 'course-1',
+        conceptTitle: 'Foundations',
+        masteryScore,
+        rootCauseFor: null,
+      }],
+    });
+    assert.equal(action.kind, 'recommendation');
+    assert.match(action.description, /not enough mastery evidence/);
+    assert.equal(action.description.includes('NaN'), false);
+    assert.equal(/\\d+% mastery/.test(action.description), false);
+  }
+});
+
+test('ranks recommendations with measured mastery before recommendations without valid evidence', () => {
+  const action = selectNextLearningAction({
+    now,
+    recommendations: [
+      { lessonId: 'unknown', lessonTitle: 'Unknown', courseId: 'course-1', conceptTitle: 'Unknown', masteryScore: undefined },
+      { lessonId: 'known', lessonTitle: 'Measured weakness', courseId: 'course-1', conceptTitle: 'Measured weakness', masteryScore: 0.25 },
+    ],
+  });
+  assert.equal(action.title, 'Study Measured weakness');
+  assert.match(action.description, /25% mastery/);
+});
