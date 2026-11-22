@@ -139,3 +139,40 @@ test('ranks recommendations with measured mastery before recommendations without
   assert.equal(action.title, 'Study Measured weakness');
   assert.match(action.description, /25% mastery/);
 });
+
+
+test('revision queue keeps the most recently overdue work and nearest upcoming work', async () => {
+  const { buildRevisionTaskQueue } = await import('../lib/learning-next-action.mjs');
+  const queue = buildRevisionTaskQueue({
+    now,
+    overdueTasks: [
+      { id: 'old-1', scheduled_for: '2026-10-01T00:00:00.000Z' },
+      { id: 'old-2', scheduled_for: '2026-10-02T00:00:00.000Z' },
+      { id: 'recent', scheduled_for: '2026-11-14T00:00:00.000Z' },
+    ],
+    upcomingTasks: [
+      { id: 'far', scheduled_for: '2026-11-18T00:00:00.000Z' },
+      { id: 'near', scheduled_for: '2026-11-16T00:00:00.000Z' },
+    ],
+    limit: 4,
+  });
+  assert.deepEqual(queue.map(task => task.id), ['recent', 'old-2', 'old-1', 'near']);
+});
+
+test('revision queue rejects invalid, mispartitioned and duplicate records', async () => {
+  const { buildRevisionTaskQueue } = await import('../lib/learning-next-action.mjs');
+  const queue = buildRevisionTaskQueue({
+    now,
+    overdueTasks: [
+      { id: 'bad', scheduled_for: 'not-a-date' },
+      { id: 'future-in-overdue', scheduled_for: '2026-11-16T00:00:00.000Z' },
+      { id: 'duplicate', scheduled_for: '2026-11-14T00:00:00.000Z' },
+    ],
+    upcomingTasks: [
+      { id: 'duplicate', scheduled_for: '2026-11-16T00:00:00.000Z' },
+      { id: 'past-in-upcoming', scheduled_for: '2026-11-14T00:00:00.000Z' },
+      { id: 'valid', scheduled_for: '2026-11-16T00:00:00.000Z' },
+    ],
+  });
+  assert.deepEqual(queue.map(task => task.id), ['duplicate', 'valid']);
+});
