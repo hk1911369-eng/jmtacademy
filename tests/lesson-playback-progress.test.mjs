@@ -106,8 +106,11 @@ test('learning page reads only the signed-in student checkpoint and does not res
   assert.ok(page.includes(".in('lesson_id', lessonIds)"));
   assert.ok(page.includes(".eq('student_id', user.id)"));
   assert.ok(page.includes("profile?.role === 'student'"));
-  assert.ok(page.includes('initialPositionSeconds={done.has(l.id) ? 0'));
+  assert.ok(page.includes('initialPositionSeconds={!progressAvailable || done.has(l.id) ? 0'));
   assert.ok(page.includes('completed={done.has(l.id)}'));
+  assert.ok(page.includes("enabled={profile?.role === 'student' && progressAvailable}"));
+  assert.ok(page.includes('!progressAvailable && <p className=\"form-error\" role=\"status\">'));
+  assert.ok(page.includes('progressAvailable && !done.has(l.id) && <form action={markLessonComplete}>'));
   assert.ok(page.includes('<LessonVideoPlayer'));
 });
 
