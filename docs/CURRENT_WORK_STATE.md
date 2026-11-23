@@ -71,17 +71,16 @@ At the start of every JMT work session, including a new chat:
 
 ## 4. The single next action (do this first on resume)
 
-**Next task: finish isolated QA deployment verification on the fully reconciled Student Today stack. Branch reconciliation and exact-head CI are COMPLETE; Render QA deploy is IN PROGRESS.**
+**Next task: implement the missing server-enforced offline missed-class recording entitlement. The Student Today stack is reconciled, exact-head CI is green, and isolated QA is live and health-checked.**
 
 - PR #66 head: `95dbb20e3877a2b7ca8b7e89515a9fa5a52c0b67`.
 - PR #67 (`feat/student-resume-progress`) head: `4af653c8ee043af9e15f5394f11769b19be33e72`; base = #66 head `95dbb20e...`.
 - PR #68 (`feat/student-academic-calendar`) head: `88daa1381712b0b0e4fc228e17aed9979c0fe5b5`; base = #67 head `4af653c...`.
-- Both actual product PRs remain open, draft, unmerged and mergeable. Temporary validation PRs #71 and #72 were closed unmerged after checks; do not reopen unless new CI evidence is required.
-- Exact-head GitHub Actions on #67: CI `45215592828`, LMS Quality `45215592600`, Quality `45215592840` — all completed successfully. LMS Quality ran 166 tests (166 passed, 0 failed), ESLint, TypeScript, production build (40 static pages) and production dependency audit.
-- Exact-head GitHub Actions on #68: CI `45215609171`, LMS Quality `45215608900`, Quality `45215609052` — all completed successfully. LMS Quality ran 174 tests (174 passed, 0 failed), ESLint, TypeScript, production build (40 static pages) and production dependency audit. These are exact-head checks, not merely local claims.
-- Isolated Render QA service `jmtacademy-qa-20261116` (`srv-dbt15jt6e07s73b50l50`) is confirmed on branch `feat/student-academic-calendar`, autoDeploy off, previews off, and connected to the previously verified JMT Test Supabase project. Manual QA deployment `dep-dc26hemk1f9s73c9k18g` started on exact commit `88daa138...` at 2026-11-23 16:24:27 UTC; latest status was `build_in_progress`.
-- **First action next session:** poll deployment `dep-dc26hemk1f9s73c9k18g` until terminal. If successful, verify QA `/api/health` (database reachable), `/login`, and unauthenticated redirects for `/student`, `/teacher`, and `/admin`; then inspect public UI and record actual results. If it fails, inspect build/deploy logs and repair only the isolated QA branch/configuration as appropriate.
-- Authenticated student/teacher/admin QA remains blocked by the owner's no-login-again constraint. Do not ask for another login, handle passwords, or bypass authentication. Keep PRs #66–#68 draft/unmerged. No production release, main change, production DB change, payment activation, secret mutation or migration is authorized.
+- Both actual product PRs remain open, draft, unmerged and mergeable. Temporary validation PRs #71/#72 are closed unmerged.
+- Exact-head CI/Quality/LMS all passed on #67 and #68 (see section 24). Isolated Render QA deployment `dep-dc26hemk1f9s73c9k18g` is live on #68 `88daa138...`; health and unauthenticated route guards passed (section 25).
+- **First action next session:** perform a focused schema/RLS/access-path audit for offline recording entitlement. Confirm the current enrollment, student profile, roll-number, cohort/batch, lesson/video, and playback-checkpoint schemas and every route/storage access path. Then define and implement the smallest reviewable server-enforced design that permits missed-class recordings only when an authorised teacher/staff/admin has approved the student's roll number and the student's identity, physical offline cohort/batch and entitlement period all match. Add deny-by-default regression tests for unapproved, mismatched, expired and cross-student cases, plus staff approval/audit tests. Update public homepage/help/terms copy so it does not promise access before the policy is implemented.
+- Do not apply any migration to Test or Production Supabase yet. Prepare the migration and tests in a reviewable PR; require explicit approval before applying any schema/RLS change. Do not change production services, main, payments, secrets or release state.
+- Authenticated browser QA remains blocked by the owner's no-login-again constraint. Do not request credentials, handle passwords or bypass authentication. Keep PRs #66–#68 draft/unmerged.
 
 ## 5. Pending / unresolved / approval gates
 - **Offline academy access:** Offline students mean students attending JMT's physical/local classroom academy, not merely website users without internet. They should receive free recordings of missed classes as make-up support. Eligibility is restricted to students whose roll numbers are added to the authorised roster by teacher/staff/admin; entitlement is tied to student identity, roll number, cohort, batch and period. Online students have separate enrolment and access entitlements. This policy is defined; robust technical enforcement is still a required security task. Enforce server-side for pages/APIs/media/playback/download, with revocation, audit trail and tests. Hiding buttons is insufficient.
@@ -726,3 +725,23 @@ These are connected strategic priorities, not isolated products. The Learning Ex
 - Isolated QA service configuration was re-read: `jmtacademy-qa-20261116`, service ID `srv-dbt15jt6e07s73b50l50`, branch `feat/student-academic-calendar`, autoDeploy off, previews off, Free/Singapore. Manual deployment `dep-dc26hemk1f9s73c9k18g` started against exact #68 head `88daa138...` at 16:24:27 UTC. It was still `build_in_progress` at last poll; no live/health claim is made yet.
 - No production service, main branch, Supabase data/schema, environment variables/secrets, payments or user credentials were changed. Temporary validation PRs #71/#72 are closed unmerged. Authenticated browser QA remains blocked.
 - **Next action:** poll Render deploy `dep-dc26hemk1f9s73c9k18g`; once live, verify QA health/database reachability, login page and unauthenticated student/teacher/admin route guards. Record exact HTTP results and keep authenticated role/data testing blocked unless a supported non-password test identity is available.
+
+
+## 25. Isolated QA deployment and offline-recording entitlement gap discovered — 23 November 2026 (Asia/Dhaka)
+
+- Render service `jmtacademy-qa-20261116` (`srv-dbt15jt6e07s73b50l50`) was re-read before deployment: branch `feat/student-academic-calendar`, autoDeploy off, previews off, Free/Singapore, and previously verified to use JMT Test Supabase. No environment variables were read or changed.
+- Manual deployment `dep-dc26hemk1f9s73c9k18g` deployed exact #68 commit `88daa1381712b0b0e4fc228e17aed9979c0fe5b5`. Render build completed successfully: npm ci installed 328 packages, 174/174 tests passed, ESLint passed, Next.js build compiled and generated all 40 static pages, build uploaded successfully, and deploy reached `live` at 2026-11-23 16:26:49 UTC.
+- Live QA HTTP verification from an unauthenticated client:
+  - `GET /api/health`: HTTP 200; JSON `status=ok`, `database=reachable`.
+  - `GET /login`: HTTP 200.
+  - `GET /student`: HTTP 307 redirect to `/login`.
+  - `GET /teacher`: HTTP 307 redirect to `/login`.
+  - `GET /admin`: HTTP 307 redirect to `/login`.
+- Firecrawl live scrape of public pages succeeded:
+  - Homepage content rendered and links to courses/register were present.
+  - Course catalogue rendered its search/filter controls and honest empty state (0 of 0 courses in the isolated test dataset).
+  - Login page rendered email/password sign-in, forgot-password and registration links, and states that role access is controlled. No credentials were entered or submitted.
+  - Screenshot output could not be displayed by the connector, so visual pixel-level review remains unverified; content-level page inspection was completed.
+- **Important new product/security gap:** current copy on `app/page.tsx` says “Active offline students also receive recorded lessons free as make-up support”; `app/help/page.tsx` and `app/terms/page.tsx` also describe offline recording access. But the actual RLS policies in `supabase/migrations/0036_align_mode_aware_billing_schema.sql` and `supabase/JMT_ACADEMY_DATABASE_UPDATE.sql` authorize lesson/chapter reads based on active paid enrollment and do not check staff-approved roll number, physical offline cohort/batch, or a separate recording-entitlement period. Existing benchmark docs explicitly describe the offline roster/recording entitlement as a separate unimplemented security task. The current implementation therefore does **not** satisfy the owner's rule that free missed-class recordings are restricted to authorised offline roll numbers approved by authorised staff/admin and enforced server-side.
+- No Test or Production Supabase query/write/migration was performed during this audit; no production service, secret, payment setting, main branch or user credential was changed. Do not treat this entitlement feature as implemented or release-ready.
+- **Next action:** audit the exact schema and all lesson/video/storage/checkpoint access paths; design and implement a deny-by-default entitlement check tied to authenticated student identity, staff-approved roll number, physical cohort/batch and entitlement period; add regression tests for every denial case and authorised access. Prepare a migration/PR only; do not apply it to either database without explicit approval. Update public copy so it accurately reflects the real access policy and current implementation state.
