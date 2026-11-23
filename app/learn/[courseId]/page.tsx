@@ -39,13 +39,18 @@ export default async function LearningPage({
   if (!isStaff && (!enrollment?.admission_fee_paid || !currentPaidThrough)) redirect('/student?learning_error=payment_due');
   const portalRole = profile?.role === 'admin' ? 'admin' : profile?.role === 'teacher' ? 'teacher' : profile?.role === 'staff' ? 'staff' : 'student';
 
-  const [{ data: lessons }, { data: progress }, { data: chapters }, { data: bookmarks }] = await Promise.all([
+  const [{ data: lessons }, { data: chapters }, { data: bookmarks }] = await Promise.all([
     supabase.from('lessons').select('id,title,description,content,video_url,position,is_published,chapter_id').eq('course_id', courseId).eq('is_published', true).order('position'),
-    supabase.from('lesson_progress').select('lesson_id,completed').eq('student_id', user.id),
     supabase.from('chapters').select('id,title,sort_order').eq('course_id', courseId).eq('published', true).order('sort_order'),
     supabase.from('lesson_bookmarks').select('lesson_id').eq('student_id', user.id),
   ]);
   const lessonIds = (lessons ?? []).map(l => l.id);
+  const progressResult = lessonIds.length
+    ? await supabase.from('lesson_progress').select('lesson_id')
+      .eq('student_id', user.id).eq('completed', true).in('lesson_id', lessonIds)
+    : { data: [] as { lesson_id: string }[], error: null };
+  const progressAvailable = !progressResult.error;
+  const progress = progressResult.data ?? [];
   const playbackProgressResult = profile?.role === 'student' && lessonIds.length
     ? await supabase.from('lesson_playback_progress')
       .select('lesson_id,position_seconds,duration_seconds')
@@ -70,7 +75,7 @@ export default async function LearningPage({
     ...r, file_name: r.file_name.replace(/sanjay[-_ ]*kumar[-_ ]*chemistry/ig, 'JMT Academy'),
   }));
 
-  const done = new Set((progress ?? []).filter(p => p.completed).map(p => p.lesson_id));
+  const done = new Set((progress ?? []).map(p => p.lesson_id));
   const saved = new Set((bookmarks ?? []).map(b => b.lesson_id));
   const chapterNames = new Map((chapters ?? []).map((ch: any) => [ch.id, ch.title] as const));
   const reactionSummary = (discussionId: string, reaction: string) => ({
@@ -90,13 +95,14 @@ export default async function LearningPage({
         <span className="auth-kicker">JMT ACADEMY · LEARNING SPACE</span>
         <h1>{course.title}</h1>
         <p className="muted">{course.description}</p>
-        {query.progress_saved && <p className="form-success">Lesson progress saved.</p>}
+        {!progressAvailable && <p className="form-error" role="status">Lesson progress could not be loaded. Your completion status is hidden until you refresh.</p>}
+        {query.progress_saved && <p className="form-success">Lesson progress saved.</p>
         {query.progress_error && <p className="form-error">Progress could not be saved.</p>}
         {discussionError && <p className="form-error">{discussionError === 'rate_limit' ? 'You have posted too many comments. Please wait a minute and try again.' : 'That action could not be completed. Please try again.'}</p>}
         <div className="portal-stats">
-          <article><b>{done.size}</b><span>Lessons completed</span></article>
+          <article><b>{progressAvailable ? done.size : '—'}</b><span>Lessons completed</span></article>
           <article><b>{lessons?.length ?? 0}</b><span>Published lessons</span></article>
-          <article><b>{lessons?.length ? Math.round(done.size / lessons.length * 100) : 0}%</b><span>Course progress</span></article>
+          <article><b>{progressAvailable ? (lessons?.length ? Math.round(done.size / lessons.length * 100) : 0) + '%' : '—'}</b><span>Course progress</span></article>
           <article><b>{resources.length}</b><span>Study files</span></article>
         </div>
 
@@ -118,7 +124,7 @@ export default async function LearningPage({
                 <h2>{l.title}</h2>
                 {l.description && <p>{l.description}</p>}
                 {l.content && <div className="lesson-content">{l.content.split('\n').map((line: string, i: number) => <p key={i}>{line}</p>)}</div>}
-                {l.video_url && <div className="lesson-video jmt-video-player"><div className="video-brand"><span>J</span><b>JMT ACADEMY</b><small>OFFICIAL LEARNING PLAYER</small></div><LessonVideoPlayer lessonId={l.id} title={l.title} src={l.video_url} initialPositionSeconds={done.has(l.id) ? 0 : Number(playbackByLesson.get(l.id)?.position_seconds ?? 0)} completed={done.has(l.id)} enabled={profile?.role === 'student'} /></div>}
+                {l.video_url && <div className="lesson-video jmt-video-player"><div className="video-brand"><span>J</span><b>JMT ACADEMY</b><small>OFFICIAL LEARNING PLAYER</small></div><LessonVideoPlayer lessonId={l.id} title={l.title} src={l.video_url} initialPositionSeconds={!progressAvailable || done.has(l.id) ? 0 : Number(playbackByLesson.get(l.id)?.position_seconds ?? 0)} completed={done.has(l.id)} enabled={profile?.role === 'student' && progressAvailable} /></div>}
 
                 {!!lessonResources.length && <section className="lesson-materials">
                   <h3>Class videos, slides and files</h3>
@@ -138,8 +144,8 @@ export default async function LearningPage({
                     <input type="hidden" name="course_id" value={courseId}/>
                     <button className="quiet-button">{saved.has(l.id) ? '★ Saved lesson' : '☆ Save lesson'}</button>
                   </form>
-                  <span>{done.has(l.id) ? <span className="status-approved">Completed</span> : <span className="status-pending">Not completed</span>}</span>
-                  {!done.has(l.id) && <form action={markLessonComplete}>
+                  <span>{!progressAvailable ? <span className="status-pending">Progress unavailable</span> : done.has(l.id) ? <span className="status-approved">Completed</span> : <span className="status-pending">Not completed</span>}</span>
+                  {progressAvailable && !done.has(l.id) && <form action={markLessonComplete}>
                     <input type="hidden" name="lesson_id" value={l.id}/>
                     <input type="hidden" name="course_id" value={courseId}/>
                     <button className="auth-submit">Mark as completed</button>
