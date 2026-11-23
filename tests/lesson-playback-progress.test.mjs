@@ -123,3 +123,14 @@ test('Student Today offers the latest saved lesson only from current paid publis
   assert.ok(dashboard.includes('learning-os-continue-card'));
   assert.ok(dashboard.includes('Resume lesson'));
 });
+
+test('course completion progress is scoped to published lessons and fails closed when the progress query fails', async () => {
+  const page = await readFile(new URL('../app/learn/[courseId]/page.tsx', import.meta.url), 'utf8');
+  assert.ok(page.includes("from('lesson_progress').select('lesson_id')"));
+  assert.ok(page.includes(".eq('student_id', user.id).eq('completed', true).in('lesson_id', lessonIds)"));
+  assert.ok(page.includes('const progressAvailable = !progressResult.error'));
+  assert.ok(page.includes("progressAvailable ? done.size : '—'"));
+  assert.ok(page.includes("progressAvailable ? (lessons?.length ? Math.round(done.size / lessons.length * 100) : 0) + '%' : '—'"));
+  assert.ok(page.includes('Progress unavailable'));
+  assert.ok(page.includes("enabled={profile?.role === 'student' && progressAvailable}"));
+});
