@@ -138,3 +138,72 @@ test('dashboard renders the primary action before summary metrics and provides a
   assert.ok(component.includes('learning-os-continue-card'));
   assert.ok(component.includes('id="learning-os-goal-form"'));
 });
+
+test('does not display NaN or unsupported percentages when mastery evidence is missing or invalid', () => {
+  for (const masteryScore of [undefined, null, 'not-a-number', 1.5, -0.2]) {
+    const action = selectNextLearningAction({
+      now,
+      recommendations: [{
+        lessonId: 'lesson-unknown',
+        lessonTitle: 'Foundations',
+        courseId: 'course-1',
+        conceptTitle: 'Foundations',
+        masteryScore,
+        rootCauseFor: null,
+      }],
+    });
+    assert.equal(action.kind, 'recommendation');
+    assert.match(action.description, /not enough mastery evidence/);
+    assert.equal(action.description.includes('NaN'), false);
+    assert.equal(/\d+% mastery/.test(action.description), false);
+  }
+});
+
+test('ranks recommendations with measured mastery before recommendations without valid evidence', () => {
+  const action = selectNextLearningAction({
+    now,
+    recommendations: [
+      { lessonId: 'unknown', lessonTitle: 'Unknown', courseId: 'course-1', conceptTitle: 'Unknown', masteryScore: undefined },
+      { lessonId: 'known', lessonTitle: 'Measured weakness', courseId: 'course-1', conceptTitle: 'Measured weakness', masteryScore: 0.25 },
+    ],
+  });
+  assert.equal(action.title, 'Study Measured weakness');
+  assert.match(action.description, /25% mastery/);
+});
+
+
+test('revision queue keeps the most recently overdue work and nearest upcoming work', async () => {
+  const { buildRevisionTaskQueue } = await import('../lib/learning-next-action.mjs');
+  const queue = buildRevisionTaskQueue({
+    now,
+    overdueTasks: [
+      { id: 'old-1', scheduled_for: '2026-10-01T00:00:00.000Z' },
+      { id: 'old-2', scheduled_for: '2026-10-02T00:00:00.000Z' },
+      { id: 'recent', scheduled_for: '2026-11-14T00:00:00.000Z' },
+    ],
+    upcomingTasks: [
+      { id: 'far', scheduled_for: '2026-11-18T00:00:00.000Z' },
+      { id: 'near', scheduled_for: '2026-11-16T00:00:00.000Z' },
+    ],
+    limit: 4,
+  });
+  assert.deepEqual(queue.map(task => task.id), ['recent', 'old-2', 'old-1', 'near']);
+});
+
+test('revision queue rejects invalid, mispartitioned and duplicate records', async () => {
+  const { buildRevisionTaskQueue } = await import('../lib/learning-next-action.mjs');
+  const queue = buildRevisionTaskQueue({
+    now,
+    overdueTasks: [
+      { id: 'bad', scheduled_for: 'not-a-date' },
+      { id: 'future-in-overdue', scheduled_for: '2026-11-16T00:00:00.000Z' },
+      { id: 'duplicate', scheduled_for: '2026-11-14T00:00:00.000Z' },
+    ],
+    upcomingTasks: [
+      { id: 'duplicate', scheduled_for: '2026-11-16T00:00:00.000Z' },
+      { id: 'past-in-upcoming', scheduled_for: '2026-11-14T00:00:00.000Z' },
+      { id: 'valid', scheduled_for: '2026-11-16T00:00:00.000Z' },
+    ],
+  });
+  assert.deepEqual(queue.map(task => task.id), ['duplicate', 'valid']);
+});
