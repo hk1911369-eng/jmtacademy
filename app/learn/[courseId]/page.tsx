@@ -96,7 +96,7 @@ export default async function LearningPage({
         <h1>{course.title}</h1>
         <p className="muted">{course.description}</p>
         {!progressAvailable && <p className="form-error" role="status">Lesson progress could not be loaded. Your completion status is hidden until you refresh.</p>}
-        {query.progress_saved && <p className="form-success">Lesson progress saved.</p>
+        {query.progress_saved && <p className="form-success">Lesson progress saved.</p>}
         {query.progress_error && <p className="form-error">Progress could not be saved.</p>}
         {discussionError && <p className="form-error">{discussionError === 'rate_limit' ? 'You have posted too many comments. Please wait a minute and try again.' : 'That action could not be completed. Please try again.'}</p>}
         <div className="portal-stats">
