@@ -39,6 +39,7 @@ const navigation: Record<PortalRole, NavGroup[]> = {
       { key: 'notifications', label: 'Notifications inbox', href: '/academic#notifications', icon: 'users' },
       { key: 'learning-insights', label: 'Learning insights', href: '/teacher/learning', icon: 'chart' },
       { key: 'students', label: 'Students & attendance', href: '/students/manage', icon: 'graduation-cap' },
+      { key: 'offline-operations', label: 'Offline batches & rolls', href: '/offline-operations', icon: 'users' },
     ]},
   ],
   staff: [
@@ -52,6 +53,7 @@ const navigation: Record<PortalRole, NavGroup[]> = {
       { key: 'notifications', label: 'Notifications inbox', href: '/academic#notifications', icon: 'users' },
       { key: 'learning-insights', label: 'Learning insights', href: '/teacher/learning', icon: 'chart' },
       { key: 'students', label: 'Students & attendance', href: '/students/manage', icon: 'graduation-cap' },
+      { key: 'offline-operations', label: 'Offline batches & rolls', href: '/offline-operations', icon: 'users' },
     ]},
   ],
   admin: [
@@ -67,6 +69,7 @@ const navigation: Record<PortalRole, NavGroup[]> = {
       { key: 'courses', label: 'Course studio', href: '/admin/courses', icon: 'book' },
       { key: 'learning-graph', label: 'Subjects & concept graph', href: '/admin/learning', icon: 'chart' },
       { key: 'learning-insights', label: 'Learning analytics', href: '/teacher/learning', icon: 'chart' },
+      { key: 'offline-operations', label: 'Offline batches & rolls', href: '/offline-operations', icon: 'users' },
     ]},
   ],
 };
