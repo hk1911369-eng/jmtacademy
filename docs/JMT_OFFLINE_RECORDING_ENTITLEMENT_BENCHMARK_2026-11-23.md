@@ -70,3 +70,33 @@ Not yet verified:
 ## Source quality
 
 The Moodle and Open edX pages are first-party product documentation and establish documented capabilities, not proof of user satisfaction. Reddit material is an anecdotal complaint signal only. The JMT acceptance criteria are original engineering requirements and must be verified against the actual application and database before release.
+
+
+## Security review supplement — 24 November 2026
+
+### Signed-link and cache semantics
+
+The source review found a mismatch in the original upload path: recording objects were uploaded with `cacheControl: '3600'` while the application issued signed viewing URLs for 900 seconds. Supabase's current Smart CDN documentation says the signed-token expiry and object cache TTL are independent; a cached signed response can remain available after token expiry until the cache duration ends. Supabase's private-bucket troubleshooting guidance also warns that browser caches can continue serving a private file after access is removed and recommends a shorter `cacheControl` for revocable files.
+
+JMT Test is currently in a Free-plan Supabase organisation (Smart CDN is Pro+), but browser caching remains relevant. The upload now sets `cacheControl: '60'`, below the 900-second signed-link lifetime. A regression test asserts both values and their ordering.
+
+This does **not** make per-student revocation instantaneous. An already-issued signed URL is a bearer link and remains usable until its 900-second expiry; a cached response may add up to the configured 60-second cache window. Revocation prevents new metadata reads and new signed URLs. If the academy later requires immediate mid-stream revocation, replace direct signed playback with a server/Edge streaming path that checks the current entitlement on every request. That stronger path is not implemented or claimed here.
+
+### Product and independent security evidence
+
+- [Moodle 5.3 groupings](https://docs.moodle.org/503/en/Create_grouping) and [cohorts](https://docs.moodle.org/501/en/Cohorts) distinguish course-level groups from broader cohort membership. JMT keeps the physical batch separate from course enrolment and records the official roll independently.
+- [Open edX content visibility](https://docs.openedx.org/en/latest/educators/references/controlling_content_visibility.html) supports release dates, publishing states and cohort/content-group restrictions. Its [cohort-specific content guide](https://docs.openedx.org/en/latest/educators/references/advanced_features/guide_cohort_specific_content.html) warns that inherited group rules and learner preview matter. JMT uses one explicit batch entitlement rather than stacking learner-visible group settings.
+- Southern Methodist University's [classroom-recording guidance](https://www.smu.edu/oit/academictech/instructional-guidelines/guides/classroom-recording) distinguishes individual sharing from organization-wide or public-unlisted links; anyone with a public-unlisted link can view it. JMT therefore keeps the bucket private and does not expose public video URLs.
+- [OWASP API1:2023 — Broken Object Level Authorization](https://api-security.owasp.org/editions/2023/en/0xa1-broken-object-level-authorization/) says every function that uses a client-supplied object ID must verify authorization for that exact object. JMT's recording-ID lookup relies on session-bound RLS for the recording row and a separate Storage-object policy; the ID itself is not treated as authority.
+- [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final) provides the least-privilege control catalogue. JMT's batch-specific staff assignment is the corresponding product decision: staff access is limited to the batch and course they are assigned to, and assignment removal must be reflected in access tests.
+- [Supabase Storage access control](https://supabase.com/docs/guides/storage/security/access-control) confirms that `storage.objects` RLS controls upload, download and signed-URL creation. [Supabase Smart CDN](https://supabase.com/docs/guides/storage/cdn/smart-cdn#signed-urls-and-cdn-caching) documents the independent token/cache lifetimes and the residual-cache caveat.
+
+### Updated release acceptance criteria
+
+- 0 new recording-row or signed-URL grants after a student's roster entitlement is revoked, expires, or no longer matches the course/batch.
+- 0 grants for online/recorded-only enrolments, inactive profiles/enrolments/batches, unpublished or archived courses, wrong batch/course, or unassigned staff.
+- The signed URL lifetime remains 900 seconds and uploaded object cache TTL remains 60 seconds; automated regression tests must fail if cache TTL is raised to or above the signed-link lifetime.
+- Authenticated test must verify the real browser/CDN behavior after signed-link expiry and after roster revocation. Until that test is run, report the 15-minute bearer-link lifetime plus up to 60 seconds of cache residual as a known limitation, not immediate revocation.
+- No public bucket or public video URL; row metadata and Storage object reads use the same server-side entitlement predicate.
+- Test recording-ID substitution, wrong batch/course, online enrolment, missing/revoked/expired roster, staff assignment removal, and signed-link expiry against hosted JMT Test before release.
+

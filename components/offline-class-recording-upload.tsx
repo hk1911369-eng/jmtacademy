@@ -27,7 +27,9 @@ export function OfflineClassRecordingUpload({
     const safeName = file.name.normalize('NFKD').replace(/[^a-zA-Z0-9._-]+/g, '-').slice(-120) || 'class-recording.mp4';
     const path = batchId + '/' + liveClassId + '/' + crypto.randomUUID() + '-' + safeName;
     const { error: uploadError } = await supabase.storage.from('offline-class-recordings').upload(path, file, {
-      contentType: file.type, cacheControl: '3600', upsert: false,
+      contentType: file.type,
+      // Keep cached copies shorter than the 15-minute signed-link lifetime.
+      cacheControl: '60', upsert: false,
     });
     if (uploadError) {
       setBusy(false); setMessage('Upload failed. Check your connection and try again.'); return;
