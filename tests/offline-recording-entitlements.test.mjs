@@ -79,8 +79,8 @@ test('public offline recording copy does not promise access from offline enrolme
 test('private recording cache TTL stays shorter than signed-link expiry', async () => {
   const upload = await read('components/offline-class-recording-upload.tsx');
   const action = await read('app/actions/offline-academy.ts');
-  const cacheTtl = Number(upload.match(/cacheControl:\s*'(\\d+)'/)?.[1]);
-  const signedTtl = Number(action.match(/createSignedUrl\\(recording\\.storage_path,\\s*(\\d+)\\)/)?.[1]);
+  const cacheTtl = Number(upload.match(/cacheControl:\s*'(\d+)'/)?.[1]);
+  const signedTtl = Number(action.match(/createSignedUrl\(recording\.storage_path,\s*(\d+)\)/)?.[1]);
   assert.equal(cacheTtl, 60);
   assert.equal(signedTtl, 900);
   assert.ok(cacheTtl < signedTtl);
