@@ -3,7 +3,7 @@
 > **This is the one authoritative, replaceable handoff for the active work.**
 > Update this file whenever a meaningful task starts, changes, finishes, is blocked, or a new feature request is accepted. Replace the previous active-task state; do not leave stale “next task” instructions active. Keep durable product requirements in the North Star and benchmark standard, not duplicated here.
 
-**Last updated:** 23 November 2026, 16:54 (Asia/Dhaka; refreshed live Student Today branch-chain, benchmark and unauthenticated QA evidence)
+**Last updated:** 26 November 2026, 13:15 (Asia/Dhaka; recovered live state and revalidated the approval-gated offline-recording task)
 **Canonical repository:** https://github.com/hk1911369-eng/jmtacademy  
 **Branch containing this handoff:** `docs/jmt-academy-project-north-star`
 
@@ -822,3 +822,18 @@ These are connected strategic priorities, not isolated products. The Learning Ex
 ### Exact next task and first next action
 - **Next task:** obtain explicit owner approval for a JMT Test-only migration and synthetic fixture operation.
 - **First next action:** do not run any migration or seed. Wait for the owner to explicitly authorize applying supabase/migrations/20261123163858_offline_recording_entitlements.sql to JMT Test project cullxqklmbdiosibgois only and creating synthetic non-real profiles/enrolments/batches/roster/classes/recordings. After approval, use the Supabase migration workflow and execute the hosted RLS/Storage allow/deny matrix; test that roster revocation blocks new signed URLs and measure the existing 900-second bearer-link plus 60-second cache behavior. If approval is not given, keep the database and Production unchanged. The recurring Continue JMT Academy automation was disabled on 24 Nov because no safe next action remains before owner approval; re-enable it after the owner authorizes the Test-only migration and synthetic fixtures.
+
+
+## Recovery verification — 26 November 2026
+
+- Re-read this handoff, the full Project North Star and the full permanent benchmark standard from `docs/jmt-academy-project-north-star`. Their current content blob SHAs at recovery: handoff `615ba3c8de57ad34af106db9f136796a37df0e5c`, North Star `d2a7ab7b94eabb93bfe69eae0d0683dfc23fc001`, benchmark `525c4df279e770b830a66aa46975790d16d0462e`.
+- Current docs branch head before this note: `c4ab067c361cf430242977c6f703e003be38af24`. The prior 24 Nov commit explicitly disabled the recurring “Continue JMT Academy” automation because no safe next action remained before owner approval.
+- Refreshed PR #73: open, draft, unmerged, mergeable; exact head `21898218a23c3068248bab779fd0f0acf12a51e6`, base PR #68 head `88daa1381712b0b0e4fc228e17aed9979c0fe5b5`, 13 files changed. No PR comments, submitted reviews or review threads were returned.
+- Re-fetched exact-head workflows for #73: CI `45375085344`, Quality `45375087339`, LMS Quality `45375085144` all completed successfully. Each reports 180 tests passing; Quality and LMS Quality also report lint, TypeScript, production build (41 static pages) and production dependency audit (0 vulnerabilities) passing. This is CI evidence only, not hosted Supabase or authenticated browser evidence.
+- PRs #66, #67 and #68 remain open, draft and unmerged, with the same stacked base/head SHAs recorded in Section 4. Do not merge or retarget them independently.
+- Read-only JMT Test inspection: project `cullxqklmbdiosibgois` is ACTIVE_HEALTHY; 257 migrations are recorded, latest `20261114190505`; target migration `20261123163858` is absent. The three offline entitlement tables are absent. Current basic fixture counts remain 3 profiles, 3 courses, 0 enrollments and 0 live classes. No database writes were made.
+- The user's broad authorization to take the lead does not explicitly approve the specifically gated Test migration and synthetic fixture creation. Keep the gate: obtain explicit approval naming JMT Test only, migration `supabase/migrations/20261123163858_offline_recording_entitlements.sql`, and synthetic non-real fixtures. Production remains out of scope.
+- Render service/deployment inspection was not performed because the relevant Render workspace/service selection is not verified in this chat. No deployment or hosting setting was changed.
+- No source code, migration, database, storage, secrets, environment, payment or production state was changed in this recovery session.
+
+**Exact next task:** obtain the explicit Test-only migration and synthetic-fixture approval described above. If approved, apply only that migration to JMT Test, create synthetic fixtures and run hosted RLS/Storage allow/deny tests. If not approved, leave both databases unchanged and continue only with safe read-only research/documentation. Re-enable the paused “Continue JMT Academy” daily automation only after the approval gate is cleared.
