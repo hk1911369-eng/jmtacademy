@@ -837,3 +837,16 @@ These are connected strategic priorities, not isolated products. The Learning Ex
 - No source code, migration, database, storage, secrets, environment, payment or production state was changed in this recovery session.
 
 **Exact next task:** obtain the explicit Test-only migration and synthetic-fixture approval described above. If approved, apply only that migration to JMT Test, create synthetic fixtures and run hosted RLS/Storage allow/deny tests. If not approved, leave both databases unchanged and continue only with safe read-only research/documentation. Re-enable the paused “Continue JMT Academy” daily automation only after the approval gate is cleared.
+
+
+## Recovery recheck — 26 November 2026 (latest session)
+
+- Re-read the current handoff (blob `a7baf4125caf1fb8cfc07b56fa8bace17ec44e57`), North Star (blob `d2a7ab7b94eabb93bfe69eae0d0683dfc23fc001`) and benchmark standard (blob `525c4df279e770b830a66aa46975790d16d0462e`) from the live docs branch.
+- Reconfirmed PR #73 remains open/draft/unmerged, head `21898218a23c3068248bab779fd0f0acf12a51e6`, base `88daa1381712b0b0e4fc228e17aed9979c0fe5b5`. PRs #66, #67 and #68 remain open/draft/unmerged with the same stacked SHAs listed above.
+- Rechecked exact-head workflow runs for PR #73: CI `45375085344`, Quality `45375087339`, LMS Quality `45375085144`; all completed with success. This does not establish hosted Supabase or browser QA.
+- Rechecked JMT Test with read-only Supabase calls: ACTIVE_HEALTHY; 257 migration records, latest `20261114190505`; target `20261123163858` absent. Tables `offline_academy_batches`, `offline_academy_roster`, and `offline_class_recordings` absent. Counts: 3 profiles, 3 courses, 0 enrollments, 0 live classes. No writes.
+- Confirmed main remains `89331594bc3dc4880d71b1e5f3ba0343d49f9797`. The recurring “Continue JMT Academy” automation remains disabled; the separate read-only PR/deployment monitor is enabled. No automation state changed.
+- The user repeated the general master continuation authorization but did not explicitly approve the named Test-only migration and synthetic fixture operation. This is not approval to perform the gated database writes. No migration, fixtures, source changes, PR changes, deployments, secrets or payment settings were changed.
+- The attempt to call an unavailable GitHub PR-files action was abandoned; it did not change repository state. Render deployment status remains unverified in this session.
+
+**Single next action remains:** obtain explicit owner approval to apply only `supabase/migrations/20261123163858_offline_recording_entitlements.sql` to JMT Test project `cullxqklmbdiosibgois` and create synthetic non-real fixtures. If approved, execute the hosted RLS/Storage allow/deny and revocation/cache-expiry tests. Until then, keep Test and Production unchanged; do not re-enable the paused continuation automation.
