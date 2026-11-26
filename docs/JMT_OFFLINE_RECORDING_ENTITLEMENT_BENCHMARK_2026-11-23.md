@@ -140,5 +140,13 @@ Transactional negative tests were rolled back. The persistent revocation test wa
 - The available Supabase integration exposes SQL, migration and schema inspection actions but no Storage file-upload action. No dummy row was inserted directly into `storage.objects`; direct writes to Supabase's Storage metadata schema were intentionally avoided. Therefore actual object upload, eligible student object download, signed-URL creation, 900-second expiry, and 60-second browser/cache behavior remain unverified against hosted Storage.
 - No authenticated browser or real student/staff/admin browser session was available. Hosted SQL role simulation verifies database policy behavior, not full Auth JWT or Next.js UI behavior.
 - Supabase security advisors still report pre-existing public/authenticated SECURITY DEFINER warnings and leaked-password protection disabled. They do not identify the new private helper functions as public callable functions.
-- Supabase performance advisors report 10 unindexed foreign-key constraints introduced by this feature migration (plus 2 pre-existing findings). Add covering indexes in a follow-up migration before production readiness. Multiple permissive policy notices reflect the separate admin/staff/student role paths and should be reviewed for query cost.
+- Initial Supabase performance advisors reported 10 unindexed foreign-key constraints introduced by the feature migration. Follow-up migration `20261126073045` (`offline_recording_foreign_key_indexes`) adds 10 covering indexes. A fresh advisor run now reports only 2 unrelated pre-existing unindexed foreign keys (`assignment_submission_versions_assignment_id_fkey` and `lesson_playback_progress_lesson_id_fkey`). Multiple permissive policy notices remain for the distinct admin/staff/student role paths and should be reviewed for query cost.
 - The feature remains a draft PR stacked on the academic-calendar branch. No PR was merged, no Production migration or deployment occurred, and no payment or secret settings changed.
+
+
+### Follow-up index migration — 26 November 2026
+
+- Source: `supabase/migrations/20261126073500_offline_recording_foreign_key_indexes.sql` (10 indexes).
+- Applied to JMT Test only; Supabase migration version `20261126073045`, name `offline_recording_foreign_key_indexes`.
+- Re-ran Supabase performance advisors. The feature's 10 unindexed foreign-key findings disappeared. Two unrelated pre-existing findings remain: `assignment_submission_versions_assignment_id_fkey` and `lesson_playback_progress_lesson_id_fkey`.
+- This is hosted Test database verification, not Production. Production remains untouched.
