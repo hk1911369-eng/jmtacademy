@@ -100,3 +100,45 @@ This does **not** make per-student revocation instantaneous. An already-issued s
 - No public bucket or public video URL; row metadata and Storage object reads use the same server-side entitlement predicate.
 - Test recording-ID substitution, wrong batch/course, online enrolment, missing/revoked/expired roster, staff assignment removal, and signed-link expiry against hosted JMT Test before release.
 
+
+
+## Hosted JMT Test verification — 26 November 2026
+
+### Migration and fixture state
+
+- Target: Supabase project `cullxqklmbdiosibgois` (JMT Test), confirmed `ACTIVE_HEALTHY`.
+- Applied migration version: `20261126072557`, name `offline_recording_entitlements`. Source migration: `supabase/migrations/20261123163858_offline_recording_entitlements.sql`, Git blob `11f376a448206edf65246ff019a09d73188ccf9b`.
+- Private bucket `offline-class-recordings` exists with `public=false`.
+- Synthetic fixture course: `d1000000-0000-4000-8000-000000000001`; synthetic batch: `d2000000-0000-4000-8000-000000000001`; completed class: `d3000000-0000-4000-8000-000000000001`.
+- Synthetic enrollment and roster use existing Test-only student identity; batch staff assignment uses existing Test-only teacher; existing Test admin performed setup. No new Auth identities were created. The original HSC 2027, HSC 2028 and Admission demo courses were not modified.
+- Roster currently contains one revoked historical approval and one current approved entry. Audit log has two `offline_roster.approved` events and one `offline_roster.revoked` event.
+
+### Hosted allow/deny evidence
+
+| Scenario | Observed result |
+|---|---|
+| Eligible student, exact course + batch + active offline enrolment + approved roster | Entitlement helper returned `true` |
+| Student reads own roster | 1 own roster row visible |
+| Student reads batch records | 0 batches visible |
+| Student reads recording metadata before any recording exists | 0 rows visible (no recording object/metadata was uploaded) |
+| Wrong batch identifier | Entitlement helper returned `false` |
+| Expired offline enrolment (transactional negative test, rolled back) | Entitlement helper returned `false` |
+| Roster revoked (transactional negative test, rolled back) | Entitlement helper returned `false` |
+| Persistent roster revocation | Access predicate denied after revocation; audit event recorded |
+| Reapproval after revocation | New approval restored the entitlement; old revoked row remained immutable |
+| Assigned teacher | 1 assigned batch and roster visible; `can_manage_offline_batch` returned `true` |
+| Teacher not assigned to a second synthetic batch (transactional negative test, rolled back) | Predicate returned `false`; teacher could see only the assigned batch |
+| Admin | Batch and roster visible; batch management predicate returned `true` |
+| Student attempts to insert own roster approval | Denied by hosted RLS with SQLSTATE `42501` |
+| Student attempts to insert Storage object | Denied by hosted Storage RLS with SQLSTATE `42501` |
+| Anonymous Storage object listing | 0 objects visible |
+
+Transactional negative tests were rolled back. The persistent revocation test was followed by a new approval so the synthetic student fixture remains eligible.
+
+### Verification limitations and follow-up
+
+- The available Supabase integration exposes SQL, migration and schema inspection actions but no Storage file-upload action. No dummy row was inserted directly into `storage.objects`; direct writes to Supabase's Storage metadata schema were intentionally avoided. Therefore actual object upload, eligible student object download, signed-URL creation, 900-second expiry, and 60-second browser/cache behavior remain unverified against hosted Storage.
+- No authenticated browser or real student/staff/admin browser session was available. Hosted SQL role simulation verifies database policy behavior, not full Auth JWT or Next.js UI behavior.
+- Supabase security advisors still report pre-existing public/authenticated SECURITY DEFINER warnings and leaked-password protection disabled. They do not identify the new private helper functions as public callable functions.
+- Supabase performance advisors report 10 unindexed foreign-key constraints introduced by this feature migration (plus 2 pre-existing findings). Add covering indexes in a follow-up migration before production readiness. Multiple permissive policy notices reflect the separate admin/staff/student role paths and should be reviewed for query cost.
+- The feature remains a draft PR stacked on the academic-calendar branch. No PR was merged, no Production migration or deployment occurred, and no payment or secret settings changed.
