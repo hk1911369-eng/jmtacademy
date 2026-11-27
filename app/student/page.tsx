@@ -7,7 +7,6 @@ import { submitManualPayment } from '@/app/actions/payments';
 import { LearningOSDashboard } from '@/components/learning-os-dashboard';
 import { buildLearningCalendarEvents, getCalendarDateKey } from '@/lib/learning-calendar.mjs';
 import { buildRevisionTaskQueue } from '@/lib/learning-next-action.mjs';
-import { getLearningDashboardAvailability } from '@/lib/learning-dashboard-availability.mjs';
 import { updateStudentDetails } from '@/app/actions/student-management';
 import { MONTHLY_FEE_BDT, currentBangladeshBillingPeriod, billingMonthEnd } from '@/lib/pricing';
 
