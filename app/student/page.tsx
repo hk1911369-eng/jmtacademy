@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server';
 import { submitManualPayment } from '@/app/actions/payments';
 import { LearningOSDashboard } from '@/components/learning-os-dashboard';
 import { buildRevisionTaskQueue } from '@/lib/learning-next-action.mjs';
+import { getLearningDashboardAvailability } from '@/lib/learning-dashboard-availability.mjs';
 import { updateStudentDetails } from '@/app/actions/student-management';
 import { MONTHLY_FEE_BDT, currentBangladeshBillingPeriod, billingMonthEnd } from '@/lib/pricing';
 
@@ -77,6 +78,15 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
     supabase.from('learner_concept_mastery').select('concept_id,mastery_score,confidence,evidence_count,next_review_at,learning_concepts(title,academic_subjects(name))').eq('student_id',user.id).order('mastery_score',{ascending:true}).limit(12),
     supabase.from('learner_mistake_memory').select('id,course_id,source_type,mistake_type,prompt_snapshot,response_snapshot,correct_answer_snapshot,explanation_snapshot,occurrence_count,last_seen_at').eq('student_id',user.id).is('resolved_at',null).order('last_seen_at',{ascending:false}).limit(8),
   ]);
+  const learningDataIssues = new Set<string>();
+  if (goalResult.error) learningDataIssues.add('goals');
+  if (overdueRevisionResult.error || upcomingRevisionResult.error) learningDataIssues.add('revision');
+  if (masteryResult.error) {
+    learningDataIssues.add('mastery');
+    learningDataIssues.add('recommendations');
+  }
+  if (mistakeResult.error) learningDataIssues.add('mistakes');
+
   const learningGoals = goalResult.data ?? [];
   const revisionTasks = buildRevisionTaskQueue({
     overdueTasks: overdueRevisionResult.data ?? [],
@@ -101,16 +111,18 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
     .map((item:any) => item.course_id))];
   let learningRecommendations: { lessonId:string; lessonTitle:string; courseId:string; conceptTitle:string; masteryScore:number|null; rootCauseFor:string|null }[] = [];
   if (weakConceptIds.length && eligibleCourseIds.length) {
-    const { data: prerequisiteEdges } = await supabase.from('concept_prerequisites')
+    const { data: prerequisiteEdges, error: prerequisiteEdgesError } = await supabase.from('concept_prerequisites')
       .select('concept_id,prerequisite_concept_id').in('concept_id',weakConceptIds);
+    if (prerequisiteEdgesError) learningDataIssues.add('recommendations');
     const prerequisiteIds = [...new Set((prerequisiteEdges ?? []).map((edge:any) => edge.prerequisite_concept_id))];
-    const [{ data: prerequisiteConceptRows }, { data: prerequisiteMasteryRows }] = prerequisiteIds.length
+    const [{ data: prerequisiteConceptRows, error: prerequisiteConceptError }, { data: prerequisiteMasteryRows, error: prerequisiteMasteryError }] = prerequisiteIds.length
       ? await Promise.all([
           supabase.from('learning_concepts').select('id,title').in('id',prerequisiteIds).eq('is_published',true),
           supabase.from('learner_concept_mastery').select('concept_id,mastery_score,evidence_count')
             .eq('student_id',user.id).in('concept_id',prerequisiteIds),
         ])
-      : [{ data: [] as any[] }, { data: [] as any[] }];
+      : [{ data: [] as any[], error: null }, { data: [] as any[], error: null }];
+    if (prerequisiteConceptError || prerequisiteMasteryError) learningDataIssues.add('recommendations');
     const prerequisiteTitles = new Map<string,string>((prerequisiteConceptRows ?? []).map((item:any) => [String(item.id),String(item.title)] as [string,string]));
     const prerequisiteMastery = new Map<string,any>((prerequisiteMasteryRows ?? []).map((item:any) => [String(item.concept_id),item] as [string,any]));
     const edgesByWeakConcept = new Map<string,string[]>();
@@ -151,13 +163,15 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
     }
     const recommendationConceptIds = [...recommendationTargets.keys()];
     if (recommendationConceptIds.length) {
-      const { data: candidateLessons } = await supabase.from('lessons')
+      const { data: candidateLessons, error: candidateLessonsError } = await supabase.from('lessons')
         .select('id,title,course_id').in('course_id',eligibleCourseIds).eq('is_published',true).limit(300);
+      if (candidateLessonsError) learningDataIssues.add('recommendations');
       const lessonRows = candidateLessons ?? [];
       if (lessonRows.length) {
-        const { data: mappings } = await supabase.from('lesson_concepts')
+        const { data: mappings, error: mappingsError } = await supabase.from('lesson_concepts')
           .select('lesson_id,concept_id').in('lesson_id',lessonRows.map((lesson:any)=>lesson.id))
           .in('concept_id',recommendationConceptIds);
+        if (mappingsError) learningDataIssues.add('recommendations');
         const lessonById = new Map(lessonRows.map((lesson:any)=>[lesson.id,lesson]));
         const seen = new Set<string>();
         for (const mapping of mappings ?? []) {
@@ -188,6 +202,8 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
     ...(upcomingQuizResult.data ?? []).map((item:any) => ({...item,kind:'Quiz',duration_minutes:item.duration_minutes})),
     ...(upcomingWrittenResult.data ?? []).map((item:any) => ({...item,kind:'Written exam',duration_minutes:null})),
   ].sort((a:any,b:any)=>new Date(a.starts_at).getTime()-new Date(b.starts_at).getTime()).slice(0,8);
+  if (upcomingQuizResult.error || upcomingWrittenResult.error) learningDataIssues.add('upcomingExams');
+  if (upcomingAssignmentResult.error) learningDataIssues.add('upcomingAssignments');
   const upcomingAssignments = upcomingAssignmentResult.data ?? [];
 
   function PaymentForm({ courseId, kind, amount, deliveryMode }: { courseId: string; kind: 'initial' | 'monthly'; amount: number; deliveryMode?: string }) {
@@ -214,7 +230,7 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
       {params.learning_error && <p className="form-error">{params.learning_error==='payment_due'?'Your current month tuition must be approved before opening lessons. Offline students receive the recorded library as part of their paid offline course.':'Course access is available only after payment approval.'}</p>}
       {params.profile_success && <p className="form-success">Profile updated.</p>}{params.profile_error && <p className="form-error">Profile could not be updated. Check your name and Bangladesh mobile number.</p>}
       <div className="portal-stats"><article><b>{activeCount}</b><span>Active courses</span></article><article><b>{pendingCount}</b><span>Payments under review</span></article><article><b>{applications?.length ?? 0}</b><span>Course applications</span></article></div>
-      <LearningOSDashboard goals={learningGoals} revisionTasks={revisionTasks} mastery={conceptMastery} mistakes={mistakeMemory} recommendations={learningRecommendations} courseNames={courseNames} upcomingExams={upcomingExams} upcomingAssignments={upcomingAssignments} />
+      <LearningOSDashboard goals={learningGoals} revisionTasks={revisionTasks} mastery={conceptMastery} mistakes={mistakeMemory} recommendations={learningRecommendations} courseNames={courseNames} upcomingExams={upcomingExams} upcomingAssignments={upcomingAssignments} sourceIssues={[...learningDataIssues]} />
       <h2 id="profile">Student profile</h2>
       {avatarUrl&&<p><Image src={avatarUrl} alt="Your profile" width={100} height={100} unoptimized style={{width:100,height:100,objectFit:'cover',borderRadius:16}}/></p>}
       <form action={updateStudentDetails} className="auth-form portal-card" encType="multipart/form-data">
