@@ -81,3 +81,33 @@ These are narrow desk-research scores, not a claim of direct hands-on comparativ
 - Reliable Continue Where You Stopped requires a secure progress checkpoint model and client-side playback/lesson progress capture. The existing `lesson_progress.completed` boolean is insufficient.
 - A unified academic calendar requires joining live classes, assignments, exams and revision, deduplication, recurring schedules, cancellation/time-zone handling and a usable day/week view.
 - Full screenshot-based mobile and accessibility audit is not completed in this chat environment. Code and automated checks cannot replace real-device/student usability validation.
+
+
+## 8. Partial data, failure and truthful empty-state extension — 27 November 2026
+
+### Additional benchmark evidence
+- **Home Office User-Centred Design Manual — Notifications** (first-party public design guidance): status updates should be exposed through an ARIA live region; `role="status"` with polite announcements avoids unnecessary interruption; keep focus in place and avoid over-notifying. This supports one calm page-level notice plus local section messages rather than assertive alerts or repeated toast spam.
+- **Agriculture Design System — Loading, empty and error states** (government design system): a section-level error should say what failed in plain language and offer a recovery path; an empty state is only appropriate after data loaded successfully and returned no items. It explicitly distinguishes empty and error states.
+- **Intelligence Community Design System — Empty state**: reserve empty states for genuinely absent content and give a useful next action; do not use an empty-state pattern to disguise an unrelated failure.
+- **Invoca Design System — Error handling**: for partial page/table failures, preserve already-loaded content and place a scoped alert above it; reserve replacement/full-page failure for cases where no content can be rendered.
+
+These are published design-system recommendations, not controlled evidence that a particular dashboard improves learning outcomes. JMT adapts the principles, not the component styling or proprietary code.
+
+### JMT decision
+- Track source availability independently for goals, revision, mastery, mistakes, recommendations, upcoming exams and upcoming assignments.
+- Keep healthy sections visible when another source fails.
+- A failed section shows a concise, non-technical explanation; it never reuses its successful-empty copy.
+- Summary metrics show an em dash when their source is unavailable, not a false zero.
+- Show one polite page-level status announcement; section-level copy identifies the affected data.
+- If any source needed to rank the next action fails, suppress a potentially misleading priority and show a neutral refresh path. Never infer that no urgent task exists from incomplete data.
+- Do not expose raw Supabase errors, SQL, identifiers or student records in UI messages.
+
+### Acceptance criteria
+1. Successful empty results retain the existing honest empty copy.
+2. A failed source is represented as unavailable, never as a zero or confirmed empty state.
+3. One or multiple source failures leave unrelated healthy dashboard sections visible.
+4. If revision, exams, assignments or recommendations cannot be checked, the dashboard does not claim a reliable next-best action.
+5. A failed mastery source does not show an empty mastery map or inferred score; a failed recommendation source does not say there are no recommendations.
+6. The page-level notice uses `role="status"` and `aria-live="polite"`; no focus is moved and raw backend errors are never exposed.
+7. Automated tests cover full success, successful empty, one failure and multiple failures.
+8. Human mobile/screen-reader verification remains a release gate and is not claimed from code inspection alone.

@@ -353,3 +353,8 @@ button,.btn,.auth-submit,.portal-nav-link{touch-action:manipulation}
   .learning-calendar-month-day small{font-size:9px}
   .learning-calendar-event{padding:10px}
 }
+
+
+/* Learning OS — truthful partial-data states */
+.learning-os-data-warning{margin:14px 0;padding:12px 14px;border:1px solid #d8b86a;border-radius:10px;background:#fff9e9;color:#59430f;font-size:13px;line-height:1.55}
+.learning-os-data-error{margin:10px 0;padding:10px 12px;border-left:3px solid #b7791f;background:#fffaf0;color:#5f4615;font-size:13px;line-height:1.55}
