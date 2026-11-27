@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { completeRevisionTask, createStudyGoal } from '@/app/actions/learning';
 import { selectNextLearningAction, type ContinueLesson } from '@/lib/learning-next-action.mjs';
 import { getLearningDashboardAvailability } from '@/lib/learning-dashboard-availability.mjs';
+import { LearningOSCalendar } from '@/components/learning-os-calendar';
+import type { LearningCalendarEvent } from '@/lib/learning-calendar.mjs';
 
 type Goal = {
   id: string; goal_type: string; target_value: number; current_value: number;
@@ -38,10 +40,12 @@ function formatPlaybackPosition(value: number) {
     : minutes + ':' + String(remainder).padStart(2, '0');
 }
 
-export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, recommendations, courseNames, upcomingExams, upcomingAssignments, continueLesson, sourceIssues = [] }: {
+export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, recommendations, courseNames, upcomingExams, upcomingAssignments, continueLesson, calendarEvents, undatedCalendarEvents, calendarInitialDateKey, calendarSourceErrorCount, sourceIssues = [] }: {
   goals: Goal[]; revisionTasks: RevisionTask[]; mastery: Mastery[]; mistakes: Mistake[]; recommendations: Recommendation[];
   courseNames: Map<string, string>; upcomingExams: UpcomingExam[]; upcomingAssignments: UpcomingAssignment[];
-  continueLesson: ContinueLesson | null; sourceIssues?: string[];
+  continueLesson: ContinueLesson | null;
+  calendarEvents: LearningCalendarEvent[]; undatedCalendarEvents: LearningCalendarEvent[];
+  calendarInitialDateKey: string; calendarSourceErrorCount: number; sourceIssues?: string[];
 }) {
   const availability = getLearningDashboardAvailability(sourceIssues);
   const nextAction = availability.nextActionUnavailable
@@ -146,26 +150,12 @@ export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, r
       </div>
     </div>
 
-    <div className="learning-os-columns">
-      <div>
-        <h3>Upcoming exams</h3>
-        {availability.hasIssue('upcomingExams') ? <p className="learning-os-data-error">Upcoming exams could not be loaded. Refresh to check the schedule again.</p> : upcomingExams.length === 0 ? <p className="learning-os-muted">No scheduled quizzes or written exams in your active courses.</p> :
-          <ul className="learning-os-list">{upcomingExams.map(exam => <li key={exam.kind + exam.id}>
-            <b>{exam.title}</b> <span className="learning-os-muted">· {exam.kind}</span>
-            <small className="learning-os-muted">{courseNames.get(exam.course_id) ?? 'Course'} · {new Date(exam.starts_at).toLocaleString('en-GB',{timeZone:'Asia/Dhaka'})} Bangladesh time · {exam.total_marks} marks{exam.duration_minutes ? ' · '+exam.duration_minutes+' min' : ''}</small>
-            <p><a href="/academic">Open academic centre</a></p>
-          </li>)}</ul>}
-      </div>
-      <div>
-        <h3>Upcoming assignments</h3>
-        {availability.hasIssue('upcomingAssignments') ? <p className="learning-os-data-error">Upcoming assignments could not be loaded. Refresh to check deadlines again.</p> : upcomingAssignments.length === 0 ? <p className="learning-os-muted">No upcoming assignment deadlines in your active courses.</p> :
-          <ul className="learning-os-list">{upcomingAssignments.map(assignment => <li key={assignment.id}>
-            <b>{assignment.title}</b>
-            <small className="learning-os-muted">{courseNames.get(assignment.course_id) ?? 'Course'} · Due {new Date(assignment.due_at).toLocaleString('en-GB',{timeZone:'Asia/Dhaka'})} Bangladesh time · {assignment.max_marks} marks</small>
-            <p><a href="/academic#assignments">Open assignment</a></p>
-          </li>)}</ul>}
-      </div>
-    </div>
+    <LearningOSCalendar
+      events={calendarEvents}
+      undated={undatedCalendarEvents}
+      initialDateKey={calendarInitialDateKey}
+      sourceErrorCount={calendarSourceErrorCount}
+    />
 
     <h3>My mistake memory</h3>
     {availability.hasIssue('mistakes')
