@@ -2,7 +2,7 @@
 
 > Replaceable operational checkpoint. Durable product requirements remain in the North Star and permanent benchmark standard. Refresh GitHub, Supabase and deployment evidence before every resume.
 
-**Last updated:** 27 November 2026, Asia/Dhaka  
+**Last updated:** 28 November 2026, Asia/Dhaka  
 **Canonical repository:** https://github.com/hk1911369-eng/jmtacademy  
 **Handoff branch:** `docs/jmt-academy-project-north-star`
 
@@ -23,7 +23,7 @@
 - No Production changes, real-money activation, PR merges or releases without required approval. Do not ask the owner to repeat recorded information or log in again.
 - Never claim “100x” improvement without comparable measurements. No protected branding/code/assets or unlicensed question-bank/textbook reuse.
 
-## 2. Active task — Student Today stack reconciliation and exact-head verification
+## 2. Completed task — Student Today stack reconciliation and exact-head verification
 
 **Current PR stack — refreshed 27 November 2026**
 - PR #66 — [Student Today: surface one explainable next action](https://github.com/hk1911369-eng/jmtacademy/pull/66), open/draft/unmerged; head `347031b9484afe6769bfdaeb9d4d130bc25cfa29`, base `main`.
@@ -75,18 +75,19 @@
 
 ## 4. Single next action — do this first on resume
 
-**Get full automated verification on the current reconciled stack without merging or changing Production.**
-1. Inspect the current workflow triggers and available GitHub Actions permissions for a supported way to run CI, Quality and LMS Quality against the exact PR #67, #68 and #73 heads. The workflows are main-targeted; the previous temporary base-retarget attempt did not trigger runs. Do not create more no-op commits or change PR bases unless a supported trigger is established.
-2. If no supported remote trigger exists, obtain an isolated checkout of the exact latest PR #73 branch and run `npm ci`, `npm test`, `npm run lint`, `npm run typecheck`, `npm run build`, and production dependency audit. Verify the checkout includes the exact current head `7288f6331c83dc84b621586cdcf4ad5714d4115e`. Report any inability to obtain the source or dependencies rather than claiming tests passed.
-3. If a failure is introduced by the stack integration, fix it on the owning PR branch, propagate the fix through descendants, and re-run verification on every affected head.
-4. Keep all PRs draft/unmerged. After code verification, continue investigating a supported authorised Test Storage upload/session route for PR #73.
-
+**Resolve the authorised Test Storage upload/playback verification path for PR #73, without exposing credentials or touching Production.**
+1. Reconfirm JMT Test project `cullxqklmbdiosibgois` remains `ACTIVE_HEALTHY` and its two approved offline-recording migrations remain applied. Do not make a new migration or mutate existing real data.
+2. Discover whether an authorised synthetic staff session can be created using existing supported Supabase Auth actions, or whether a supported Test-only browser/session harness exists. The current Supabase connector exposes SQL, migrations, project/schema/advisors and Edge Function operations but no Storage upload/download or signed-URL action; do not pretend SQL can substitute for the Storage API.
+3. Do not request the owner's login, JWT, service-role key or any credential. Do not use a service-role bypass or direct SQL writes to `storage.objects`. If no supported authorised session/action is available, document the exact blocker and the minimum safe enabling capability; keep the feature draft/unmerged.
+4. If a valid synthetic staff session becomes available, test the actual object upload (100 MB and MIME constraints), metadata publication, eligible student playback/download, wrong-batch/expired/revoked denial, signed URL expiry (900 seconds), cache behavior (60 seconds) and post-revocation behavior. Record observed results separately from source inspection and hosted RLS SQL checks.
+5. In parallel, request the owner to confirm the Render workspace before any Render service/deployment inspection: both linked Render account aliases list the same workspace `My Workspace` (`tea-dbn7i7lbedkc73fshc40`), but the connector explicitly requires owner confirmation before selecting a workspace. No Render service or deployment was changed.
+6. Keep PR #66–#68 and #73 open/draft/unmerged. Do not deploy, merge, change secrets/environment or touch Production. After meaningful progress, update and read back this handoff.
 ## 5. Pending gates and safety boundaries
 - PR #73 hosted Storage object lifecycle and signed-link/cache verification remain blocked until an authorised synthetic staff browser/session or equivalent supported test harness exists.
 - PR #73 exact-head CI is missing. PR #67 and #68 exact-head CI is also missing after reconciliation.
 - Authenticated UI QA, Android/mobile, slow-network, screen-reader and real-device verification remain outstanding.
 - No PR #66–#68 or #73 merge, no Production migration/deployment, no real-money payment activation, no secrets/environment changes, no Render setting changes this session.
-- Render current service/deployment state was not rechecked. Do not claim it is live/current.
+- Render deployment state was not checked: the connected Render tools returned a workspace-selection requirement. Both linked account aliases list the same workspace ID `tea-dbn7i7lbedkc73fshc40`, but owner confirmation is required before selecting it. No Render changes were made.
 - Daily “Continue JMT Academy” automation was previously configured for 16:00 Asia/Dhaka with flexible execution timing; its current enabled state was not rechecked.
 
 ## 6. Completed this session — 27 November 2026, Asia/Dhaka
@@ -101,3 +102,15 @@
 
 ## 7. New owner requests
 No new product request was introduced in this session. Preserve the existing project scope and strategic priorities.
+
+## 8. Completed this session — 28 November 2026, Asia/Dhaka
+- Recovered and re-read the live handoff, the 75,528-character North Star and the 50,774-character permanent benchmark standard from the handoff branch. The canonical repo and documented next action matched the previous checkpoint.
+- Refreshed PR #66, #67, #68 and #73 metadata, base/head SHAs, changed-file lists, comments, mergeability and exact-head workflow runs. All feature PRs remain open/draft/unmerged/mergeable; no new feature commits were made.
+- Confirmed the three workflows target pull requests to `main`. Created temporary validation branch `ci/validate-jmt-stack-7288f63` pointing to the exact existing PR #73 commit (no new commit), then temporary PR #75 to `main` solely to trigger those supported checks. The PR head SHA was exactly `7288f6331c83dc84b621586cdcf4ad5714d4115e`. Closed PR #75 unmerged after completion; the canonical feature branches were not retargeted.
+- All three exact-head workflows passed: CI `46047365608`, Quality `46047365806`, LMS Quality `46047365618`. Each executed 184 tests with zero failures; TypeScript and ESLint passed. Both production builds succeeded and generated 41 static pages. Production dependency audits found 0 vulnerabilities.
+- Updated PR #73 description with the exact-head validation links and scope limitations. Verified PR #73 still open/draft/unmerged/mergeable and PR #75 closed/unmerged.
+- Re-discovered available Supabase actions: no Storage upload/download or signed-URL operation exists. No browser automation/authenticated test harness was found in the connected tools. No credential was requested, no service-role bypass used and no direct SQL write to `storage.objects` performed.
+- Attempted a local Git checkout, but the runtime could not resolve `github.com`; the exact-head GitHub-hosted workflows provided full automated verification instead.
+- Checked Render workspace discovery. Both linked aliases show the same `My Workspace` ID `tea-dbn7i7lbedkc73fshc40`, but the connector requires explicit owner confirmation before selecting a workspace. Service/deployment status remains unchecked; no Render operation was performed.
+- No Supabase database changes, migrations, Production changes, deployment, payment activation, secret/environment changes or feature PR merges occurred.
+- Next active task is the Storage lifecycle verification described in Section 4; full CI verification is complete, not the remaining authenticated Storage/UI QA.
