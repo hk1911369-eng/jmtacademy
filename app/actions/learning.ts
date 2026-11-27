@@ -82,6 +82,38 @@ export async function saveLesson(formData: FormData) {
   redirect('/teacher?lesson_success=1');
 }
 
+
+export async function saveLessonPlaybackCheckpoint(
+  lessonId: string,
+  positionSeconds: number,
+  durationSeconds: number | null,
+) {
+  if (typeof lessonId !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(lessonId)) {
+    return { ok: false };
+  }
+  if (!Number.isFinite(positionSeconds) || positionSeconds < 0 || positionSeconds > 86400) {
+    return { ok: false };
+  }
+  if (durationSeconds !== null
+    && (!Number.isFinite(durationSeconds) || durationSeconds < 1 || durationSeconds > 86400)) {
+    return { ok: false };
+  }
+  const safeDuration = durationSeconds === null ? null : Math.floor(durationSeconds);
+  const safePosition = Math.floor(positionSeconds);
+  if (safeDuration !== null && safePosition > safeDuration + 3) return { ok: false };
+
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { ok: false };
+
+  const { data, error } = await supabase.rpc('save_lesson_playback_checkpoint', {
+    p_lesson_id: lessonId,
+    p_position_seconds: safePosition,
+    p_duration_seconds: safeDuration,
+  });
+  return { ok: !error && data === true, deferred: !error && data === false };
+}
+
 export async function markLessonComplete(formData: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();

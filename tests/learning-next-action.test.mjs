@@ -49,6 +49,36 @@ test('chooses the nearest exam when it precedes the assignment', () => {
   assert.equal(action.title, 'Prepare for Physics test');
 });
 
+test('uses the saved lesson as the next action when no urgent deadline exists', () => {
+  const action = selectNextLearningAction({
+    now,
+    continueLesson: {
+      lessonId: 'lesson-resume', lessonTitle: 'Motion in a Plane', courseId: 'course-1',
+      courseTitle: 'Physics', positionSeconds: 367, durationSeconds: 900,
+    },
+    recommendations: [
+      { lessonId: 'lesson-2', lessonTitle: 'Vectors', courseId: 'course-1', conceptTitle: 'Vectors', masteryScore: 0.3, rootCauseFor: null },
+    ],
+  });
+  assert.equal(action.kind, 'continue');
+  assert.equal(action.title, 'Continue Motion in a Plane');
+  assert.equal(action.href, '/learn/course-1#lesson-lesson-resume');
+  assert.match(action.description, /6:07/);
+});
+
+test('urgent revision work takes precedence over a saved lesson checkpoint', () => {
+  const action = selectNextLearningAction({
+    now,
+    courseNames: new Map([['course-1', 'Physics']]),
+    revisionTasks: [{ title: 'Review vectors', scheduled_for: '2026-11-14T00:00:00.000Z', course_id: 'course-1', priority: 3 }],
+    continueLesson: {
+      lessonId: 'lesson-resume', lessonTitle: 'Motion in a Plane', courseId: 'course-1',
+      courseTitle: 'Physics', positionSeconds: 367, durationSeconds: 900,
+    },
+  });
+  assert.equal(action.kind, 'revision');
+});
+
 test('uses an evidence-backed lesson recommendation when no timed task is near', () => {
   const action = selectNextLearningAction({
     now,
@@ -105,6 +135,7 @@ test('dashboard renders the primary action before summary metrics and provides a
   assert.ok(component.indexOf('learning-os-next-action') < component.indexOf('learning-os-stats'));
   assert.ok(component.includes('aria-labelledby="learning-os-next-action-title"'));
   assert.ok(component.includes('selectNextLearningAction'));
+  assert.ok(component.includes('learning-os-continue-card'));
   assert.ok(component.includes('id="learning-os-goal-form"'));
 });
 

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { completeRevisionTask, createStudyGoal } from '@/app/actions/learning';
-import { selectNextLearningAction } from '@/lib/learning-next-action.mjs';
+import { selectNextLearningAction, type ContinueLesson } from '@/lib/learning-next-action.mjs';
 import { getLearningDashboardAvailability } from '@/lib/learning-dashboard-availability.mjs';
 
 type Goal = {
@@ -28,19 +28,32 @@ const goalLabels: Record<string, string> = {
   lesson_completions: 'Lesson completions',
 };
 
-export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, recommendations, courseNames, upcomingExams, upcomingAssignments, sourceIssues = [] }: {
+function formatPlaybackPosition(value: number) {
+  const seconds = Math.max(0, Math.floor(value));
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainder = seconds % 60;
+  return hours > 0
+    ? hours + ':' + String(minutes).padStart(2, '0') + ':' + String(remainder).padStart(2, '0')
+    : minutes + ':' + String(remainder).padStart(2, '0');
+}
+
+export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, recommendations, courseNames, upcomingExams, upcomingAssignments, continueLesson, sourceIssues = [] }: {
   goals: Goal[]; revisionTasks: RevisionTask[]; mastery: Mastery[]; mistakes: Mistake[]; recommendations: Recommendation[];
-  courseNames: Map<string, string>; upcomingExams: UpcomingExam[]; upcomingAssignments: UpcomingAssignment[]; sourceIssues?: string[];
+  courseNames: Map<string, string>; upcomingExams: UpcomingExam[]; upcomingAssignments: UpcomingAssignment[];
+  continueLesson: ContinueLesson | null; sourceIssues?: string[];
 }) {
   const availability = getLearningDashboardAvailability(sourceIssues);
   const nextAction = availability.nextActionUnavailable
     ? {
+        kind: 'unavailable' as const,
         title: 'Your next step is temporarily unavailable',
         description: 'Some learning information could not be loaded, so this dashboard cannot safely prioritise your next task. Refresh to try again.',
         href: '/student',
         actionLabel: 'Refresh dashboard',
       }
-    : selectNextLearningAction({ revisionTasks, upcomingExams, upcomingAssignments, recommendations, courseNames, now: new Date() });
+    : selectNextLearningAction({ revisionTasks, upcomingExams, upcomingAssignments, recommendations, continueLesson, courseNames, now: new Date() });
+  const showContinueCard = Boolean(continueLesson && nextAction.kind !== 'continue');
   const dueCount = availability.hasIssue('revision')
     ? null
     : revisionTasks.filter(task => new Date(task.scheduled_for) <= new Date()).length;
@@ -55,14 +68,24 @@ export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, r
     <h2>Today dashboard</h2>
     <p className="learning-os-muted">A subject-independent view of your study goals, revision queue and topic mastery. Insights improve as you complete lessons and assessments.</p>
     {availability.hasIssues && <p className="learning-os-data-warning" role="status" aria-live="polite">Some learning information could not be loaded. Available sections are still shown; refresh the dashboard to try again.</p>}
-    <section className="learning-os-next-action" aria-labelledby="learning-os-next-action-title" data-testid="learning-os-next-action">
-      <div className="learning-os-next-action-copy">
-        <span className="auth-kicker">YOUR NEXT STEP</span>
-        <h3 id="learning-os-next-action-title">{nextAction.title}</h3>
-        <p>{nextAction.description}</p>
-      </div>
-      <Link className="learning-os-next-action-link" href={nextAction.href}>{nextAction.actionLabel}<span aria-hidden="true"> →</span></Link>
-    </section>
+    <div className={'learning-os-action-grid' + (showContinueCard ? ' has-continue' : '')}>
+      <section className="learning-os-next-action" aria-labelledby="learning-os-next-action-title" data-testid="learning-os-next-action">
+        <div className="learning-os-next-action-copy">
+          <span className="auth-kicker">YOUR NEXT STEP</span>
+          <h3 id="learning-os-next-action-title">{nextAction.title}</h3>
+          <p>{nextAction.description}</p>
+        </div>
+        <Link className="learning-os-next-action-link" href={nextAction.href}>{nextAction.actionLabel}<span aria-hidden="true"> →</span></Link>
+      </section>
+      {showContinueCard && continueLesson && (
+        <section className="learning-os-continue-card" aria-labelledby="learning-os-continue-title">
+          <span className="auth-kicker">CONTINUE LEARNING</span>
+          <h3 id="learning-os-continue-title">{continueLesson.lessonTitle}</h3>
+          <p>{continueLesson.courseTitle} · Last saved at {formatPlaybackPosition(continueLesson.positionSeconds)}</p>
+          <Link href={'/learn/' + encodeURIComponent(continueLesson.courseId) + '#lesson-' + encodeURIComponent(continueLesson.lessonId)}>Resume lesson <span aria-hidden="true">→</span></Link>
+        </section>
+      )}
+    </div>
     <div className="learning-os-stats">
       <div className="learning-os-stat"><strong>{availability.hasIssue('goals') ? '—' : goals.length}</strong><span>Current goals</span></div>
       <div className="learning-os-stat"><strong>{dueCount === null ? '—' : dueCount}</strong><span>Revision due</span></div>
