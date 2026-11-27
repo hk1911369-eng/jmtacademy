@@ -1,6 +1,6 @@
 # JMT Academy — CURRENT WORK STATE (Single Live Handoff)
 
-> One replaceable live handoff. Durable product requirements remain in the North Star and benchmark standard. Refresh repository evidence before every resume.
+> Replaceable operational checkpoint. Durable product requirements remain in the North Star and permanent benchmark standard. Refresh GitHub, Supabase and deployment evidence before every resume.
 
 **Last updated:** 27 November 2026, Asia/Dhaka  
 **Canonical repository:** https://github.com/hk1911369-eng/jmtacademy  
@@ -8,95 +8,96 @@
 
 ## 0. Resume protocol
 1. Read this file, `docs/JMT_ACADEMY_PROJECT_NORTH_STAR.md`, and `docs/JMT_BEST_IN_CLASS_FEATURE_BENCHMARK_STANDARD_2026-11-14.md`.
-2. Refresh the active PR heads, changed files, comments, checks and deployment state; do not trust this snapshot without rechecking.
-3. Follow Section 4's single next action. Do not restart or duplicate completed work.
-4. Benchmark every feature before implementation; use measurable acceptance criteria and distinguish code, automated tests, hosted verification and production verification.
-5. After meaningful work, update this file on this branch using Git blob/tree/commit/ref operations (not the Contents API `update_file`, which previously wrote to `main` when a slash-containing branch was supplied). Read back the saved file.
-6. Never merge PRs, touch Production, change secrets/environment, activate payments or deploy without the required explicit approval and verified prerequisites.
+2. Refresh current PR heads, base heads, changed files, comments, conflicts, checks and deployments. Do not trust this snapshot without rechecking.
+3. Follow Section 4's exact next action.
+4. Distinguish source inspection, local tests, GitHub Actions, hosted Test verification, authenticated UI verification and Production verification.
+5. Update this handoff after meaningful work and read the saved version back.
+6. Never merge PRs, touch Production, change secrets/environment, activate payments or deploy without required explicit approval and verified prerequisites.
 
 ## 1. Permanent project rules
-- Strategic order: (1) JMT Learning Experience OS, (2) separate AI Teacher and Exam Question Predictor systems, (3) Complete Learning Ecosystem. Quality remains best-in-class across every feature.
+- Strategic order: (1) JMT Learning Experience OS, (2) separate AI Teacher and Exam Question Predictor systems, (3) Complete Learning Ecosystem.
 - Keep JMT free/no-purchase until fully working; no paid domain, hosting, API, dataset or service without approval.
-- Physical offline academy students are distinct from internet-disconnected users. Free missed-class recordings require active offline enrolment plus explicit authorised roll approval for the matching physical batch and period, enforced server-side.
+- Physical offline academy students are distinct from internet-disconnected users. Free missed-class recordings require active offline enrolment plus explicit authorised roll approval for the matching physical batch and entitlement period, enforced server-side.
 - HSC 2027 = 2025–26 XI intake; HSC 2028 = 2026–27 XI intake.
 - Manual bKash/Nagad/Rocket foundations are not automatic payment gateways.
 - No Production changes, real-money activation, PR merges or releases without required approval. Do not ask the owner to repeat recorded information or log in again.
 - Never claim “100x” improvement without comparable measurements. No protected branding/code/assets or unlicensed question-bank/textbook reuse.
 
-## 2. Active task — Student Today / Learning Experience OS review
-**Task:** Student Today partial-data reliability improvement has been implemented on PR #66. All PR #66 exact-head workflows are green; carefully reconcile the stacked PR #67–#73 chain with the updated PR #66 base. Do not merge any PR.
+## 2. Active task — Student Today stack reconciliation and exact-head verification
 
-**Active PR stack (refreshed 26 Nov 2026):**
-- PR #66 — [Student Today: surface one explainable next action](https://github.com/hk1911369-eng/jmtacademy/pull/66), open/draft/unmerged; head `347031b9484afe6769bfdaeb9d4d130bc25cfa29`, base `main` (partial-data reliability follow-up added 27 Nov).
-- PR #67 — [secure lesson resume and playback checkpoints](https://github.com/hk1911369-eng/jmtacademy/pull/67), open/draft/unmerged; head `4af653c8ee043af9e15f5394f11769b19be33e72`, base branch `feat/student-today-next-action`. After PR #66 advanced to `347031b...`, GitHub reports #67 `mergeable=false` / `dirty`; its recorded base SHA is stale at `d46b050...`. The PR #67 patch overlaps PR #66 in `app/student/page.tsx`, `components/learning-os-dashboard.tsx` and `app/globals.css`; a careful three-way integration is required.
-- PR #68 — [unified student academic calendar](https://github.com/hk1911369-eng/jmtacademy/pull/68), open/draft/unmerged; head `88daa1381712b0b0e4fc228e17aed9979c0fe5b5`, based on #67.
-- PR #73 — [approved offline missed-class recording access](https://github.com/hk1911369-eng/jmtacademy/pull/73), open/draft/unmerged; head `871ba5401b0eb781fb46c1d22727621c125a6f6e`, based on #68. Keep it draft and do not merge independently.
+**Current PR stack — refreshed 27 November 2026**
+- PR #66 — [Student Today: surface one explainable next action](https://github.com/hk1911369-eng/jmtacademy/pull/66), open/draft/unmerged; head `347031b9484afe6769bfdaeb9d4d130bc25cfa29`, base `main`.
+- PR #67 — [secure lesson resume and playback checkpoints](https://github.com/hk1911369-eng/jmtacademy/pull/67), open/draft/unmerged; head `84a2d3a8778bd887796a19be35410654adffea70`, base PR #66 head `347031b9484afe6769bfdaeb9d4d130bc25cfa29`.
+- PR #68 — [unified student academic calendar](https://github.com/hk1911369-eng/jmtacademy/pull/68), open/draft/unmerged; head `0547adbe718271d0f0b15349d6617662e0e49413`, base PR #67 head `84a2d3a8778bd887796a19be35410654adffea70`.
+- PR #73 — [approved offline missed-class recording access](https://github.com/hk1911369-eng/jmtacademy/pull/73), open/draft/unmerged; head `7288f6331c83dc84b621586cdcf4ad5714d4115e`, base PR #68 head `0547adbe718271d0f0b15349d6617662e0e49413`.
+- GitHub currently reports all four PRs open, draft, unmerged and mergeable. No PR was merged. The stack ancestry was verified with compare-commits: each child is ahead of its current base and behind by zero commits.
 
-**Exact-head GitHub Actions evidence:**
-- PR #66 previous head `95dbb20...`: CI run `45070679125`, Quality `45070679113`, LMS Quality `45070679139` passed. New head `347031b9484afe6769bfdaeb9d4d130bc25cfa29`: CI run `46043132167` passed (159 tests, 0 failures, TypeScript and ESLint passed); LMS Quality run `46043132448` passed (ESLint, guardrail tests, TypeScript, production build and production dependency audit). Quality run `46043132362` passed guardrail tests, ESLint, TypeScript, production build and production dependency audit. All three exact-head workflows are green.
-- PR #67: CI `45215592828`, Quality `45215592840`, LMS Quality `45215592600` — all completed successfully on the current head. Earlier superseded attempts include cancelled runs; do not confuse them with the latest successful runs.
-- PR #68: CI `45215609171`, Quality `45215609052`, LMS Quality `45215608900` — all completed successfully on the current head. Earlier superseded attempts include cancelled runs.
-- PR #73: workflow query returned no runs and combined status returned no rows for exact head `871ba5401b0eb781fb46c1d22727621c125a6f6e`. Previous green checks belong to older commit `21898218a23c3068248bab779fd0f0acf12a51e6`, not the latest head.
+**Stack reconciliation completed this session**
+- PR #67 merged the current PR #66 base with its playback checkpoint feature in merge commit `f868e6bcab35998d92a296b6005a032e6afaa1eb`. Follow-up commit `84a2d3a8778bd887796a19be35410654adffea70` removes an unused helper import from `app/student/page.tsx`; playback resume and partial-data tracking remain.
+- PR #68 merged the updated PR #67 branch in merge commit `eca8dc0d65165946b9f441e4e3f4eb21a2f2789b`. Follow-up `0547adbe718271d0f0b15349d6617662e0e49413` preserves the calendar-aware page while removing the unused import.
+- PR #73 merged the updated PR #68 branch in merge commit `88124499dc6d38270fd73471f2d4b0cc950f57dc`. Follow-up `7288f6331c83dc84b621586cdcf4ad5714d4115e` inherits the corrected calendar page without overwriting offline-recording feature files.
+- The final PR #73 tree was read back: `app/student/page.tsx` retains calendar queries, lesson resume, and partial-data tracking; it does not contain the unused helper import. `components/learning-os-dashboard.tsx` retains calendar, continue-lesson and source-specific error states. CSS retains calendar, resume and partial-data styles.
+- PR #67/#68/#73 descriptions were updated with reconciliation notes and latest heads. Changed-file lists were refreshed; PR #73's feature diff remains limited to its offline-recording files relative to its current base.
 
-**PR #66 partial-data reliability follow-up implemented 27 Nov:**
-- Re-read `docs/JMT_STUDENT_TODAY_NEXT_ACTION_BENCHMARK_2026-11-15.md`, `app/student/page.tsx`, `components/learning-os-dashboard.tsx`, `lib/learning-next-action.mjs` and the PR #68 partial-source calendar behavior.
-- Research added to the benchmark: Home Office User-Centred Design Manual (polite live-region status), Agriculture Design System (separates error from successful empty), Intelligence Community Design System (empty-state semantics), and Invoca Design System (preserve loaded content on partial failure). These are design-system recommendations, not controlled learning-outcome studies.
-- Commit `347031b9484afe6769bfdaeb9d4d130bc25cfa29` (branch `feat/student-today-next-action`) adds independent availability tracking for goals, revision, mastery, mistakes, recommendations, upcoming exams and assignments; scoped plain-language unavailable states; em-dash summary metrics for failed sources; one polite page-level status message; and suppresses next-action ranking when a priority source fails.
-- Recommendation availability tracks failures in prerequisite, prerequisite mastery/concept, lesson and lesson-concept lookup stages. Backend error details are not exposed.
-- Added `lib/learning-dashboard-availability.mjs`, `lib/learning-dashboard-availability.d.mts`, `tests/learning-dashboard-availability.test.mjs`; updated `app/student/page.tsx`, `components/learning-os-dashboard.tsx`, `app/globals.css`, and the benchmark.
-- GitHub PR changed-file list was rechecked after repairing the initial tree construction: it contains only the expected PR #66 code/test/benchmark paths; North Star, live handoff and permanent standard are not in PR #66.
-- PR #66 remains open/draft/unmerged and mergeable. No local/browser/real-device verification was available.
-- PR #67 benchmark and implementation cover separate playback checkpoints; test-only migrations and hosted RLS checks are recorded in its PR body.
-- PR #68 benchmark and implementation cover agenda/week/month, course/type filters, undated work, Asia/Dhaka formatting and conflict detection. Recurring physical timetable, offline cache, push reminders and external calendar sync remain out of scope.
+**Student Today partial-data reliability**
+- Benchmark additions are in `docs/JMT_STUDENT_TODAY_NEXT_ACTION_BENCHMARK_2026-11-15.md`. Research sources and trade-offs include Home Office UCD notifications, Agriculture Design System loading/empty/error states, Intelligence Community Design System empty-state guidance and Invoca error handling. These are design-system recommendations, not controlled learning-outcome studies.
+- Added `lib/learning-dashboard-availability.mjs`, `lib/learning-dashboard-availability.d.mts`, and `tests/learning-dashboard-availability.test.mjs`.
+- Updated `app/student/page.tsx`, `components/learning-os-dashboard.tsx`, and `app/globals.css` across the stack.
+- Independently tracks goals, revision, mastery, mistakes, recommendations, upcoming exams, upcoming assignments and calendar query failures.
+- Failed sources no longer masquerade as successful empty results or zero counts. Healthy sections remain visible. A failed priority source suppresses next-action ranking. The page-level message uses `role="status"` and `aria-live="polite"`; raw backend errors are not exposed.
+- Calendar's own source-error UI remains present; calendar source failures also contribute to the page-level status.
+- Acceptance criteria are recorded in the benchmark: truthful empty vs unavailable, section isolation, no misleading priority, no inferred mastery, accessible polite status, regression tests, and human mobile/screen-reader verification.
 
-## 3. Offline recording feature — verified state and blocker
-**PR #73 implementation remains in draft; JMT Test migrations were explicitly approved and applied only to Test.**
+**Checks and limitations**
+- PR #66 exact head `347031b9484afe6769bfdaeb9d4d130bc25cfa29`: CI run `46043132167`, Quality run `46043132362`, LMS Quality run `46043132448` all passed. CI: 159 tests, zero failures, TypeScript and ESLint. Quality/LMS Quality: guardrails, ESLint, TypeScript, production build and production dependency audit passed.
+- New exact-head workflow queries for PR #67 head `84a2d3a...`, PR #68 head `0547adb...`, and PR #73 head `7288f63...` returned no runs. Their older green workflow results do not validate these reconciled heads.
+- Workflow files currently target `main` for push/pull_request; LMS Quality also supports workflow_dispatch. A temporary PR #67 base retarget to `main` did not create workflow runs and was restored. A temporary no-op validation commit was reset; it is not present at the branch head. No lasting base change remains.
+- This session ran only the isolated Node availability-helper tests: **4 passed, 0 failed**. No full repository npm test, typecheck, lint or production build was run. No browser/mobile/screen-reader QA was run.
+- Human Android/mobile, slow-network, screen-reader and authenticated student QA remain outstanding.
+
+## 3. Offline missed-class recording feature — hosted Test state and blocker
+
+**PR #73 implementation remains draft and unmerged. Test-only migrations were explicitly approved and applied.**
 - JMT Test project `cullxqklmbdiosibgois` is `ACTIVE_HEALTHY`.
 - Hosted migration history confirms `20261126072557 offline_recording_entitlements` and `20261126073045 offline_recording_foreign_key_indexes`.
 - Synthetic QA course `d1000000-0000-4000-8000-000000000001`, batch `d2000000-0000-4000-8000-000000000001`, completed class `d3000000-0000-4000-8000-000000000001`; existing Test-only admin/teacher/student profiles reused. No Auth users or real student data created; demo courses unchanged.
-- Hosted SQL/RLS checks: eligible student allowed; wrong batch, expired enrolment and revoked roster denied; assigned teacher scoped to assigned batch; unassigned teacher denied; admin allowed; student self-approval insert denied with 42501; student Storage-object insert denied with 42501; anonymous Storage listing returned zero. Persistent revoke was audited and a new approval restored the synthetic student's entitlement.
+- Hosted SQL/RLS checks: eligible student allowed; wrong batch, expired enrolment and revoked roster denied; assigned teacher scoped to assigned batch; unassigned teacher denied; admin allowed; student self-approval insert denied with SQLSTATE 42501; student Storage-object insert denied with SQLSTATE 42501; anonymous Storage listing returned zero objects. Persistent revocation was audited and a new approval restored the synthetic student's entitlement.
 - Ten feature-specific FK indexes were applied. Performance advisor then showed zero feature-specific unindexed FK warnings; two unrelated pre-existing findings remain.
 - Security advisor baseline still includes existing SECURITY DEFINER warnings, leaked-password protection disabled and two RLS-enabled tables without policies. These were not changed here.
 
-**Storage blocker reconfirmed 26 Nov 2026:**
-- Enumerated all currently available Supabase actions. They include SQL, migrations, project/schema/advisors and Edge Function deployment, but no Storage file upload/download or signed-URL action.
-- Supabase documentation search confirmed the supported JavaScript methods: `storage.from(bucket).upload(...)`, `createSignedUploadUrl(...)` / `uploadToSignedUrl(...)`, and `createSignedUrl(...)`. These still require a real authorised staff session to create the upload path or signed upload token.
-- Available Firecrawl action is scrape-only; no BrowserAct or authenticated browser-control/Playwright action is available. No existing staff JWT/session is available. Do not ask the owner to sign in again or supply credentials.
-- No direct SQL writes were made to `storage.objects`; no service-role secret was read or used. Therefore real object upload/download, metadata publication, signed URL generation, 900-second expiry and 60-second browser/cache behavior remain unverified.
-- Static source review confirms the client upload uses private bucket `offline-class-recordings`, 100 MB cap, allowed MP4/WebM/QuickTime MIME types and `cacheControl: '60'`; server action issues a 900-second signed URL only after the recording row is visible under the authenticated user's RLS. This is source inspection, not hosted Storage proof.
-- A previously issued signed URL is a bearer link and can remain usable until its 900-second expiry; 60-second cache TTL does not provide instant revocation. PR/benchmark accurately records this limitation.
-- No new code, migration, deployment or database change was made this session.
+**Storage blocker**
+- Available Supabase actions include SQL, migrations, project/schema/advisors and Edge Function deployment, but no Storage upload/download or signed-URL action.
+- Supabase Storage's supported JavaScript methods require an authorised staff session. No authenticated browser-control/Playwright/BrowserAct action or existing staff JWT/session is available.
+- No direct SQL writes were made to `storage.objects`; no service-role secret was read or used. Do not ask the owner to log in again or provide credentials.
+- Actual object upload/download, eligible object read, metadata publication, signed-URL creation, 900-second expiry and 60-second browser/cache behavior remain unverified.
+- Static source review: private bucket `offline-class-recordings`, 100 MB cap, MP4/WebM/QuickTime MIME types, upload cacheControl `60`, signed URL expiry `900` seconds, created only after authenticated student authorization. A previously issued signed URL is a bearer link and may remain usable until expiry; 60-second cache TTL does not provide instant revocation.
+- PR #73 latest head `7288f633...` has no exact-head workflow runs. Earlier checks on `21898218...` are historical only.
 
 ## 4. Single next action — do this first on resume
-**Reconcile PR #67 onto the now-verified PR #66 head.** PR #66 exact head `347031b9484afe6769bfdaeb9d4d130bc25cfa29` has all three workflows green. First inspect the complete PR #67 commit list and three-way diff against merge base `95dbb20e3877a2b7ca8b7e89515a9fa5a52c0b67`; preserve its secure playback migration, API route, server action, player component and tests while integrating the newer Student Today page, dashboard and CSS changes. The overlapping files are `app/student/page.tsx`, `components/learning-os-dashboard.tsx` and `app/globals.css`. Prefer a reviewable branch update; do not drop commits, rewrite unrelated history, or merge any PR. Then update/check PR #68 and #73 descendants and run exact-head workflows for each affected head.
 
-Acceptance for the partial-data slice:
-1. Successful empty results remain honest empty states.
-2. Failed sources are never shown as zero/confirmed empty.
-3. Healthy sections remain visible when another source fails.
-4. Priority ranking is suppressed when revision, exams, assignments or recommendations cannot be checked.
-5. Raw backend errors, SQL, identifiers and student records are never exposed.
-6. Regression tests cover successful empty, one failure, priority-source failure and multiple failures.
-7. Human mobile/screen-reader verification remains outstanding; do not claim it from automated checks.
+**Get full automated verification on the current reconciled stack without merging or changing Production.**
+1. Inspect the current workflow triggers and available GitHub Actions permissions for a supported way to run CI, Quality and LMS Quality against the exact PR #67, #68 and #73 heads. The workflows are main-targeted; the previous temporary base-retarget attempt did not trigger runs. Do not create more no-op commits or change PR bases unless a supported trigger is established.
+2. If no supported remote trigger exists, obtain an isolated checkout of the exact latest PR #73 branch and run `npm ci`, `npm test`, `npm run lint`, `npm run typecheck`, `npm run build`, and production dependency audit. Verify the checkout includes the exact current head `7288f6331c83dc84b621586cdcf4ad5714d4115e`. Report any inability to obtain the source or dependencies rather than claiming tests passed.
+3. If a failure is introduced by the stack integration, fix it on the owning PR branch, propagate the fix through descendants, and re-run verification on every affected head.
+4. Keep all PRs draft/unmerged. After code verification, continue investigating a supported authorised Test Storage upload/session route for PR #73.
 
 ## 5. Pending gates and safety boundaries
-- PR #73 hosted Storage object lifecycle and signed-link/cache verification remain blocked until an authorised synthetic staff browser/session or equivalent supported test harness exists. No owner approval is currently needed to investigate tooling; any new Auth identity, credentials, secret use or sensitive environment change requires separate review/approval.
-- PR #73 exact-head CI is still missing; no merge.
-- PR #67 currently reports mergeable=false/dirty after PR #66 advanced; its changes overlap three files with the new PR #66 commit. No rebase, merge or branch update has been performed. PR #68 and #73 heads remain unchanged; their stacked ancestry must be checked after #67 is reconciled.
-- Authenticated UI QA, Android/mobile, slow-network, screen-reader and real-device verification remain outstanding across the Student Today chain.
+- PR #73 hosted Storage object lifecycle and signed-link/cache verification remain blocked until an authorised synthetic staff browser/session or equivalent supported test harness exists.
+- PR #73 exact-head CI is missing. PR #67 and #68 exact-head CI is also missing after reconciliation.
+- Authenticated UI QA, Android/mobile, slow-network, screen-reader and real-device verification remain outstanding.
 - No PR #66–#68 or #73 merge, no Production migration/deployment, no real-money payment activation, no secrets/environment changes, no Render setting changes this session.
-- Render current service/deployment state was not rechecked in this session; do not claim it is live/current.
-- The daily “Continue JMT Academy” automation was previously saved for 16:00 Asia/Dhaka with flexible execution timing; its current enabled state was not rechecked this session.
+- Render current service/deployment state was not rechecked. Do not claim it is live/current.
+- Daily “Continue JMT Academy” automation was previously configured for 16:00 Asia/Dhaka with flexible execution timing; its current enabled state was not rechecked.
 
 ## 6. Completed this session — 27 November 2026, Asia/Dhaka
-- Recovered this handoff, full North Star and permanent benchmark standard; confirmed docs branch started at `a456e86eb1ff85c9f269dfacf697b3ba5e481f8c`.
-- Refreshed PR #66–#68 and #73. PR #66 now points to `347031b9484afe6769bfdaeb9d4d130bc25cfa29`, remains draft/unmerged/mergeable. PR #67 reports dirty after the #66 base advanced; #68 and #73 are unchanged.
-- Researched partial-data UX/accessibility references and documented the evidence and trade-offs in the PR #66 benchmark.
-- Implemented source-specific dashboard failure states, truthful summary metrics, partial-data preservation, priority suppression and regression tests. Updated PR #66 body and verified the changed-file list.
-- Exact-head CI run `46043132167` passed: 159 tests, 0 failures, TypeScript and ESLint. LMS Quality run `46043132448` and Quality run `46043132362` both passed guardrail tests, ESLint, TypeScript, production build and production dependency audit.
-- Inspected PR #67's commit list and patch after the stack became dirty; confirmed overlapping edits in the student page, dashboard component and CSS. Did not rebase or modify #67/#68/#73 because the three-way integration needs a careful preservation pass.
-- No local tests, browser QA, mobile/device QA or screen-reader QA were run. No database writes/migrations, Production changes, deployment, secrets/environment change, payment activation or PR merge occurred.
-- Offline-recording Storage blocker remains: no authorised authenticated Storage upload route is available in connected tools; no direct SQL Storage writes or credentials were used.
+- Recovered this handoff, full North Star and permanent benchmark standard; verified the canonical repository and docs branch.
+- Inspected PR #66–#68 and #73 heads, ancestry, changed files, comments, mergeability and exact-head workflow history.
+- Reconciled PR #67, #68 and #73 sequentially with merge commits; preserved playback security, calendar and offline-recording feature code while carrying forward Student Today partial-data handling.
+- Removed an unused import from the merged Student Today page and propagated the correction through PR #68 and #73. Read back the final PR #73 page, dashboard, CSS, helper, declaration, tests and benchmark.
+- Updated PR #67/#68/#73 descriptions and verified latest heads. All remain open/draft/mergeable/unmerged.
+- Ran the four isolated Node availability-helper tests: 4 passed, 0 failed.
+- Confirmed no exact-head workflows were returned for the new #67/#68/#73 commits; a temporary base retarget to main did not trigger checks and was restored. No-op validation commit was reset.
+- No full repository test/build, browser/mobile QA, database mutation, migration, Production change, deployment, secret/environment change, payment activation or PR merge occurred.
 
 ## 7. New owner requests
-No new product request was introduced in this session. Preserve the existing project scope and priorities.
+No new product request was introduced in this session. Preserve the existing project scope and strategic priorities.
