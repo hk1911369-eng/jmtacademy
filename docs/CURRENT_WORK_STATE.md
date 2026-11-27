@@ -24,7 +24,7 @@
 - Never claim “100x” improvement without comparable measurements. No protected branding/code/assets or unlicensed question-bank/textbook reuse.
 
 ## 2. Active task — Student Today / Learning Experience OS review
-**Task:** Student Today partial-data reliability improvement has been implemented on PR #66. Finish exact-head CI verification, then carefully reconcile the stacked PR #67–#73 chain with the updated PR #66 base. Do not merge any PR.
+**Task:** Student Today partial-data reliability improvement has been implemented on PR #66. All PR #66 exact-head workflows are green; carefully reconcile the stacked PR #67–#73 chain with the updated PR #66 base. Do not merge any PR.
 
 **Active PR stack (refreshed 26 Nov 2026):**
 - PR #66 — [Student Today: surface one explainable next action](https://github.com/hk1911369-eng/jmtacademy/pull/66), open/draft/unmerged; head `347031b9484afe6769bfdaeb9d4d130bc25cfa29`, base `main` (partial-data reliability follow-up added 27 Nov).
@@ -33,7 +33,7 @@
 - PR #73 — [approved offline missed-class recording access](https://github.com/hk1911369-eng/jmtacademy/pull/73), open/draft/unmerged; head `871ba5401b0eb781fb46c1d22727621c125a6f6e`, based on #68. Keep it draft and do not merge independently.
 
 **Exact-head GitHub Actions evidence:**
-- PR #66 previous head `95dbb20...`: CI run `45070679125`, Quality `45070679113`, LMS Quality `45070679139` passed. New head `347031b9484afe6769bfdaeb9d4d130bc25cfa29`: CI run `46043132167` passed (159 tests, 0 failures, TypeScript and ESLint passed); LMS Quality run `46043132448` passed (ESLint, guardrail tests, TypeScript, production build and production dependency audit). Quality run `46043132362` had passed tests, ESLint and TypeScript; production build was still in progress at last check.
+- PR #66 previous head `95dbb20...`: CI run `45070679125`, Quality `45070679113`, LMS Quality `45070679139` passed. New head `347031b9484afe6769bfdaeb9d4d130bc25cfa29`: CI run `46043132167` passed (159 tests, 0 failures, TypeScript and ESLint passed); LMS Quality run `46043132448` passed (ESLint, guardrail tests, TypeScript, production build and production dependency audit). Quality run `46043132362` passed guardrail tests, ESLint, TypeScript, production build and production dependency audit. All three exact-head workflows are green.
 - PR #67: CI `45215592828`, Quality `45215592840`, LMS Quality `45215592600` — all completed successfully on the current head. Earlier superseded attempts include cancelled runs; do not confuse them with the latest successful runs.
 - PR #68: CI `45215609171`, Quality `45215609052`, LMS Quality `45215608900` — all completed successfully on the current head. Earlier superseded attempts include cancelled runs.
 - PR #73: workflow query returned no runs and combined status returned no rows for exact head `871ba5401b0eb781fb46c1d22727621c125a6f6e`. Previous green checks belong to older commit `21898218a23c3068248bab779fd0f0acf12a51e6`, not the latest head.
