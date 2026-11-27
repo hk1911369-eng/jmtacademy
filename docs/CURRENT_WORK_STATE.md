@@ -25,7 +25,7 @@
 
 ## 2. Completed task — Student Today stack reconciliation and exact-head verification
 
-**Current PR stack — refreshed 27 November 2026**
+**Current PR stack — refreshed 28 November 2026**
 - PR #66 — [Student Today: surface one explainable next action](https://github.com/hk1911369-eng/jmtacademy/pull/66), open/draft/unmerged; head `347031b9484afe6769bfdaeb9d4d130bc25cfa29`, base `main`.
 - PR #67 — [secure lesson resume and playback checkpoints](https://github.com/hk1911369-eng/jmtacademy/pull/67), open/draft/unmerged; head `84a2d3a8778bd887796a19be35410654adffea70`, base PR #66 head `347031b9484afe6769bfdaeb9d4d130bc25cfa29`.
 - PR #68 — [unified student academic calendar](https://github.com/hk1911369-eng/jmtacademy/pull/68), open/draft/unmerged; head `0547adbe718271d0f0b15349d6617662e0e49413`, base PR #67 head `84a2d3a8778bd887796a19be35410654adffea70`.
@@ -71,7 +71,7 @@
 - No direct SQL writes were made to `storage.objects`; no service-role secret was read or used. Do not ask the owner to log in again or provide credentials.
 - Actual object upload/download, eligible object read, metadata publication, signed-URL creation, 900-second expiry and 60-second browser/cache behavior remain unverified.
 - Static source review: private bucket `offline-class-recordings`, 100 MB cap, MP4/WebM/QuickTime MIME types, upload cacheControl `60`, signed URL expiry `900` seconds, created only after authenticated student authorization. A previously issued signed URL is a bearer link and may remain usable until expiry; 60-second cache TTL does not provide instant revocation.
-- PR #73 latest head `7288f633...` has no exact-head workflow runs. Earlier checks on `21898218...` are historical only.
+- PR #73 exact head `7288f6331c83dc84b621586cdcf4ad5714d4115e` now has three successful exact-SHA workflows: CI `46047365608`, Quality `46047365806`, LMS Quality `46047365618` (all completed successfully on 28 November).
 
 ## 4. Single next action — do this first on resume
 
@@ -84,7 +84,7 @@
 6. Keep PR #66–#68 and #73 open/draft/unmerged. Do not deploy, merge, change secrets/environment or touch Production. After meaningful progress, update and read back this handoff.
 ## 5. Pending gates and safety boundaries
 - PR #73 hosted Storage object lifecycle and signed-link/cache verification remain blocked until an authorised synthetic staff browser/session or equivalent supported test harness exists.
-- PR #73 exact-head CI is missing. PR #67 and #68 exact-head CI is also missing after reconciliation.
+- Full automated verification of the complete reconciled stack passed on the exact PR #73 head `7288f6331c83dc84b621586cdcf4ad5714d4115e`: CI, Quality and LMS Quality all succeeded (184 tests, zero failures; TypeScript, ESLint, production build and production dependency audit passed). PR #67 and #68 do not have separate exact-head workflow runs, but their changes are included in and validated by the cumulative PR #73 head.
 - Authenticated UI QA, Android/mobile, slow-network, screen-reader and real-device verification remain outstanding.
 - No PR #66–#68 or #73 merge, no Production migration/deployment, no real-money payment activation, no secrets/environment changes, no Render setting changes this session.
 - Render deployment state was not checked: the connected Render tools returned a workspace-selection requirement. Both linked account aliases list the same workspace ID `tea-dbn7i7lbedkc73fshc40`, but owner confirmation is required before selecting it. No Render changes were made.
