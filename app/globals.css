@@ -281,3 +281,8 @@ button,.btn,.auth-submit,.portal-nav-link{touch-action:manipulation}
 .lesson-video-progress{display:grid;gap:8px;width:100%}
 .lesson-video-progress-status{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
 @media(max-width:760px){.learning-os-action-grid.has-continue{grid-template-columns:minmax(0,1fr)}}
+
+
+/* Learning OS — truthful partial-data states */
+.learning-os-data-warning{margin:14px 0;padding:12px 14px;border:1px solid #d8b86a;border-radius:10px;background:#fff9e9;color:#59430f;font-size:13px;line-height:1.55}
+.learning-os-data-error{margin:10px 0;padding:10px 12px;border-left:3px solid #b7791f;background:#fffaf0;color:#5f4615;font-size:13px;line-height:1.55}
