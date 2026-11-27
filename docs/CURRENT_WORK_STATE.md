@@ -2,7 +2,7 @@
 
 > Replaceable operational checkpoint. Durable product requirements remain in the North Star and permanent benchmark standard. Refresh GitHub, Supabase and deployment evidence before every resume.
 
-**Last updated:** 28 November 2026, Asia/Dhaka  
+**Last updated:** 28 November 2026, Asia/Dhaka (Storage gate rechecked)  
 **Canonical repository:** https://github.com/hk1911369-eng/jmtacademy  
 **Handoff branch:** `docs/jmt-academy-project-north-star`
 
@@ -67,7 +67,7 @@
 
 **Storage blocker**
 - Available Supabase actions include SQL, migrations, project/schema/advisors and Edge Function deployment, but no Storage upload/download or signed-URL action.
-- Supabase Storage's supported JavaScript methods require an authorised staff session. No authenticated browser-control/Playwright/BrowserAct action or existing staff JWT/session is available.
+- Supabase Storage's supported JavaScript methods require an authorised staff session. Firecrawl browser interaction is available, but its hosted browser is isolated and never receives the owner's browser cookies; it starts without cookies/saved sessions unless a team-scoped profile is explicitly supplied. No known Test-only profile containing an authorised synthetic staff session, staff JWT/session, Supabase Auth user-management action or Storage API connector action is available. Thus browser automation exists, but the authenticated Test path does not.
 - No direct SQL writes were made to `storage.objects`; no service-role secret was read or used. Do not ask the owner to log in again or provide credentials.
 - Actual object upload/download, eligible object read, metadata publication, signed-URL creation, 900-second expiry and 60-second browser/cache behavior remain unverified.
 - Static source review: private bucket `offline-class-recordings`, 100 MB cap, MP4/WebM/QuickTime MIME types, upload cacheControl `60`, signed URL expiry `900` seconds, created only after authenticated student authorization. A previously issued signed URL is a bearer link and may remain usable until expiry; 60-second cache TTL does not provide instant revocation.
@@ -77,13 +77,13 @@
 
 **Resolve the authorised Test Storage upload/playback verification path for PR #73, without exposing credentials or touching Production.**
 1. Reconfirm JMT Test project `cullxqklmbdiosibgois` remains `ACTIVE_HEALTHY` and its two approved offline-recording migrations remain applied. Do not make a new migration or mutate existing real data.
-2. Discover whether an authorised synthetic staff session can be created using existing supported Supabase Auth actions, or whether a supported Test-only browser/session harness exists. The current Supabase connector exposes SQL, migrations, project/schema/advisors and Edge Function operations but no Storage upload/download or signed-URL action; do not pretend SQL can substitute for the Storage API.
+2. Check for an existing authorised synthetic staff session or Test-only browser profile. Supabase exposes no Auth user/session creation action and no Storage upload/download/signed-URL action. Firecrawl can automate a live browser, but its isolated session has no owner cookies by default; only use it if a pre-authorised Test-only staff profile is already available. Do not treat public/anonymous browser access or SQL as a substitute for the Storage API.
 3. Do not request the owner's login, JWT, service-role key or any credential. Do not use a service-role bypass or direct SQL writes to `storage.objects`. If no supported authorised session/action is available, document the exact blocker and the minimum safe enabling capability; keep the feature draft/unmerged.
 4. If a valid synthetic staff session becomes available, test the actual object upload (100 MB and MIME constraints), metadata publication, eligible student playback/download, wrong-batch/expired/revoked denial, signed URL expiry (900 seconds), cache behavior (60 seconds) and post-revocation behavior. Record observed results separately from source inspection and hosted RLS SQL checks.
 5. In parallel, request the owner to confirm the Render workspace before any Render service/deployment inspection: both linked Render account aliases list the same workspace `My Workspace` (`tea-dbn7i7lbedkc73fshc40`), but the connector explicitly requires owner confirmation before selecting a workspace. No Render service or deployment was changed.
 6. Keep PR #66–#68 and #73 open/draft/unmerged. Do not deploy, merge, change secrets/environment or touch Production. After meaningful progress, update and read back this handoff.
 ## 5. Pending gates and safety boundaries
-- PR #73 hosted Storage object lifecycle and signed-link/cache verification remain blocked until an authorised synthetic staff browser/session or equivalent supported test harness exists.
+- PR #73 hosted Storage object lifecycle and signed-link/cache verification remain blocked until an authorised synthetic staff browser session is available through a team-scoped saved profile or an equivalent supported Test-only harness. Firecrawl browser automation alone does not satisfy authentication.
 - Full automated verification of the complete reconciled stack passed on the exact PR #73 head `7288f6331c83dc84b621586cdcf4ad5714d4115e`: CI, Quality and LMS Quality all succeeded (184 tests, zero failures; TypeScript, ESLint, production build and production dependency audit passed). PR #67 and #68 do not have separate exact-head workflow runs, but their changes are included in and validated by the cumulative PR #73 head.
 - Authenticated UI QA, Android/mobile, slow-network, screen-reader and real-device verification remain outstanding.
 - No PR #66–#68 or #73 merge, no Production migration/deployment, no real-money payment activation, no secrets/environment changes, no Render setting changes this session.
@@ -101,7 +101,7 @@
 - No full repository test/build, browser/mobile QA, database mutation, migration, Production change, deployment, secret/environment change, payment activation or PR merge occurred.
 
 ## 7. New owner requests
-No new product request was introduced in this session. Preserve the existing project scope and strategic priorities.
+- Owner asked to see visual previews of the eventual JMT Academy website. Two AI-generated dashboard concept images were shown in chat only; they are inspiration, not screenshots, approved design direction, implemented UI or evidence of current website state. During the later dedicated visual-design workflow, audit actual routes and explore/compare design directions before implementation, consistent with the North Star visual-design charter.
 
 ## 8. Completed this session — 28 November 2026, Asia/Dhaka
 - Recovered and re-read the live handoff, the 75,528-character North Star and the 50,774-character permanent benchmark standard from the handoff branch. The canonical repo and documented next action matched the previous checkpoint.
@@ -114,3 +114,16 @@ No new product request was introduced in this session. Preserve the existing pro
 - Checked Render workspace discovery. Both linked aliases show the same `My Workspace` ID `tea-dbn7i7lbedkc73fshc40`, but the connector requires explicit owner confirmation before selecting a workspace. Service/deployment status remains unchecked; no Render operation was performed.
 - No Supabase database changes, migrations, Production changes, deployment, payment activation, secret/environment changes or feature PR merges occurred.
 - Next active task is the Storage lifecycle verification described in Section 4; full CI verification is complete, not the remaining authenticated Storage/UI QA.
+
+
+## 9. Recovered and rechecked this session — 28 November 2026, Asia/Dhaka
+- Read back this live handoff, the full North Star and the permanent benchmark standard from `docs/jmt-academy-project-north-star`. The active next task remains Test-only offline-recording Storage lifecycle verification.
+- Reconfirmed JMT Test project `cullxqklmbdiosibgois` is `ACTIVE_HEALTHY` in `ap-south-1`; migration history contains both approved versions: `20261126072557 offline_recording_entitlements` and `20261126073045 offline_recording_foreign_key_indexes`. No SQL mutation or migration was run.
+- Refreshed PR #66–#68 and #73 metadata. All remain open, draft, unmerged and mergeable. Heads/bases remain: #66 `347031b9484afe6769bfdaeb9d4d130bc25cfa29` → `main`; #67 `84a2d3a8778bd887796a19be35410654adffea70` → #66; #68 `0547adbe718271d0f0b15349d6617662e0e49413` → #67; #73 `7288f6331c83dc84b621586cdcf4ad5714d4115e` → #68. PR #73 still has 14 changed files and no comments; its exact-head CI/Quality/LMS Quality runs remain successful: `46047365608`, `46047365806`, `46047365618`. No feature PR changed and no merge occurred.
+- PR #73 changed-file scope remains the 14 documented offline-recording/app/academic/docs/migration/test paths. The exact-head run metadata was independently re-read; combined status endpoint returned no legacy commit statuses, which does not negate the three successful Actions runs.
+- Re-discovered Supabase connector capabilities: no Auth user/session creation and no Storage upload/download/signed-URL actions. A Firecrawl live browser interaction action is available, but its isolated browser does not receive owner cookies and starts without cookies/saved sessions unless a team-scoped profile is supplied. No authorised Test-only staff profile/session is known. This does not unlock the required end-to-end test; no credentials were requested or used.
+- No browser test was run, because no authorised staff session exists. No Storage object upload/download, metadata publication, signed URL, expiry or cache test is claimed. No database changes, migration, Production operation, Render workspace selection, deployment, secret change, payment activation or PR merge occurred.
+- Render remains uninspected pending the owner's explicit confirmation to select `My Workspace` (`tea-dbn7i7lbedkc73fshc40`).
+- Visual preview request was recorded in Section 7; generated concepts are not approved product designs or implemented screenshots.
+
+**Exact next action:** locate or establish a team-scoped, Test-only browser profile that is already authenticated as an authorised synthetic staff user, without requesting owner credentials or using service-role bypass. Then use the isolated browser plus supported Supabase Storage client/API to run the actual upload → metadata publish → eligible student read → wrong-batch/expired/revoked denial → 900-second signed-link expiry → 60-second cache/revocation checks. If no such profile/harness exists, record that as the remaining external enablement blocker and keep PR #73 draft/unmerged.
