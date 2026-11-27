@@ -28,7 +28,7 @@
 
 **Active PR stack (refreshed 26 Nov 2026):**
 - PR #66 — [Student Today: surface one explainable next action](https://github.com/hk1911369-eng/jmtacademy/pull/66), open/draft/unmerged; head `347031b9484afe6769bfdaeb9d4d130bc25cfa29`, base `main` (partial-data reliability follow-up added 27 Nov).
-- PR #67 — [secure lesson resume and playback checkpoints](https://github.com/hk1911369-eng/jmtacademy/pull/67), open/draft/unmerged; head `4af653c8ee043af9e15f5394f11769b19be33e72`, base branch `feat/student-today-next-action`. After PR #66 advanced to `347031b...`, GitHub reports #67 `mergeable=false` / `dirty`; its recorded base SHA is stale at `d46b050...`. Stack reconciliation is required before proceeding.
+- PR #67 — [secure lesson resume and playback checkpoints](https://github.com/hk1911369-eng/jmtacademy/pull/67), open/draft/unmerged; head `4af653c8ee043af9e15f5394f11769b19be33e72`, base branch `feat/student-today-next-action`. After PR #66 advanced to `347031b...`, GitHub reports #67 `mergeable=false` / `dirty`; its recorded base SHA is stale at `d46b050...`. The PR #67 patch overlaps PR #66 in `app/student/page.tsx`, `components/learning-os-dashboard.tsx` and `app/globals.css`; a careful three-way integration is required.
 - PR #68 — [unified student academic calendar](https://github.com/hk1911369-eng/jmtacademy/pull/68), open/draft/unmerged; head `88daa1381712b0b0e4fc228e17aed9979c0fe5b5`, based on #67.
 - PR #73 — [approved offline missed-class recording access](https://github.com/hk1911369-eng/jmtacademy/pull/73), open/draft/unmerged; head `871ba5401b0eb781fb46c1d22727621c125a6f6e`, based on #68. Keep it draft and do not merge independently.
 
@@ -68,7 +68,7 @@
 - No new code, migration, deployment or database change was made this session.
 
 ## 4. Single next action — do this first on resume
-**Finish PR #66 exact-head verification, then reconcile the stacked PR chain.** First poll Quality run `46043132362` for head `347031b9484afe6769bfdaeb9d4d130bc25cfa29` until the production build and dependency audit complete. CI `46043132167` and LMS Quality `46043132448` already passed on that exact head. If Quality passes, inspect commit ancestry and diffs for PR #67, then safely rebase/stack its work onto the new #66 head without dropping its playback migration/tests; update descendants #68 and #73 only as required. If Quality fails, inspect logs and fix PR #66 first. Do not merge any PR.
+**Reconcile PR #67 onto the now-verified PR #66 head.** PR #66 exact head `347031b9484afe6769bfdaeb9d4d130bc25cfa29` has all three workflows green. First inspect the complete PR #67 commit list and three-way diff against merge base `95dbb20e3877a2b7ca8b7e89515a9fa5a52c0b67`; preserve its secure playback migration, API route, server action, player component and tests while integrating the newer Student Today page, dashboard and CSS changes. The overlapping files are `app/student/page.tsx`, `components/learning-os-dashboard.tsx` and `app/globals.css`. Prefer a reviewable branch update; do not drop commits, rewrite unrelated history, or merge any PR. Then update/check PR #68 and #73 descendants and run exact-head workflows for each affected head.
 
 Acceptance for the partial-data slice:
 1. Successful empty results remain honest empty states.
@@ -82,7 +82,7 @@ Acceptance for the partial-data slice:
 ## 5. Pending gates and safety boundaries
 - PR #73 hosted Storage object lifecycle and signed-link/cache verification remain blocked until an authorised synthetic staff browser/session or equivalent supported test harness exists. No owner approval is currently needed to investigate tooling; any new Auth identity, credentials, secret use or sensitive environment change requires separate review/approval.
 - PR #73 exact-head CI is still missing; no merge.
-- PR #67 currently reports mergeable=false/dirty after PR #66 advanced. PR #68 and #73 heads remain unchanged; their stacked ancestry must be checked after #67 is reconciled.
+- PR #67 currently reports mergeable=false/dirty after PR #66 advanced; its changes overlap three files with the new PR #66 commit. No rebase, merge or branch update has been performed. PR #68 and #73 heads remain unchanged; their stacked ancestry must be checked after #67 is reconciled.
 - Authenticated UI QA, Android/mobile, slow-network, screen-reader and real-device verification remain outstanding across the Student Today chain.
 - No PR #66–#68 or #73 merge, no Production migration/deployment, no real-money payment activation, no secrets/environment changes, no Render setting changes this session.
 - Render current service/deployment state was not rechecked in this session; do not claim it is live/current.
@@ -93,7 +93,8 @@ Acceptance for the partial-data slice:
 - Refreshed PR #66–#68 and #73. PR #66 now points to `347031b9484afe6769bfdaeb9d4d130bc25cfa29`, remains draft/unmerged/mergeable. PR #67 reports dirty after the #66 base advanced; #68 and #73 are unchanged.
 - Researched partial-data UX/accessibility references and documented the evidence and trade-offs in the PR #66 benchmark.
 - Implemented source-specific dashboard failure states, truthful summary metrics, partial-data preservation, priority suppression and regression tests. Updated PR #66 body and verified the changed-file list.
-- Exact-head CI run `46043132167` passed: 159 tests, 0 failures, TypeScript and ESLint. LMS Quality run `46043132448` passed: ESLint, guardrail tests, TypeScript, production build and production dependency audit. Quality run `46043132362` passed guardrail tests, ESLint and TypeScript; production build/dependency audit were still in progress at last poll.
+- Exact-head CI run `46043132167` passed: 159 tests, 0 failures, TypeScript and ESLint. LMS Quality run `46043132448` and Quality run `46043132362` both passed guardrail tests, ESLint, TypeScript, production build and production dependency audit.
+- Inspected PR #67's commit list and patch after the stack became dirty; confirmed overlapping edits in the student page, dashboard component and CSS. Did not rebase or modify #67/#68/#73 because the three-way integration needs a careful preservation pass.
 - No local tests, browser QA, mobile/device QA or screen-reader QA were run. No database writes/migrations, Production changes, deployment, secrets/environment change, payment activation or PR merge occurred.
 - Offline-recording Storage blocker remains: no authorised authenticated Storage upload route is available in connected tools; no direct SQL Storage writes or credentials were used.
 
