@@ -2,7 +2,7 @@
 
 > Replaceable operational checkpoint. Durable product requirements remain in the North Star and permanent benchmark standard. Refresh GitHub, Supabase and deployment evidence before every resume.
 
-**Last updated:** 28 November 2026, Asia/Dhaka (resume verification and Test Storage policy read-back)  
+**Last updated:** 28 November 2026, 17:57 Asia/Dhaka (fresh PR #73 exact-head CI, JMT Test read-back, current Supabase Storage documentation and public health recheck)
 **Canonical repository:** https://github.com/hk1911369-eng/jmtacademy  
 **Handoff branch:** `docs/jmt-academy-project-north-star`
 
@@ -233,3 +233,45 @@
 - **Next task:** complete authorised Test-only Storage lifecycle verification for PR #73; keep it draft/unmerged until the real object/API/cache gate is passed.
 - **First next action:** establish an authorised Test-only end-to-end path without sharing credentials in chat: either identify an already-authenticated team-scoped Firecrawl profile for the existing synthetic staff and student identities, or establish an owner-controlled CI harness using protected Test-only secrets and a supported dispatch route. Do not request passwords/JWTs/service-role keys, bypass RLS, write directly to storage.objects, or touch Production.
 - Once that capability exists, execute the six acceptance scenarios above. After the PR #73 Storage gate, return to Learning Experience OS by reviewing and reconciling PR #78's fail-closed resume-source correction into the Student Today stack, then complete authenticated Android/mobile, slow-network and screen-reader verification. Do not merge any PR or release without the required owner approval.
+
+
+## 16. Resume verification — 28 November 2026, 17:57 Asia/Dhaka
+
+### Authoritative sources and repository state
+- Re-read this authoritative handoff on `docs/jmt-academy-project-north-star` (current handoff blob before this update: `5523db55b233b1cb8dd380dc67de5aea1d29b918`), the North Star (`d2a7ab7b94eabb93bfe69eae0d0683dfc23fc001`), the permanent benchmark standard (`525c4df279e770b830a66aa46975790d16d0462e`) and continuity checkpoint (`826d7b36773aa03b4704b2d98d420e45cf6b876e`). The strategic order remains Learning Experience OS → separate AI Teacher and Exam Question Predictor → Complete Learning Ecosystem.
+- Canonical repository is public `hk1911369-eng/jmtacademy`; default branch `main` remains at `89331594bc3dc4880d71b1e5f3ba0343d49f9797`. The `main` copy of CURRENT_WORK_STATE.md is still the older 21 November snapshot. Keep this docs-branch copy authoritative. No merge or rebase was performed.
+
+### Current PR stack and exact-head evidence
+- PR #66 remains open/draft/unmerged/mergeable: `feat/student-today-next-action` at `347031b9484afe6769bfdaeb9d4d130bc25cfa29` → `main`.
+- PR #67 remains open/draft/unmerged/mergeable: `feat/student-resume-progress` at `84a2d3a8778bd887796a19be35410654adffea70` → PR #66.
+- PR #68 remains open/draft/unmerged/mergeable: `feat/student-academic-calendar` at `0547adbe718271d0f0b15349d6617662e0e49413` → PR #67.
+- PR #73 remains open/draft/unmerged/mergeable: `feat/offline-recording-entitlements` at exact head `b1dfdce16b07bf595ddb9e5dc7280e58b7329c5c` → PR #68 head `0547adbe718271d0f0b15349d6617662e0e49413`. Its 14 changed files remain the offline recording feature, benchmark, two Test migration files and regression test. The latest commit changes only `components/offline-recording-access.tsx` and `tests/offline-recording-entitlements.test.mjs`; no entitlement predicate, RLS policy, migration or Storage setting changed in that commit.
+- PR #78 remains open/draft/unmerged/mergeable at `791a8b2b8632176b6f8da24177d1220acad41455` → PR #68. It is a sibling of #73, not part of #73's branch; its fail-closed Student Today resume-source correction still needs review/reconciliation after the Storage gate.
+- Fresh PR #73 discussion reads returned zero issue comments, review submissions and inline review threads.
+- Exact-head GitHub Actions for PR #73 commit `b1dfdce16b07bf595ddb9e5dc7280e58b7329c5c`: CI run [46140233092](https://github.com/hk1911369-eng/jmtacademy/actions/runs/46140233092), Quality run [46140233158](https://github.com/hk1911369-eng/jmtacademy/actions/runs/46140233158), LMS Quality run [46140233175](https://github.com/hk1911369-eng/jmtacademy/actions/runs/46140233175) all completed successfully. I re-read their job logs: **186/186 tests passed**, TypeScript and ESLint passed, production build generated **41/41** static pages, and production-only dependency audit found **0 vulnerabilities**.
+- Non-failing install warnings remain distinct from the production audit: `npm ci` reported **6 moderate dependency-tree vulnerabilities**; logs also note deprecated `glob@7.2.3` and ESLint 8.57.1, a Node `url.parse()` deprecation, and a webpack CSS-loader cache serialization warning. Do not describe the full development dependency tree as vulnerability-free. No local checkout or local test run is claimed. The combined commit-status endpoint returned no separate legacy status entries; the workflow runs above are the CI evidence.
+
+### JMT Test — read-only verification only
+- Supabase project `cullxqklmbdiosibgois` is `JMT Test`, `ACTIVE_HEALTHY`, ap-south-1, PostgreSQL 17.11. Migration history contains 259 records. Approved versions `20261126072557 offline_recording_entitlements` and `20261126073045 offline_recording_foreign_key_indexes` are present. Neither migration was reapplied.
+- Read-only SQL confirms bucket `offline-class-recordings` is private, 100 MiB maximum, MIME allowlist MP4/WebM/QuickTime; current counts remain 1 synthetic offline batch, 1 staff assignment, 2 roster-history rows, 1 linked class, **0 recording metadata rows and 0 Storage objects**.
+- All ten feature foreign-key indexes are present. Performance advisor reports only 2 unrelated pre-existing unindexed foreign keys (`assignment_submission_versions_assignment_id_fkey`, `lesson_playback_progress_lesson_id_fkey`), 95 unused-index notices and 30 multiple-permissive-policy notices. Do not remove the new indexes merely because they have not yet been exercised by an object workload.
+- Project-wide security advisor still reports 2 RLS-enabled tables without policies (`app_rate_limit_events`, `auth_rate_limit_events`), 1 anon-executable SECURITY DEFINER function, 23 authenticated-executable SECURITY DEFINER functions and leaked-password protection disabled. These are existing project-wide findings, not newly attributed to PR #73; no security remediation was attempted in this session.
+
+### Storage lifecycle gate — still blocked
+- Fresh official Supabase documentation search reconfirmed that private-bucket operations, including downloads, are subject to `storage.objects` RLS; downloads require an authorised JWT or a time-limited signed URL. Smart CDN is automatically enabled on Pro and above; browser `cacheControl` and CDN caching are independent. Signed-URL token expiry does not purge an already-cached CDN response, and object-deletion invalidation can take up to 60 seconds. Keep the distinction explicit; `cacheControl: '60'` is not a guaranteed 60-second CDN edge TTL.
+- The current connected Supabase catalogue still has no Storage object upload/download/signed-URL action and no Auth user/session creation action. Firecrawl's browser is isolated from owner cookies; no authorised team-scoped profile for the synthetic staff/student identities is known. The GitHub connector has no repository-secret write or workflow-dispatch action. No password, JWT or service-role key was requested or used.
+- Actual authenticated object upload, metadata publication, eligible GET/Range read, signed-link creation and 900-second expiry, browser/CDN cache, post-revocation behavior and upload/metadata interruption scenarios remain **unverified**. SQL role checks and source-pattern tests are not substitutes for those API tests. Do not write directly to `storage.objects`, create new Auth users, use service-role bypass or test with real recordings.
+- The six release acceptance scenarios in `docs/JMT_OFFLINE_RECORDING_ENTITLEMENT_BENCHMARK_2026-11-23.md` remain mandatory. Keep PR #73 and dependent PRs #66–#68 draft/unmerged until the authorised Test-only lifecycle gate and authenticated UI/device verification are complete.
+
+### Public deployment smoke and access boundary
+- Fresh public health endpoint reads returned `{"status":"ok","app":"jmt-academy","database":"reachable"}` for primary `jmtacademy-web` at 2026-11-28T11:56:53Z, QA `jmtacademy-qa-20261116` at 11:57:04Z, and legacy `sanjay-kumar-chemistry-lms` at 11:56:52Z. This is health-endpoint evidence only; it does not establish each service's deployed commit or Supabase binding.
+- Render workspace selection still requires owner confirmation. No workspace was selected; no Render service settings, environment variables, secrets, deployments or billing were changed.
+
+### Work performed in this resume session
+- Re-read the authoritative documents and PR #73 source/test paths; refreshed PR #73 metadata, changed-file list, discussion, exact-head workflow runs and job logs; refreshed JMT Test migration history, bucket/object/metadata counts, index presence and advisors; searched current official Supabase Storage documentation; and rechecked the three public health endpoints.
+- No application code, PR metadata, migration, fixture, Storage object, recording metadata, Render setting, deployment, Production resource, payment setting or secret was changed. No new test suite or authenticated browser test was run in this session; the exact-head GitHub Actions results above were independently re-read.
+
+### Exact next task and first next action
+- **Next task:** complete authorised Test-only Storage lifecycle verification for PR #73; keep it draft/unmerged until real API-level evidence exists.
+- **First next action:** obtain one safe authenticated Test-only execution route without sharing credentials in chat: either an already-authenticated, team-scoped Firecrawl profile for the existing synthetic staff and student identities, or an owner-controlled GitHub Actions environment containing protected Test-only synthetic staff/student secrets and a supported manual dispatch path. The current connectors cannot provision those secrets or dispatch that workflow. Do not ask for passwords/JWTs in chat, bypass RLS, write directly to `storage.objects`, or touch Production.
+- Once that route is available, execute the six acceptance scenarios in the feature benchmark. Then return to Learning Experience OS: review/reconcile PR #78's fail-closed resume-source correction into the Student Today stack, followed by authenticated Android/mobile, slow-network and screen-reader verification. No PR merge or Production release without the required owner approval.
