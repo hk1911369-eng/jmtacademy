@@ -202,3 +202,17 @@ Before PR #73 can leave draft status, an authorised Test-only browser/JWT harnes
 6. Keep all identities, files and records synthetic and Test-only. Do not write directly to `storage.objects`, use real student recordings, alter Production, or activate payments.
 
 The available Supabase connector still exposes SQL/migration/schema actions but no Storage object upload/download action or authenticated browser session. Until a safe owner-authorised browser/JWT path is available, the hosted Storage gate remains blocked and PR #73 stays draft/unmerged.
+
+### Exact-head automated verification after upload recovery — 28 November 2026
+
+Updated feature head: `219f05ccd678fe02539e62c3789ea519b7b6f127`.
+
+A temporary validation-only PR #76 pointed to this exact SHA and was closed unmerged after the workflows completed:
+- [CI 46138133683](https://github.com/hk1911369-eng/jmtacademy/actions/runs/46138133683): **185 tests passed, 0 failed**; TypeScript and ESLint passed.
+- [Quality 46138133730](https://github.com/hk1911369-eng/jmtacademy/actions/runs/46138133730): guardrail tests, ESLint, TypeScript, production build and production dependency audit passed.
+- [LMS Quality 46138133727](https://github.com/hk1911369-eng/jmtacademy/actions/runs/46138133727): guardrail tests, ESLint, TypeScript, production build and production dependency audit passed.
+- Build generated 41 static pages; dependency audit reported 0 vulnerabilities.
+
+The GitHub Actions logs include non-failing warnings: a webpack CSS-loader cache serialization warning, Node's `punycode` deprecation warning, and a notice that checkout/setup-node actions target Node.js 20 while the runner is forcing Node.js 24. These should be tracked separately; they did not fail this run.
+
+The container could not resolve `github.com`, so no local checkout or local npm test/build was run. The results above are exact-SHA GitHub-hosted CI evidence. They do not verify authenticated Storage API behavior, browser/mobile accessibility, slow-network behavior or Production deployment.
