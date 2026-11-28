@@ -2,7 +2,7 @@
 
 > Replaceable operational checkpoint. Durable product requirements remain in the North Star and permanent benchmark standard. Refresh GitHub, Supabase and deployment evidence before every resume.
 
-**Last updated:** 28 November 2026, 17:59 Asia/Dhaka (fresh PR #73 exact-head CI, JMT Test read-back, current Supabase Storage documentation and public health recheck)
+**Last updated:** 28 November 2026, 22:35 Asia/Dhaka (Figma application-design first batch created; app source unchanged)
 **Canonical repository:** https://github.com/hk1911369-eng/jmtacademy  
 **Handoff branch:** `docs/jmt-academy-project-north-star`
 
@@ -288,3 +288,24 @@
 - No Figma or Product Design app UI workflow was executed. Product Design's installed instructions state standard ChatGPT chat does not support its full workflow; use ChatGPT Work for cloud-browser/Sites-based product UI ideation and prototyping. Adobe Express assets are marketing/brand collateral, not application UI implementation.
 - No application source, GitHub PR, Supabase, Render, Production resource, payment configuration or secrets were changed by this design sprint.
 - **Next design action:** establish and approve the JMT visual system (logo/emblem, type scale, color tokens, spacing, imagery and accessibility rules) using a supported vector/design workflow; then produce the reusable course-slide master, course cover/thumbnail set, class handout/worksheet, admission collateral, certificate and ID-card templates, social campaign set, and staff/admin/student document templates. In parallel, use Product Design in Work for actual Learning Experience OS screen designs and prototypes. Prioritise assets with repeated use across the platform; do not treat a single cover or social post as “everything designed.”
+
+
+## 16. JMT application design — first editable Figma batch — 28 November 2026, Asia/Dhaka
+
+- Owner redirected the limited Adobe Express subscription priority: design the actual JMT Academy application first; marketing collateral is secondary. Keep the existing multi-subject, Bangladesh HSC 2027/HSC 2028/admission, online + offline product scope and existing role/business rules. Do not restart the product or treat posters as application design.
+- Created a dedicated editable Figma Design file: https://www.figma.com/design/ecJJeJe5sfGYRLuCcC5zaz . This is a separate design artifact; no application source code or deployed UI was changed.
+- First page, 01 — Student Experience, contains:
+  - JMT Student Today — Desktop 1440, frame ID 4:18.
+  - JMT Student Today — Mobile 390, frame ID 6:15, deliberately reflowed for phone layout, including a Noto Sans Bengali heading.
+  - JMT Design Foundations — v1 specimen board, ID 7:15.
+  - Reusable primary button component ID 4:12 and stat card component ID 4:14.
+- Second page, 02 — Learning journeys, contains the JMT Course Library — Desktop 1440 frame, ID 9:20, with cohort filters, continue-learning cards and subject course cards. Figma confirmed the page and screen were created; a second screenshot audit was not possible after the tool-call limit was reached.
+- Created semantic token collection JMT — Semantic Tokens (collection ID VariableCollectionId:4:2) with nine colour variables: brand navy #071B3B, action blue #1769D2, canvas #F6F9FD, raised surface #FFFFFF, primary text #14233B, muted text #66758B, subtle border #DCE5F1, status accent #D89A35, and status success #16744D. These are a working application palette grounded in the existing codebase direction, not an owner-approved final brand palette.
+- Inter and Noto Sans Bengali are available and used in the specimen/mobile design. Existing codebase typography remains the implementation reference until visual QA confirms parity.
+- Sample course names, progress counts, lesson durations and dashboard metrics in these screens are design-only sample data, not live database facts. Replace with bound product data during implementation; do not present sample metrics as real learner records.
+- Desktop and mobile Student Today screenshots were inspected. The mobile layout fits the intended phone width and uses a distinct vertical flow. The desktop screen has an intentionally restrained first pass; the continuation card's unused right-side space and missing navigation iconography are known visual refinements, not final acceptance.
+- Figma Starter imposed an MCP tool-call limit after the first batch. The created file and frames were saved, but additional Figma construction/visual QA could not continue in this session. The token collection currently exposes only a Light mode despite the initial request for Light/Dark; Dark mode is not complete. Do not claim full design-system or multi-role completion.
+- The Product Design plugin's full workflow remains Work-mode-only per its installed instructions. Direct Figma design editing was possible here, but this is not a substitute for the complete Product Design Work workflow or application implementation.
+- Adobe Express remains the asset-production route for reusable brand/course/academic collateral, not the application screen canvas. Previously created Express brand cover and square social post remain provisional, with their export links documented in Section 15. The failed AI logo/emblem and complex admissions-poster tasks must not be repeated as the same requests.
+- No code, PR, Supabase, Render, Production, payments, secrets or deployment was changed in this design batch.
+- Next design sequence: complete student learning journeys (course detail, lesson player, live class, resources, notes/doubts, assignments, quizzes/exams, planner/calendar, notifications, profile/payments); then teacher workspace; then admin operations; then parent view. Include mobile layouts for every high-frequency workflow. Audit the real code routes/data contracts before implementation; then apply the approved system to a dedicated feature branch/PR and run the existing test suite plus authenticated responsive QA. Use Adobe Express for repeatable visual assets that support those workflows.
