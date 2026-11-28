@@ -20,33 +20,63 @@ export function OfflineClassRecordingUpload({
     if (file.size > 100 * 1024 * 1024) { setMessage('Maximum recording size is 100 MB.'); return; }
     setBusy(true);
     setMessage('Uploading the recording. Keep this page open until it finishes.');
-    const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    );
-    const safeName = file.name.normalize('NFKD').replace(/[^a-zA-Z0-9._-]+/g, '-').slice(-120) || 'class-recording.mp4';
-    const path = batchId + '/' + liveClassId + '/' + crypto.randomUUID() + '-' + safeName;
-    const { error: uploadError } = await supabase.storage.from('offline-class-recordings').upload(path, file, {
-      contentType: file.type,
-      // Keep cached copies shorter than the 15-minute signed-link lifetime.
-      cacheControl: '60', upsert: false,
-    });
-    if (uploadError) {
-      setBusy(false); setMessage('Upload failed. Check your connection and try again.'); return;
+
+    let supabase: ReturnType<typeof createBrowserClient> | null = null;
+    let path = '';
+    let metadataInsertStarted = false;
+
+    try {
+      supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      );
+      const safeName = file.name.normalize('NFKD').replace(/[^a-zA-Z0-9._-]+/g, '-').slice(-120) || 'class-recording.mp4';
+      path = batchId + '/' + liveClassId + '/' + crypto.randomUUID() + '-' + safeName;
+      const { error: uploadError } = await supabase.storage.from('offline-class-recordings').upload(path, file, {
+        contentType: file.type,
+        // This controls browser caching; it does not shorten the signed URL's bearer lifetime.
+        cacheControl: '60', upsert: false,
+      });
+      if (uploadError) {
+        setMessage('Upload failed. Check your connection and try again.');
+        return;
+      }
+
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      if (authError || !user) {
+        try { await supabase.storage.from('offline-class-recordings').remove([path]); } catch { /* best-effort cleanup */ }
+        setMessage('Your staff session expired. Sign in again before publishing this recording.');
+        return;
+      }
+
+      metadataInsertStarted = true;
+      const { error: rowError } = await supabase.from('offline_class_recordings').insert({
+        live_class_id: liveClassId, batch_id: batchId, course_id: courseId,
+        storage_path: path, file_name: safeName, mime_type: file.type, file_size: file.size,
+        created_by: user.id,
+      });
+      if (rowError) {
+        try { await supabase.storage.from('offline-class-recordings').remove([path]); } catch { /* best-effort cleanup */ }
+        setMessage('The file uploaded but could not be published. No student access was granted.');
+        return;
+      }
+
+      setFile(null);
+      setMessage('Recording published to the approved offline batch.');
+      router.refresh();
+    } catch {
+      // A timed-out upload may have reached Storage even if its response was lost.
+      // Once metadata publication starts, its outcome may be ambiguous; do not delete
+      // an object that may already have a published metadata row.
+      if (supabase && path && !metadataInsertStarted) {
+        try { await supabase.storage.from('offline-class-recordings').remove([path]); } catch { /* best-effort cleanup */ }
+      }
+      setMessage(metadataInsertStarted
+        ? 'The connection was interrupted while confirming publication. Refresh this page before retrying to check whether the recording was saved.'
+        : 'Upload interrupted. Check your connection and retry.');
+    } finally {
+      setBusy(false);
     }
-    const { data: { user } } = await supabase.auth.getUser();
-    const { error: rowError } = await supabase.from('offline_class_recordings').insert({
-      live_class_id: liveClassId, batch_id: batchId, course_id: courseId,
-      storage_path: path, file_name: safeName, mime_type: file.type, file_size: file.size,
-      created_by: user?.id,
-    });
-    if (rowError) {
-      await supabase.storage.from('offline-class-recordings').remove([path]);
-      setBusy(false); setMessage('The file uploaded but could not be published. No student access was granted.');
-      return;
-    }
-    setFile(null); setBusy(false); setMessage('Recording published to the approved offline batch.');
-    router.refresh();
   }
 
   return (
