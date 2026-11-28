@@ -329,3 +329,11 @@
 - Google Drive: no Google Drive connector action is available in this session. Do not claim files were uploaded to the owner's 400 GB Drive. The Adobe and Figma links are cloud-hosted artifacts; a Drive archive remains pending connector availability or an owner-provided upload route.
 - No application source, GitHub PR, Supabase, Render, Production, payment configuration, secrets or deployment was changed.
 - Next: continue application screen design when Figma MCP access is available again; use the six covers as assets in the course-library and course-detail UI, then complete lesson player/live class/resources/assessments/planner and teacher/admin/parent workspaces. After visual approval, apply designs in a dedicated PR branch and run the repository checks plus responsive authenticated QA.
+
+
+## 18. Design-system specification and historical-thread reconciliation — 28 November 2026
+
+- Added the durable working design specification at `docs/JMT_APPLICATION_DESIGN_SYSTEM_V1.md` on the handoff branch. It records the exact existing CSS palette, English/Bangla typography, first-pass layout/component rules, student IA, role workspace scopes, accessibility/reliability requirements, sample-data restrictions and implementation gates. It explicitly distinguishes design artifacts from implemented UI and records that Dark mode, lesson-player detail and teacher/admin/parent screens are not complete.
+- Recovered the older conversation context around “Continue JMT Academy Development 12”. The earlier checkpoint did not contain additional Adobe Express designs; design was still a planned next phase at that point. The actual Express designs are from the 28 November 2026 design sprint documented in Sections 15 and 17. Do not infer extra unseen designs from the older conversation title.
+- Google Drive connector actions remain unavailable in this session. The owner reports 400 GB Drive storage and 12 months premium access; no Drive upload was performed. Do not claim Drive backup is complete.
+- Latest documentation commits: design system specification `3bb0d5e0994bbf7d95cb04e7def24299486ffe4a`; live handoff update `6268451c720cac9ed41fc5f208fb6d23689a5f14` (followed by this section's update).
