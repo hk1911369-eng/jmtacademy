@@ -95,3 +95,10 @@ test('recording upload recovers from thrown network errors and does not delete a
   assert.match(upload, /Refresh this page before retrying to check whether the recording was saved/);
   assert.match(upload, /remove\(\[path\]\)/);
 });
+
+test('recording playback unlocks and offers retry after signed-link request interruption', async () => {
+  const access = await read('components/offline-recording-access.tsx');
+  assert.match(access, /try \\{[\\s\\S]*getOfflineClassRecordingUrl\\(recordingId\\)/);
+  assert.match(access, /catch \\{[\\s\\S]*Could not prepare the recording\\. Check your connection and try again\\./);
+  assert.match(access, /finally \\{\\s*setBusy\\(false\\);\\s*\\}/);
+});
