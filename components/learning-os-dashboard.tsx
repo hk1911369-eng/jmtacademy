@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { completeRevisionTask, createStudyGoal } from '@/app/actions/learning';
+import { selectNextLearningAction } from '@/lib/learning-next-action.mjs';
+import { getLearningDashboardAvailability } from '@/lib/learning-dashboard-availability.mjs';
 
 type Goal = {
   id: string; goal_type: string; target_value: number; current_value: number;
@@ -26,29 +28,51 @@ const goalLabels: Record<string, string> = {
   lesson_completions: 'Lesson completions',
 };
 
-export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, recommendations, courseNames, upcomingExams, upcomingAssignments }: {
+export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, recommendations, courseNames, upcomingExams, upcomingAssignments, sourceIssues = [] }: {
   goals: Goal[]; revisionTasks: RevisionTask[]; mastery: Mastery[]; mistakes: Mistake[]; recommendations: Recommendation[];
-  courseNames: Map<string, string>; upcomingExams: UpcomingExam[]; upcomingAssignments: UpcomingAssignment[];
+  courseNames: Map<string, string>; upcomingExams: UpcomingExam[]; upcomingAssignments: UpcomingAssignment[]; sourceIssues?: string[];
 }) {
-  const dueCount = revisionTasks.filter(task => new Date(task.scheduled_for) <= new Date()).length;
-  const averageMastery = mastery.length
-    ? Math.round(mastery.reduce((sum, item) => sum + Number(item.mastery_score), 0) / mastery.length * 100)
-    : null;
+  const availability = getLearningDashboardAvailability(sourceIssues);
+  const nextAction = availability.nextActionUnavailable
+    ? {
+        title: 'Your next step is temporarily unavailable',
+        description: 'Some learning information could not be loaded, so this dashboard cannot safely prioritise your next task. Refresh to try again.',
+        href: '/student',
+        actionLabel: 'Refresh dashboard',
+      }
+    : selectNextLearningAction({ revisionTasks, upcomingExams, upcomingAssignments, recommendations, courseNames, now: new Date() });
+  const dueCount = availability.hasIssue('revision')
+    ? null
+    : revisionTasks.filter(task => new Date(task.scheduled_for) <= new Date()).length;
+  const averageMastery = availability.hasIssue('mastery')
+    ? null
+    : mastery.length
+      ? Math.round(mastery.reduce((sum, item) => sum + Number(item.mastery_score), 0) / mastery.length * 100)
+      : null;
 
   return <section id="learning-os" className="portal-card learning-os-panel">
     <span className="auth-kicker">YOUR LEARNING OS</span>
     <h2>Today dashboard</h2>
     <p className="learning-os-muted">A subject-independent view of your study goals, revision queue and topic mastery. Insights improve as you complete lessons and assessments.</p>
+    {availability.hasIssues && <p className="learning-os-data-warning" role="status" aria-live="polite">Some learning information could not be loaded. Available sections are still shown; refresh the dashboard to try again.</p>}
+    <section className="learning-os-next-action" aria-labelledby="learning-os-next-action-title" data-testid="learning-os-next-action">
+      <div className="learning-os-next-action-copy">
+        <span className="auth-kicker">YOUR NEXT STEP</span>
+        <h3 id="learning-os-next-action-title">{nextAction.title}</h3>
+        <p>{nextAction.description}</p>
+      </div>
+      <Link className="learning-os-next-action-link" href={nextAction.href}>{nextAction.actionLabel}<span aria-hidden="true"> →</span></Link>
+    </section>
     <div className="learning-os-stats">
-      <div className="learning-os-stat"><strong>{goals.length}</strong><span>Current goals</span></div>
-      <div className="learning-os-stat"><strong>{dueCount}</strong><span>Revision due</span></div>
-      <div className="learning-os-stat"><strong>{mastery.length}</strong><span>Topics tracked</span></div>
-      <div className="learning-os-stat"><strong>{mistakes.length}</strong><span>Mistakes to revisit</span></div>
+      <div className="learning-os-stat"><strong>{availability.hasIssue('goals') ? '—' : goals.length}</strong><span>Current goals</span></div>
+      <div className="learning-os-stat"><strong>{dueCount === null ? '—' : dueCount}</strong><span>Revision due</span></div>
+      <div className="learning-os-stat"><strong>{availability.hasIssue('mastery') ? '—' : mastery.length}</strong><span>Topics tracked</span></div>
+      <div className="learning-os-stat"><strong>{availability.hasIssue('mistakes') ? '—' : mistakes.length}</strong><span>Mistakes to revisit</span></div>
       <div className="learning-os-stat"><strong>{averageMastery === null ? '—' : averageMastery + '%'}</strong><span>Average mastery</span></div>
     </div>
 
     <h3>Set a 7-day study target</h3>
-    <form action={createStudyGoal} className="auth-form learning-os-goal-form">
+    <form id="learning-os-goal-form" action={createStudyGoal} className="auth-form learning-os-goal-form">
       <label>Goal type
         <select name="goal_type" defaultValue="lesson_completions" required>
           <option value="lesson_completions">Lesson completions</option>
@@ -73,7 +97,7 @@ export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, r
     <div className="learning-os-columns">
       <div>
         <h3>My study goals</h3>
-        {goals.length === 0 ? <p className="learning-os-muted">No active goals yet. Set your first target above.</p> :
+        {availability.hasIssue('goals') ? <p className="learning-os-data-error">Study goals could not be loaded. Refresh the dashboard to try again.</p> : goals.length === 0 ? <p className="learning-os-muted">No active goals yet. Set your first target above.</p> :
           <ul className="learning-os-list">{goals.map(goal => {
             const progress = Math.min(100, Math.round(Number(goal.current_value) / Number(goal.target_value) * 100));
             return <li key={goal.id}>
@@ -87,7 +111,7 @@ export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, r
       </div>
       <div>
         <h3>Revision queue</h3>
-        {revisionTasks.length === 0 ? <p className="learning-os-muted">Your revision schedule will appear here when learning evidence is available.</p> :
+        {availability.hasIssue('revision') ? <p className="learning-os-data-error">Your revision queue could not be loaded. No conclusion about pending revision can be made.</p> : revisionTasks.length === 0 ? <p className="learning-os-muted">Your revision schedule will appear here when learning evidence is available.</p> :
           <ul className="learning-os-list">{revisionTasks.map(task => <li key={task.id}>
             <b>{task.title}</b>
             <small className="learning-os-muted"> {courseNames.get(task.course_id) ?? 'Course'} · {new Date(task.scheduled_for).toLocaleString('en-GB', { timeZone: 'Asia/Dhaka' })} · Priority {task.priority}/5</small>
@@ -102,7 +126,7 @@ export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, r
     <div className="learning-os-columns">
       <div>
         <h3>Upcoming exams</h3>
-        {upcomingExams.length === 0 ? <p className="learning-os-muted">No scheduled quizzes or written exams in your active courses.</p> :
+        {availability.hasIssue('upcomingExams') ? <p className="learning-os-data-error">Upcoming exams could not be loaded. Refresh to check the schedule again.</p> : upcomingExams.length === 0 ? <p className="learning-os-muted">No scheduled quizzes or written exams in your active courses.</p> :
           <ul className="learning-os-list">{upcomingExams.map(exam => <li key={exam.kind + exam.id}>
             <b>{exam.title}</b> <span className="learning-os-muted">· {exam.kind}</span>
             <small className="learning-os-muted">{courseNames.get(exam.course_id) ?? 'Course'} · {new Date(exam.starts_at).toLocaleString('en-GB',{timeZone:'Asia/Dhaka'})} Bangladesh time · {exam.total_marks} marks{exam.duration_minutes ? ' · '+exam.duration_minutes+' min' : ''}</small>
@@ -111,7 +135,7 @@ export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, r
       </div>
       <div>
         <h3>Upcoming assignments</h3>
-        {upcomingAssignments.length === 0 ? <p className="learning-os-muted">No upcoming assignment deadlines in your active courses.</p> :
+        {availability.hasIssue('upcomingAssignments') ? <p className="learning-os-data-error">Upcoming assignments could not be loaded. Refresh to check deadlines again.</p> : upcomingAssignments.length === 0 ? <p className="learning-os-muted">No upcoming assignment deadlines in your active courses.</p> :
           <ul className="learning-os-list">{upcomingAssignments.map(assignment => <li key={assignment.id}>
             <b>{assignment.title}</b>
             <small className="learning-os-muted">{courseNames.get(assignment.course_id) ?? 'Course'} · Due {new Date(assignment.due_at).toLocaleString('en-GB',{timeZone:'Asia/Dhaka'})} Bangladesh time · {assignment.max_marks} marks</small>
@@ -121,7 +145,9 @@ export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, r
     </div>
 
     <h3>My mistake memory</h3>
-    {mistakes.length === 0
+    {availability.hasIssue('mistakes')
+      ? <p className="learning-os-data-error">Your saved mistakes could not be loaded. Refresh to try again.</p>
+      : mistakes.length === 0
       ? <p className="learning-os-muted">Your quiz mistakes will be saved here after concept-mapped quizzes are completed. Repeated patterns help target revision; they do not reduce your grade.</p>
       : <div className="learning-os-columns">{mistakes.map(mistake => <details className="learning-os-stat" key={mistake.id}>
           <summary><b>{mistake.prompt_snapshot}</b><small className="learning-os-muted"> · {mistake.occurrence_count} occurrence{mistake.occurrence_count===1?'':'s'} · {courseNames.get(mistake.course_id)??'Course'}</small></summary>
@@ -132,7 +158,9 @@ export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, r
         </details>)}</div>}
 
     <h3>Recommended next steps</h3>
-    {recommendations.length === 0
+    {availability.hasIssue('recommendations')
+      ? <p className="learning-os-data-error">Personal lesson recommendations could not be checked. This does not mean that no useful lesson is available.</p>
+      : recommendations.length === 0
       ? <p className="learning-os-muted">Personal lesson recommendations will appear when a topic has at least three verified learning signals and a published lesson is available in a currently paid course. Recommendations are based on evidence, not guesses.</p>
       : <ul className="learning-os-list">{recommendations.map(item => <li key={item.lessonId}>
           <b>{item.lessonTitle}</b>
@@ -141,7 +169,7 @@ export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, r
         </li>)}</ul>}
 
     <h3>Topic mastery map</h3>
-    {mastery.length === 0 ? <p className="learning-os-muted">Topic-level mastery will appear after concepts are mapped to lessons and enough practice evidence is collected. Your scores are not guessed.</p> :
+    {availability.hasIssue('mastery') ? <p className="learning-os-data-error">Topic mastery could not be loaded. No mastery score is being inferred.</p> : mastery.length === 0 ? <p className="learning-os-muted">Topic-level mastery will appear after concepts are mapped to lessons and enough practice evidence is collected. Your scores are not guessed.</p> :
       <div className="learning-os-columns">{mastery.map(item => {
         const concept = Array.isArray(item.learning_concepts) ? item.learning_concepts[0] : item.learning_concepts;
         const subject = Array.isArray(concept?.academic_subjects) ? concept.academic_subjects[0] : concept?.academic_subjects;
