@@ -31,12 +31,17 @@ export async function createLiveClass(formData:FormData) {
  const {supabase,user,role}=await actor();
  const courseId=String(formData.get('course_id')||'');
  const title=String(formData.get('title')||'').trim();
- const starts=String(formData.get('starts_at')||'');
- const ends=String(formData.get('ends_at')||'');
+ const starts=parseDhakaDateTime(String(formData.get('starts_at')||''));
+ const ends=parseDhakaDateTime(String(formData.get('ends_at')||''));
  const meeting=String(formData.get('meeting_url')||'').trim();
+ const offlineBatchId=String(formData.get('offline_batch_id')||'').trim()||null;
  if(!courseId||title.length<3||!starts||!ends||new Date(ends)<=new Date(starts)|| (meeting&&!/^https:\/\//i.test(meeting))) redirect('/academic?error=class');
  if(!await canTeach(supabase,user.id,role,courseId)) redirect('/academic?error=permission');
- const {error}=await supabase.from('live_classes').insert({course_id:courseId,title,starts_at:new Date(starts).toISOString(),ends_at:new Date(ends).toISOString(),meeting_url:meeting||null,created_by:user.id});
+ if(offlineBatchId){
+  const {data:batch}=await supabase.from('offline_batches').select('id,course_id').eq('id',offlineBatchId).maybeSingle();
+  if(!batch||batch.course_id!==courseId) redirect('/academic?error=permission');
+ }
+ const {error}=await supabase.from('live_classes').insert({course_id:courseId,title,starts_at:starts,ends_at:ends,meeting_url:meeting||null,offline_batch_id:offlineBatchId,created_by:user.id});
  redirect(error?'/academic?error=class':'/academic?saved=class');
 }
 
