@@ -12,10 +12,16 @@ export function OfflineRecordingAccess({
 
   async function open() {
     setBusy(true); setError('');
-    const result = await getOfflineClassRecordingUrl(recordingId);
-    setBusy(false);
-    if (!result.url) { setUrl(''); setError('This recording is no longer available to your account.'); return; }
-    setUrl(result.url);
+    try {
+      const result = await getOfflineClassRecordingUrl(recordingId);
+      if (!result.url) { setUrl(''); setError('This recording is no longer available to your account.'); return; }
+      setUrl(result.url);
+    } catch {
+      setUrl('');
+      setError('Could not prepare the recording. Check your connection and try again.');
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
