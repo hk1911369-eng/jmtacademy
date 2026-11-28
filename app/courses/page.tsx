@@ -3,7 +3,7 @@ import {createPublicClient} from '@/lib/supabase/public';
 import {CourseCatalogue} from '@/components/course-catalogue';
 
 export const revalidate = 300;
-export const metadata = { title: 'Courses', alternates: { canonical: '/courses' }, openGraph: { url: '/courses' } };
+export const metadata = { title: 'Courses', description: 'Explore JMT Academy courses across school, HSC, admission and skills programmes. Compare live, recorded and offline learning options.', alternates: { canonical: '/courses' }, openGraph: { url: '/courses' } };
 
 export default async function Courses(){
  const db=createPublicClient();

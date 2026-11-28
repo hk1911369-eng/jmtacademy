@@ -1,0 +1,202 @@
+{
+  "datasetId": "jmt-hsc-2027-bangla-first-paper-candidate",
+  "preparedOn": "2026-11-14",
+  "jurisdiction": "Bangladesh",
+  "board": "NCTB",
+  "targetCohort": {
+    "intake": "2025-26",
+    "exam": "HSC 2027"
+  },
+  "subject": {
+    "name": "Bangla First Paper",
+    "subjectCode": null
+  },
+  "curriculumVersion": "2024-25",
+  "carryForward": {
+    "status": "secondary_reported_primary_attachment_pending",
+    "noticeDate": "2025-11-26",
+    "officialNoticeUrl": "https://nctb.gov.bd/pages/notices/695b9e5235ce18e1c05af63d",
+    "corroboratingReportUrl": "https://www.prothomalo.com/amp/story/education/examination/6gnl078cvr"
+  },
+  "provenance": {
+    "officialNctbCircularUrl": "https://nctb.gov.bd/sites/default/files/files/nctb.portal.gov.bd/notices/2fda494e_f478_40f2_97a7_9692c9de42d8/2024-11-21-12-04-130109718cbffd151b90e1556a7dca07.pdf",
+    "officialCircularDate": "2024-11-21",
+    "officialCircularMemo": "37.06.0000.402.71.068.02.39",
+    "officialCircularConfirms": "The 2024-25 HSC Bangla First Paper curriculum attachment and 12 prose plus 12 poetry selections; it does not include the full list in the extracted circular text.",
+    "secondaryHostedSyllabusPdf": "https://media.prothomalo.com/prothomalo-bangla/2024-11-24/vuyx0h7e/l6q6l2ng.pdf",
+    "secondaryPdfPage": "1",
+    "secondaryPdfHost": "media.prothomalo.com",
+    "secondaryPdfStatus": "unofficial_hosted_copy_not_yet_compared_byte_for_byte_with_NCTB_attachment"
+  },
+  "sourceStatus": "candidate_secondary_mirror_needs_primary_attachment_verification",
+  "teacherReviewRequired": true,
+  "publishable": false,
+  "items": [
+    {
+      "type": "prose",
+      "title": "বাংলার নবাব লেখকদিগের প্রতি নিবেদন",
+      "author": "বঙ্কিমচন্দ্র চট্টোপাধ্যায়",
+      "position": 1
+    },
+    {
+      "type": "prose",
+      "title": "অপরিচিতা",
+      "author": "রবীন্দ্রনাথ ঠাকুর",
+      "position": 2
+    },
+    {
+      "type": "prose",
+      "title": "সাহিত্যে খেলা",
+      "author": "প্রমথ চৌধুরী",
+      "position": 3
+    },
+    {
+      "type": "prose",
+      "title": "বিলাসী",
+      "author": "শরৎচন্দ্র চট্টোপাধ্যায়",
+      "position": 4
+    },
+    {
+      "type": "prose",
+      "title": "অর্ধাঙ্গী",
+      "author": "রোকেয়া সাখাওয়াত হোসেন",
+      "position": 5
+    },
+    {
+      "type": "prose",
+      "title": "যৌবনের গান",
+      "author": "কাজী নজরুল ইসলাম",
+      "position": 6
+    },
+    {
+      "type": "prose",
+      "title": "জীবন ও বৃক্ষ",
+      "author": "মোতাহের হোসেন চৌধুরী",
+      "position": 7
+    },
+    {
+      "type": "prose",
+      "title": "গন্তব্য কাবুল",
+      "author": "সৈয়দ মুজতবা আলী",
+      "position": 8
+    },
+    {
+      "type": "prose",
+      "title": "মাসি-পিসি",
+      "author": "মানিক বন্দ্যোপাধ্যায়",
+      "position": 9
+    },
+    {
+      "type": "prose",
+      "title": "কপিলদাস মুর্মুর শেষ কাজ",
+      "author": "শওকত আলী",
+      "position": 10
+    },
+    {
+      "type": "prose",
+      "title": "রেইনকোট",
+      "author": "আখতারুজ্জামান ইলিয়াস",
+      "position": 11
+    },
+    {
+      "type": "prose",
+      "title": "নেকলেস",
+      "author": "গী দ্য মোপাসাঁ",
+      "position": 12
+    },
+    {
+      "type": "poetry",
+      "title": "খণ্ড-বর্ণ",
+      "author": "আলাওল",
+      "position": 1
+    },
+    {
+      "type": "poetry",
+      "title": "বিভীষণের প্রতি মেঘনাদ",
+      "author": "মাইকেল মধুসূদন দত্ত",
+      "position": 2
+    },
+    {
+      "type": "poetry",
+      "title": "সোনার তরী",
+      "author": "রবীন্দ্রনাথ ঠাকুর",
+      "position": 3
+    },
+    {
+      "type": "poetry",
+      "title": "বিদ্রোহী",
+      "author": "কাজী নজরুল ইসলাম",
+      "position": 4
+    },
+    {
+      "type": "poetry",
+      "title": "সুচেতনা",
+      "author": "জীবনানন্দ দাশ",
+      "position": 5
+    },
+    {
+      "type": "poetry",
+      "title": "প্রতিদান",
+      "author": "জসীমউদ্দীন",
+      "position": 6
+    },
+    {
+      "type": "poetry",
+      "title": "তাহারেই পড়ে মনে",
+      "author": "সুফিয়া কামাল",
+      "position": 7
+    },
+    {
+      "type": "poetry",
+      "title": "পদ্মা",
+      "author": "ফররুখ আহমদ",
+      "position": 8
+    },
+    {
+      "type": "poetry",
+      "title": "ফেব্রুয়ারি ১৯৬৯",
+      "author": "শামসুর রাহমান",
+      "position": 9
+    },
+    {
+      "type": "poetry",
+      "title": "আঠার বছর বয়স",
+      "author": "সুকান্ত ভট্টাচার্য",
+      "position": 10
+    },
+    {
+      "type": "poetry",
+      "title": "আমি কিংবদন্তির কথা বলছি",
+      "author": "আবু জাফর ওবায়দুল্লাহ",
+      "position": 11
+    },
+    {
+      "type": "poetry",
+      "title": "প্রত্যাবর্তনের লজ্জা",
+      "author": "আল মাহমুদ",
+      "position": 12
+    },
+    {
+      "type": "novel",
+      "title": "লালসালু",
+      "author": "সৈয়দ ওয়ালীউল্লাহ",
+      "position": 1
+    },
+    {
+      "type": "drama",
+      "title": "সিরাজউদ্দৌলা",
+      "author": "সিকান্দার আবু জাফর",
+      "position": 1
+    }
+  ],
+  "validation": {
+    "extractedCounts": {
+      "prose": 12,
+      "poetry": 12,
+      "novel": 1,
+      "drama": 1
+    },
+    "officialCountCrossCheck": "NCTB signed circular lists 12 prose and 12 poetry selections for 2024-25.",
+    "titleListCrossCheck": "Titles and authors transcribed from the Prothom Alo-hosted PDF only; exact NCTB attachment comparison and teacher review are outstanding."
+  }
+}
