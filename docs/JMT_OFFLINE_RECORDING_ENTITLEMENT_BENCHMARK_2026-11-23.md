@@ -150,3 +150,55 @@ Transactional negative tests were rolled back. The persistent revocation test wa
 - Applied to JMT Test only; Supabase migration version `20261126073045`, name `offline_recording_foreign_key_indexes`.
 - Re-ran Supabase performance advisors. The feature's 10 unindexed foreign-key findings disappeared. Two unrelated pre-existing findings remain: `assignment_submission_versions_assignment_id_fkey` and `lesson_playback_progress_lesson_id_fkey`.
 - This is hosted Test database verification, not Production. Production remains untouched.
+
+## Cache semantics correction and upload interruption hardening — 28 November 2026
+
+### Supabase cache semantics clarified
+
+The current Supabase documentation (Smart CDN page updated 12 November 2026) makes an important distinction that must remain explicit in the release evidence:
+
+- `cacheControl: '60'` controls the browser's cache TTL. It does **not** establish a 60-second Smart CDN edge TTL.
+- Smart CDN is automatically enabled on Pro plans and above. When enabled, signed URLs are cached at the edge by their unique token; generating a new token creates a separate cache key.
+- Supabase states that token expiry does not itself purge a cached CDN response. Deleting the object invalidates cached entries for that object across tokens, but global propagation can take up to 60 seconds. Browser caches are separate and may continue serving until their own `cacheControl` TTL expires.
+- The 900-second signed URL remains a bearer credential. Roster revocation blocks new metadata reads and new signed-URL creation, but it does not individually revoke an already-issued URL. Immediate mid-stream revocation is not guaranteed by this design.
+
+Official evidence:
+- [Supabase Smart CDN — cache duration, signed URLs and expiry](https://supabase.com/docs/guides/storage/cdn/smart-cdn)
+- [Supabase Storage access control](https://supabase.com/docs/guides/storage/security/access-control)
+- [Supabase URL signing keys and revocation](https://supabase.com/docs/guides/storage/security/signing-keys)
+- [Supabase private-bucket serving](https://supabase.com/docs/guides/storage/serving/downloads)
+- [Supabase troubleshooting: private files after access removal/logout](https://supabase.com/kb/troubleshooting/storage-private-bucket-files-still-accessible-after-remove-access-or-logout)
+
+The previous statement that the 60-second value represents the full cache-residual window must not be read as a CDN guarantee. It is the configured browser cache TTL. The project handoff previously recorded JMT Test as a Free-plan project; the Supabase project metadata action used in this session does not expose billing tier, so plan status was not independently rechecked. Do not assume Smart CDN is enabled or disabled without checking the current project plan.
+
+### Hosted state re-read — 28 November 2026
+
+- JMT Test project `cullxqklmbdiosibgois` remains `ACTIVE_HEALTHY`.
+- The `offline-class-recordings` bucket is private (`public=false`), has a 100 MiB upload limit, and allows only MP4, WebM and QuickTime MIME types.
+- Hosted Test counts: 1 synthetic offline batch, 1 assigned staff row, 2 roster history rows (1 currently approved), 1 linked completed class, 0 recording metadata rows and 0 Storage objects.
+- All 10 follow-up foreign-key indexes are present in the hosted Test catalog. The performance advisor now reports only 2 unrelated pre-existing unindexed foreign keys: `assignment_submission_versions_assignment_id_fkey` and `lesson_playback_progress_lesson_id_fkey`.
+- Because no object exists, no hosted upload, download, signed URL, expiry, browser cache or CDN cache test has occurred.
+
+### Upload interruption handling
+
+The browser upload component now handles thrown network/runtime errors with a `try/catch/finally` path:
+
+- The busy state is always cleared, so a transient network failure does not leave the upload control permanently disabled.
+- If an upload may have reached Storage but metadata publication has not started, the client attempts best-effort object cleanup.
+- Once metadata insertion starts, the outcome can be ambiguous after a lost response. The client deliberately does not delete the object in that case; it asks staff to refresh and verify publication before retrying, avoiding deletion of an object whose metadata row may already have committed.
+- A regression assertion covers the catch/finally path and the ambiguous-publication guard.
+
+This is source-level resilience work, not a substitute for the still-missing authenticated hosted Storage test.
+
+### Remaining hosted Storage acceptance gate
+
+Before PR #73 can leave draft status, an authorised Test-only browser/JWT harness must verify:
+
+1. An assigned staff account uploads a synthetic video to the exact `batch_id/live_class_id/random-file` path. Confirm the private object exists, metadata publication succeeds only after upload, MIME and 100 MiB limits are enforced, and the response carries the expected browser `Cache-Control: max-age=60` behavior.
+2. An eligible synthetic student can obtain a 900-second signed URL and successfully GET/Range-read the object; anonymous users, wrong-batch students, online-only students, unapproved/revoked/expired roster entries and unassigned staff cannot create a new signed URL or read the object.
+3. Revoke the student's roster after issuing a signed URL. Confirm a **new** URL request is denied. Record that the previously issued bearer URL can remain usable until its 900-second expiry; do not label this immediate revocation.
+4. Test the same URL before and after expiry, with browser cache disabled and enabled. If the current project plan enables Smart CDN, inspect edge headers/cache behavior separately; do not infer CDN TTL from `cacheControl: '60'`. If object deletion is used for emergency invalidation, measure propagation and account for the documented up-to-60-second CDN invalidation window.
+5. Simulate interruption during object upload and during metadata publication. Verify the UI unlocks, cleanup is best-effort, ambiguous publication is checked by refreshing before retry, and no duplicate recording is created.
+6. Keep all identities, files and records synthetic and Test-only. Do not write directly to `storage.objects`, use real student recordings, alter Production, or activate payments.
+
+The available Supabase connector still exposes SQL/migration/schema actions but no Storage object upload/download action or authenticated browser session. Until a safe owner-authorised browser/JWT path is available, the hosted Storage gate remains blocked and PR #73 stays draft/unmerged.
