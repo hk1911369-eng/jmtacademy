@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { selectNextLearningAction } from '../lib/learning-next-action.mjs';
 
 const now = new Date('2026-11-15T06:00:00.000Z');
@@ -206,4 +207,16 @@ test('revision queue rejects invalid, mispartitioned and duplicate records', asy
     ],
   });
   assert.deepEqual(queue.map(task => task.id), ['duplicate', 'valid']);
+});
+
+
+test('Student Today fails closed when playback or lesson-completion evidence cannot be checked', async () => {
+  const page = await readFile(new URL('../app/student/page.tsx', import.meta.url), 'utf8');
+  const dashboard = await readFile(new URL('../components/learning-os-dashboard.tsx', import.meta.url), 'utf8');
+  assert.match(page, /error: playbackRowsError/);
+  assert.match(page, /error: completedPlaybackError/);
+  assert.match(page, /learningDataIssues.add\('resume'\)/);
+  assert.match(page, /if \(completedPlaybackError\)[\s\S]*learningDataIssues.add\('resume'\)/);
+  assert.match(dashboard, /availability.hasIssue\('resume'\)/);
+  assert.match(dashboard, /Lesson resume could not be checked, so no resume suggestion is shown/);
 });

@@ -72,6 +72,7 @@ export function LearningOSDashboard({ goals, revisionTasks, mastery, mistakes, r
     <h2>Today dashboard</h2>
     <p className="learning-os-muted">A subject-independent view of your study goals, revision queue and topic mastery. Insights improve as you complete lessons and assessments.</p>
     {availability.hasIssues && <p className="learning-os-data-warning" role="status" aria-live="polite">Some learning information could not be loaded. Available sections are still shown; refresh the dashboard to try again.</p>}
+    {availability.hasIssue('resume') && <p className="learning-os-data-error">Lesson resume could not be checked, so no resume suggestion is shown. Other learning sections remain available.</p>}
     <div className={'learning-os-action-grid' + (showContinueCard ? ' has-continue' : '')}>
       <section className="learning-os-next-action" aria-labelledby="learning-os-next-action-title" data-testid="learning-os-next-action">
         <div className="learning-os-next-action-copy">
